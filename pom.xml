@@ -77,14 +77,6 @@
       <version>${spring.security}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.zalando/problem-spring-web -->
-    <dependency>
-      <groupId>org.zalando</groupId>
-      <artifactId>problem-spring-web</artifactId>
-      <version>0.26.2</version>
-    </dependency>
-
-
     <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
     <dependency>
       <groupId>com.google.guava</groupId>
@@ -114,6 +106,13 @@
       <version>5.2.11.RELEASE</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+
   </dependencies>
 
   <build>

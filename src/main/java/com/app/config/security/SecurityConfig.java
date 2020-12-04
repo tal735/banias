@@ -1,5 +1,6 @@
 package com.app.config.security;
 
+import com.app.security.AuthoritiesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -70,41 +71,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
-                .disable()
+                    .disable()
 //                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 //                .and()
 //                .addFilterBefore(corsFilter, CsrfFilter.class)
-                .exceptionHandling()
-                .authenticationEntryPoint(restAuthenticationEntryPoint())
-                .accessDeniedHandler(restAccessDeniedHandler())
+                    .exceptionHandling()
+                    .authenticationEntryPoint(restAuthenticationEntryPoint())
+                    .accessDeniedHandler(restAccessDeniedHandler())
                 .and()
-                .formLogin()
-                .loginProcessingUrl("/api/authentication")
-                .successHandler(ajaxAuthenticationSuccessHandler())
-                .failureHandler(ajaxAuthenticationFailureHandler())
-                .permitAll()
+                    .formLogin()
+                    .loginProcessingUrl("/api/authentication")
+                    .successHandler(ajaxAuthenticationSuccessHandler())
+                    .failureHandler(ajaxAuthenticationFailureHandler())
+                    .permitAll()
                 .and()
-                .logout()
-                .logoutUrl("/api/logout")
-                .logoutSuccessHandler(ajaxLogoutSuccessHandler())
-                .permitAll()
+                    .logout()
+                    .logoutUrl("/api/logout")
+                    .logoutSuccessHandler(ajaxLogoutSuccessHandler())
+                    .permitAll()
                 .and()
-                .headers()
-                .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
+                    .headers()
+                    .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
                 .and()
-                .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
+                    .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
                 .and()
-                .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
+                    .featurePolicy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'")
                 .and()
-                .frameOptions()
-                .deny()
+                    .frameOptions()
+                    .deny()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/api/authentication").permitAll()
-                .antMatchers("/api/**").authenticated()
-                .antMatchers("/management/health").permitAll()
-                .antMatchers("/management/info").permitAll()
-                .antMatchers("/management/prometheus").permitAll()
-                .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
+                    .authorizeRequests()
+                    .antMatchers("/api/authentication").permitAll()
+                    .antMatchers("/api/**").authenticated()
+                    .antMatchers("/management/health").permitAll()
+                    .antMatchers("/management/info").permitAll()
+                    .antMatchers("/management/prometheus").permitAll()
+                    .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
+//                .anyRequest().authenticated();
     }
 }

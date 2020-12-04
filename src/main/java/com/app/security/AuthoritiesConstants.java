@@ -1,4 +1,4 @@
-package com.app.config.security;
+package com.app.security;
 
 /**
  * Constants for Spring Security authorities.

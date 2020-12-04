@@ -20,6 +20,7 @@ create table booking(
                         date_created timestamp default now(),
                         date_modified timestamp,
                         status character varying(32),
+                        guests integer,
                         constraint user_id_fk FOREIGN KEY (user_id) references usr(id)
 );
 create index booking_date_idx on booking(date_from, date_to);
