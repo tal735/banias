@@ -15,7 +15,7 @@ public class BookingNote extends DaoModel {
     @SequenceGenerator(name="BookingNoteIdGenerator", sequenceName = "booking_notes_id_sequence", allocationSize=1)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;
 

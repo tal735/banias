@@ -25,13 +25,22 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public void saveOrUpdate(Booking booking) {
-        sessionFactory.getCurrentSession().saveOrUpdate(booking);
+        if (booking.getId() == null) {
+            sessionFactory.getCurrentSession().saveOrUpdate(booking);
+        } else {
+            Booking dbBooking = getById(booking.getId());
+            dbBooking.setDateModified(new Date());
+            sessionFactory.getCurrentSession().merge(booking);
+        }
+    }
+
+    public Booking getById(Long id) {
+        return sessionFactory.getCurrentSession().get(Booking.class, id);
     }
 
     @Override
     public List<Booking> getAll() {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
-        criteria.setFetchMode("members", FetchMode.JOIN);
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }

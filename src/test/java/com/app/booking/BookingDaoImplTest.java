@@ -39,32 +39,27 @@ public class BookingDaoImplTest extends TestCase {
     @Test
     public void shouldBook() {
         User user = createUser("email","phone");
-        User user2 = createUser("email2","phone2");
 
         Booking booking = new Booking();
-//        booking.setUser(user);
+        booking.setUser(user);
 
         Date from = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(1).withMillisOfDay(0).toDate();
         Date to = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(3).withMillisOfDay(0).toDate();
         booking.setDateFrom(from);
         booking.setDateTo(to);
-//        booking.getMembers().add(user);
-//        booking.getMembers().add(user2);
+        booking.addNote(user, "NOTE");
 
         bookingDao.saveOrUpdate(booking);
 
         User user3 = createUser("email3","phone3");
-        User user4 = createUser("email4","phone4");
 
         Booking booking2 = new Booking();
-//        booking2.setUser(user3);
+        booking2.setUser(user3);
 
         Date from2 = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(1).withMillisOfDay(0).toDate();
         Date to2 = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(4).withMillisOfDay(0).toDate();
         booking2.setDateFrom(from2);
         booking2.setDateTo(to2);
-//        booking2.getMembers().add(user3);
-//        booking2.getMembers().add(user4);
 
         bookingDao.saveOrUpdate(booking2);
 

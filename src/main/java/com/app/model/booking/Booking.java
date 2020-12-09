@@ -2,11 +2,11 @@ package com.app.model.booking;
 
 import com.app.model.DaoModel;
 import com.app.model.user.User;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "booking")
@@ -17,17 +17,9 @@ public class Booking extends DaoModel {
     @SequenceGenerator(name="BookingIdGenerator", sequenceName = "booking_id_sequence", allocationSize=1)
     private Long id;
 
-    @Column(name = "primary_contact")
-    private String primaryContact;
-
-    @Column(name = "primary_phone_cc")
-    private String primaryPhoneCountryCode;
-
-    @Column(name = "primary_phone_number")
-    private String primaryPhoneNumber;
-
-    @Column(name = "primary_email")
-    private String primaryEmail;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "date_from")
     private Date dateFrom;
@@ -45,6 +37,9 @@ public class Booking extends DaoModel {
 
     private Integer guests;
 
+    @OneToMany(mappedBy = "booking")
+    private List<BookingNote> notes;
+
     public Long getId() {
         return id;
     }
@@ -53,36 +48,12 @@ public class Booking extends DaoModel {
         this.id = id;
     }
 
-    public String getPrimaryContact() {
-        return primaryContact;
+    public User getUser() {
+        return user;
     }
 
-    public void setPrimaryContact(String primaryContact) {
-        this.primaryContact = primaryContact;
-    }
-
-    public String getPrimaryPhoneCountryCode() {
-        return primaryPhoneCountryCode;
-    }
-
-    public void setPrimaryPhoneCountryCode(String primaryPhoneCountryCode) {
-        this.primaryPhoneCountryCode = primaryPhoneCountryCode;
-    }
-
-    public String getPrimaryPhoneNumber() {
-        return primaryPhoneNumber;
-    }
-
-    public void setPrimaryPhoneNumber(String primaryPhoneNumber) {
-        this.primaryPhoneNumber = primaryPhoneNumber;
-    }
-
-    public String getPrimaryEmail() {
-        return primaryEmail;
-    }
-
-    public void setPrimaryEmail(String primaryEmail) {
-        this.primaryEmail = primaryEmail;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getDateFrom() {
@@ -131,5 +102,33 @@ public class Booking extends DaoModel {
 
     public void setGuests(Integer guests) {
         this.guests = guests;
+    }
+
+    public List<BookingNote> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<BookingNote> notes) {
+        this.notes = notes;
+    }
+
+    public void addNote(BookingNote note) {
+        if (notes == null) {
+            notes = Lists.newArrayList();
+        }
+        notes.add(note);
+        note.setBooking(this);
+    }
+
+    public void addNote(User user, String note) {
+        if (notes == null) {
+            notes = Lists.newArrayList();
+        }
+        BookingNote bookingNote = new BookingNote();
+        bookingNote.setNote(note);
+        bookingNote.setUser(user);
+        bookingNote.setDate(new Date());
+        bookingNote.setBooking(this);
+        notes.add(bookingNote);
     }
 }

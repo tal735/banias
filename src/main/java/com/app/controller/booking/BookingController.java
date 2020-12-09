@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Date;
-
 @Controller
 @RequestMapping("/api/booking")
 public class BookingController {
@@ -29,7 +27,8 @@ public class BookingController {
     @PostMapping
     @ResponseBody
     public Booking book (@RequestBody BookingRequest bookingRequest) {
-        return bookingService.book(bookingRequest);
+        User user = userService.getFirst();
+        return bookingService.book(user, bookingRequest);
     }
 
 }

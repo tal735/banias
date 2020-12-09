@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,18 +22,15 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public Booking book(BookingRequest bookingRequest) {
+    public Booking book(User user, BookingRequest bookingRequest) {
         Booking booking = new Booking();
 
-        booking.setPrimaryContact(bookingRequest.getPrimaryContactName());
-        booking.setPrimaryPhoneCountryCode(bookingRequest.getPrimaryContactPhoneCc());
-        booking.setPrimaryPhoneNumber(bookingRequest.getPrimaryContactPhoneNumber());
-        booking.setPrimaryEmail(bookingRequest.getPrimaryContactEmail());
-
+        booking.setUser(user);
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
         booking.setStatus("PENDING");
+        booking.addNote(user, bookingRequest.getNote());
 
         bookingDao.saveOrUpdate(booking);
 
