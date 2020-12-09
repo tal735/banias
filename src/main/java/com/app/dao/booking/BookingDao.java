@@ -10,6 +10,4 @@ public interface BookingDao {
     void saveOrUpdate(Booking booking);
 
     List<Booking> getAll();
-
-    int getNumberOfGuests(Date from, Date to);
 }

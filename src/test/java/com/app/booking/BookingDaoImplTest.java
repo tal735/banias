@@ -67,9 +67,6 @@ public class BookingDaoImplTest extends TestCase {
 
         Booking dbBooking = bookings.get(0);
 
-        int numberOfGuests = bookingDao.getNumberOfGuests(from, to);
-
-        System.out.println("numberOfGuests" + numberOfGuests);
     }
 
     private User createUser(String email, String phone) {

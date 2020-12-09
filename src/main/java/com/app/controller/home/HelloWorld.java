@@ -10,7 +10,7 @@ public class HelloWorld {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloWorld.class);
 
-    @GetMapping("/hi")
+    @GetMapping("/home")
     public String index() {
         logger.debug("Hello from Logback");
         return "HI";
