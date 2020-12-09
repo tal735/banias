@@ -31,15 +31,6 @@ CREATE SEQUENCE booking_id_sequence START 1;
 
 
 
-
-create table booking_member (
-                                user_id numeric(19,0),
-                                booking_id numeric(19,0),
-                                constraint booking_member_user_id_fk FOREIGN KEY (user_id) references usr(id),
-                                constraint booking_member_booking_id_fk FOREIGN KEY (booking_id) references booking(id)
-);
-
-
 create table booking_notes (
                                id numeric(19,0) primary key,
                                user_id numeric(19,0),
