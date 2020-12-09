@@ -18,6 +18,9 @@ public class User extends DaoModel {
 
    private String phone;
 
+   @Column(name = "country_code")
+   private String countryCode;
+
    private boolean verified;
 
    @Column(name = "registration_date", updatable = false, insertable = false)
@@ -45,6 +48,14 @@ public class User extends DaoModel {
 
    public void setPhone(String phone) {
       this.phone = phone;
+   }
+
+   public String getCountryCode() {
+      return countryCode;
+   }
+
+   public void setCountryCode(String countryCode) {
+      this.countryCode = countryCode;
    }
 
    public boolean isVerified() {
