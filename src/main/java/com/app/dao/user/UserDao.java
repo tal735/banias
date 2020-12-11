@@ -6,4 +6,6 @@ public interface UserDao {
     void save(User user);
 
     User getFirst();
+
+    User getByEmail(String email);
 }

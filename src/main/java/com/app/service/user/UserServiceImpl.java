@@ -3,6 +3,7 @@ package com.app.service.user;
 import com.app.dao.user.UserDao;
 import com.app.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,16 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
-    }
-
-    @Override
-    @Transactional
-    public void save(User user) {
-        userDao.save(user);
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -27,4 +24,25 @@ public class UserServiceImpl implements UserService {
     public User getFirst() {
         return userDao.getFirst();
     }
+
+    @Override
+    @Transactional
+    public User getByEmail(String email) {
+        return userDao.getByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public User addNewUser(String email, String password) throws Exception {
+        if (getByEmail(email) != null) {
+            throw new Exception("Email " + email + " already exists");
+        }
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(password));
+        userDao.save(user);
+        return user;
+    }
+
+
 }

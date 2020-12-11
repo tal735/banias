@@ -3,17 +3,19 @@ package com.app.config.security;
 import com.app.security.AuthoritiesConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -22,9 +24,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
 @EnableWebSecurity
+@ComponentScan(basePackages = "com.app")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired PasswordEncoder passwordEncoder;
+    @Autowired
+    UserDetailsService userDetailsService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public AccessDeniedHandler restAccessDeniedHandler() {
@@ -52,17 +64,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder)
-                .withUser("user").password(passwordEncoder.encode("123456")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder.encode("123456")).roles("USER", "ADMIN");
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
     }
 
     @Override
@@ -117,12 +123,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .deny()
                 .and()
                     .authorizeRequests()
+                    .antMatchers("/home").permitAll()
+                    .antMatchers("/user/register").permitAll()
                     .antMatchers("/api/authentication").permitAll()
+                    .antMatchers("/api/logout").permitAll()
                     .antMatchers("/api/**").authenticated()
-                    .antMatchers("/management/health").permitAll()
-                    .antMatchers("/management/info").permitAll()
-                    .antMatchers("/management/prometheus").permitAll()
-                    .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);
-//                .anyRequest().authenticated();
+                    .antMatchers("/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .anyRequest().authenticated();
     }
 }

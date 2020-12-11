@@ -26,6 +26,8 @@ public class User extends DaoModel {
    @Column(name = "registration_date", updatable = false, insertable = false)
    private Date registrationDate;
 
+   private String password;
+
    public Long getId() {
       return id;
    }
@@ -72,5 +74,13 @@ public class User extends DaoModel {
 
    public void setRegistrationDate(Date registrationDate) {
       this.registrationDate = registrationDate;
+   }
+
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
    }
 }

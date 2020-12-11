@@ -16,4 +16,9 @@ public class HelloWorld {
         return "HI";
     }
 
+    @GetMapping("/api/home")
+    public String apiHome() {
+        logger.debug("Hello from apiHome");
+        return "apiHome";
+    }
 }

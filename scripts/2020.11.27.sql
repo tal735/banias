@@ -1,6 +1,7 @@
 create table usr(
 	id numeric(19,0) primary key,
 	email character varying(256),
+    password character varying (128),
 	phone character varying(64),
     country_code character varying(16),
 	verified boolean default false,

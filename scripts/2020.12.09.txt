@@ -1,0 +1,4 @@
+$ npm install intl-tel-input@17.0.3 --save
+$ npm install google-libphonenumber --save
+$ ng add ngx-bootstrap
+$ npm install ngx-intl-tel-input --save
