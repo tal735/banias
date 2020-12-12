@@ -1,5 +1,6 @@
 package com.app.service.user;
 
+import com.app.model.user.SessionUser;
 import com.app.model.user.User;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,12 @@ import java.util.List;
 @Service("UserDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -26,6 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         List<GrantedAuthority> authorities = Lists.newArrayList();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+        SessionUser sessionUser = new SessionUser(user.getEmail(), user.getPassword(), authorities);
+        sessionUser.setUserId(user.getId());
+        sessionUser.setEmail(user.getEmail());
+        return sessionUser;
     }
 }

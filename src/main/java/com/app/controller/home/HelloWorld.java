@@ -1,5 +1,7 @@
 package com.app.controller.home;
 
+import com.app.model.user.SessionUser;
+import com.app.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ public class HelloWorld {
 
     @GetMapping("/api/home")
     public String apiHome() {
+        SessionUser user = SecurityUtils.getLoggedInUser();
         logger.debug("Hello from apiHome");
         return "apiHome";
     }

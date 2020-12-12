@@ -1,5 +1,6 @@
 package com.app.security;
 
+import com.app.model.user.SessionUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,6 +26,12 @@ public final class SecurityUtils {
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
+    }
+
+    public static SessionUser getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SessionUser sessionUser = (SessionUser) authentication.getPrincipal();
+        return sessionUser;
     }
 
     private static String extractPrincipal(Authentication authentication) {
