@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "booking_note")
+@Table(name = "booking_notes")
 public class BookingNote extends DaoModel {
 
     @Id
