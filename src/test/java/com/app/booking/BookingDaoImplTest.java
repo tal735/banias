@@ -2,6 +2,8 @@ package com.app.booking;
 
 import com.app.dao.booking.BookingDao;
 import com.app.dao.booking.BookingDaoImpl;
+import com.app.dao.booking.BookingNoteDao;
+import com.app.dao.booking.BookingNoteDaoImpl;
 import com.app.dao.user.UserDao;
 import com.app.dao.user.UserDaoImpl;
 import com.app.model.booking.Booking;
@@ -24,6 +26,7 @@ import java.util.List;
 @ContextConfiguration(locations = { "classpath:**/applicationContext-test.xml"})
 @Transactional
 public class BookingDaoImplTest extends TestCase {
+    private BookingNoteDao bookingNoteDao;
     private BookingDao bookingDao;
     private UserDao userDao;
 
@@ -32,6 +35,7 @@ public class BookingDaoImplTest extends TestCase {
 
     @Before
     public void setUp() {
+        bookingNoteDao = new BookingNoteDaoImpl(sessionFactory);
         bookingDao = new BookingDaoImpl(sessionFactory);
         userDao = new UserDaoImpl(sessionFactory);
     }
@@ -47,7 +51,7 @@ public class BookingDaoImplTest extends TestCase {
         Date to = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(3).withMillisOfDay(0).toDate();
         booking.setDateFrom(from);
         booking.setDateTo(to);
-        booking.addNote(user, "NOTE");
+//        booking.addNote(user, "NOTE");
 
         bookingDao.saveOrUpdate(booking);
 

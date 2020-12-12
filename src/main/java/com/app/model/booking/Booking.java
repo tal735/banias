@@ -2,12 +2,9 @@ package com.app.model.booking;
 
 import com.app.model.DaoModel;
 import com.app.model.user.User;
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "booking")
@@ -37,9 +34,6 @@ public class Booking extends DaoModel {
     private String status;
 
     private Integer guests;
-
-    @OneToMany(mappedBy = "booking")
-    private List<BookingNote> notes;
 
     public Long getId() {
         return id;
@@ -103,28 +97,5 @@ public class Booking extends DaoModel {
 
     public void setGuests(Integer guests) {
         this.guests = guests;
-    }
-
-    public List<BookingNote> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(List<BookingNote> notes) {
-        this.notes = notes;
-    }
-
-    public void addNote(User user, String note) {
-        if (StringUtils.isBlank(note)) {
-            return;
-        }
-        if (notes == null) {
-            notes = Lists.newArrayList();
-        }
-        BookingNote bookingNote = new BookingNote();
-        bookingNote.setNote(note);
-        bookingNote.setUser(user);
-        bookingNote.setDate(new Date());
-        bookingNote.setBooking(this);
-        notes.add(bookingNote);
     }
 }

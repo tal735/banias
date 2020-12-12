@@ -1,4 +1,4 @@
-package com.app.controller.booking;
+package com.app.controller.booking.dto;
 
 import com.app.model.booking.Booking;
 

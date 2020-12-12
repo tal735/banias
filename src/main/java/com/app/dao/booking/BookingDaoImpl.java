@@ -33,6 +33,7 @@ public class BookingDaoImpl implements BookingDao {
         }
     }
 
+    @Override
     public Booking getById(Long id) {
         return sessionFactory.getCurrentSession().get(Booking.class, id);
     }

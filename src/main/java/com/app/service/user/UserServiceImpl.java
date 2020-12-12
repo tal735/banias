@@ -39,10 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User addNewUser(String email, String password) throws Exception {
-        if (getByEmail(email) != null) {
-            throw new Exception("Email " + email + " already exists");
-        }
+    public User addNewUser(String email, String password) {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
