@@ -3,6 +3,7 @@ package com.app.model.booking;
 import com.app.model.DaoModel;
 import com.app.model.user.User;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -112,15 +113,10 @@ public class Booking extends DaoModel {
         this.notes = notes;
     }
 
-    public void addNote(BookingNote note) {
-        if (notes == null) {
-            notes = Lists.newArrayList();
-        }
-        notes.add(note);
-        note.setBooking(this);
-    }
-
     public void addNote(User user, String note) {
+        if (StringUtils.isBlank(note)) {
+            return;
+        }
         if (notes == null) {
             notes = Lists.newArrayList();
         }

@@ -4,7 +4,6 @@ import com.app.model.booking.Booking;
 import com.app.model.user.SessionUser;
 import com.app.security.SecurityUtils;
 import com.app.service.booking.BookingService;
-import com.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +16,10 @@ import java.util.stream.Collectors;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final UserService userService;
 
     @Autowired
-    public BookingController(BookingService bookingService, UserService userService) {
+    public BookingController(BookingService bookingService) {
         this.bookingService = bookingService;
-        this.userService = userService;
     }
 
     @GetMapping
