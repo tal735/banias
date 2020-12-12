@@ -39,4 +39,10 @@ public class UserDaoImpl implements UserDao {
         criteria.add(Restrictions.eq("email", email));
         return (User) criteria.uniqueResult();
     }
+
+    @Override
+    public User getById(Long id) {
+        User user = sessionFactory.getCurrentSession().get(User.class, id);
+        return user;
+    }
 }

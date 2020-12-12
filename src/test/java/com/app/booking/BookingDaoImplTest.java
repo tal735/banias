@@ -62,10 +62,10 @@ public class BookingDaoImplTest extends TestCase {
         booking2.setDateTo(to2);
 
         bookingDao.saveOrUpdate(booking2);
-
-        List<Booking> bookings = bookingDao.getAll();
-
-        Booking dbBooking = bookings.get(0);
+//
+//        List<Booking> bookings = bookingDao.getAll();
+//
+//        Booking dbBooking = bookings.get(0);
 
     }
 

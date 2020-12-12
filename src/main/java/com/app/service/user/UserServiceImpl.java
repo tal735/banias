@@ -33,6 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public User getById(Long id) {
+        return userDao.getById(id);
+    }
+
+    @Override
+    @Transactional
     public User addNewUser(String email, String password) throws Exception {
         if (getByEmail(email) != null) {
             throw new Exception("Email " + email + " already exists");

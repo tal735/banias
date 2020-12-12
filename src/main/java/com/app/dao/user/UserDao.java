@@ -8,4 +8,6 @@ public interface UserDao {
     User getFirst();
 
     User getByEmail(String email);
+
+    User getById(Long id);
 }
