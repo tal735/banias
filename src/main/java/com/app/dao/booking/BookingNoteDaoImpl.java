@@ -28,7 +28,7 @@ public class BookingNoteDaoImpl implements BookingNoteDao {
     public List<BookingNote> getNotes(Long bookingId, Integer offset) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(BookingNote.class);
         criteria.add(Restrictions.eq("booking.id", bookingId));
-        criteria.addOrder(Order.desc("id"));
+//        criteria.addOrder(Order.asc("id"));
         criteria.setFirstResult(offset);
         criteria.setMaxResults(10);
         return criteria.list();

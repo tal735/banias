@@ -40,10 +40,17 @@ public class BookingServiceImpl implements BookingService {
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
         booking.setStatus("PENDING");
-        bookingDao.saveOrUpdate(booking);
+        saveOrUpdate(booking);
         if (StringUtils.isNotBlank(bookingRequest.getNote())) {
             saveNote(user, booking, bookingRequest.getNote());
         }
+        return booking;
+    }
+
+    @Override
+    @Transactional
+    public Booking saveOrUpdate(Booking booking) {
+        bookingDao.saveOrUpdate(booking);
         return booking;
     }
 
@@ -71,6 +78,12 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public List<BookingNote> getNotes(Long bookingId, Integer offset) {
         return bookingNoteDao.getNotes(bookingId, offset);
+    }
+
+    @Override
+    @Transactional
+    public List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo) {
+        return bookingDao.getExistingBookings(userId, dateFrom, dateTo);
     }
 
     private BookingNote saveNote(User user, Booking booking, String note) {

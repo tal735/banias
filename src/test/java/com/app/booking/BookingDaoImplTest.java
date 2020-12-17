@@ -73,6 +73,26 @@ public class BookingDaoImplTest extends TestCase {
 
     }
 
+    @Test
+    public void shouldFindExistingBooking() {
+        User user = createUser("e","p");
+
+        Booking booking = new Booking();
+        booking.setUser(user);
+        Date from = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(2).withMillisOfDay(0).toDate();
+        Date to = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(5).withMillisOfDay(0).toDate();
+        booking.setDateFrom(from);
+        booking.setDateTo(to);
+        bookingDao.saveOrUpdate(booking);
+
+
+        Date fromTest = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(1).withMillisOfDay(0).toDate();
+        Date toTest = new DateTime().withYear(2020).withMonthOfYear(10).withDayOfMonth(6).withMillisOfDay(0).toDate();
+        List<Booking> existingBookings = bookingDao.getExistingBookings(user.getId(), fromTest, toTest);
+
+        System.out.println(123);
+    }
+
     private User createUser(String email, String phone) {
         User user = new User();
         user.setEmail(email);

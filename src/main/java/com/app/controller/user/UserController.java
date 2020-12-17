@@ -1,6 +1,7 @@
 package com.app.controller.user;
 
 import com.app.service.user.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class UserController {
     public ResponseEntity register(@RequestParam String email, @RequestParam String password) {
         try {
             email = email.toLowerCase().trim();
-            if (userService.getByEmail(email) != null) {
+            if (StringUtils.isBlank(email) || userService.getByEmail(email) != null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already in use.");
             }
             userService.addNewUser(email, password);

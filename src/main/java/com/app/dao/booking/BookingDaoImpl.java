@@ -14,7 +14,6 @@ import java.util.List;
 @Repository
 public class BookingDaoImpl implements BookingDao {
 
-
     private final SessionFactory sessionFactory;
 
     @Autowired
@@ -36,6 +35,27 @@ public class BookingDaoImpl implements BookingDao {
     @Override
     public Booking getById(Long id) {
         return sessionFactory.getCurrentSession().get(Booking.class, id);
+    }
+
+    @Override
+    public List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
+        criteria.add(Restrictions.eq("user.id", userId));
+        criteria.add(Restrictions.disjunction(
+                Restrictions.conjunction(
+                        Restrictions.ge("dateFrom", dateFrom),
+                        Restrictions.le("dateFrom", dateTo)
+                ),
+                Restrictions.conjunction(
+                        Restrictions.ge("dateTo", dateFrom),
+                        Restrictions.le("dateTo", dateTo)
+                ),
+                Restrictions.conjunction(
+                        Restrictions.le("dateFrom", dateFrom),
+                        Restrictions.ge("dateTo", dateTo)
+                )
+        ));
+        return criteria.list();
     }
 
     @Override
