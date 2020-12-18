@@ -21,12 +21,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User getFirst() {
-        return userDao.getFirst();
-    }
-
-    @Override
-    @Transactional
     public User getByEmail(String email) {
         return userDao.getByEmail(email);
     }
@@ -43,6 +37,13 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
+        userDao.save(user);
+        return user;
+    }
+
+    @Override
+    @Transactional
+    public User saveOrUpdate(User user) {
         userDao.save(user);
         return user;
     }

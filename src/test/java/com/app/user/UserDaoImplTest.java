@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 import org.hamcrest.MatcherAssert;
 import org.hibernate.SessionFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import static org.hamcrest.core.Is.is;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:**/applicationContext-test.xml"})
 @Transactional
+@Ignore
 public class UserDaoImplTest extends TestCase {
 
     private UserDao userDao;
@@ -29,17 +31,5 @@ public class UserDaoImplTest extends TestCase {
     @Before
     public void setUp() throws Exception {
         userDao = new UserDaoImpl(sessionFactory);
-    }
-
-    @Test
-    public void shouldSaveUser() {
-        User user = new User();
-        user.setEmail("email");
-        user.setPhone("phone");
-        userDao.save(user);
-
-        User first = userDao.getFirst();
-
-        MatcherAssert.assertThat(first.getEmail(), is("email"));
     }
 }

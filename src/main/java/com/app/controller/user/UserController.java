@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -24,10 +25,18 @@ public class UserController {
     }
 
     @PostMapping("/user/register")
-    public ResponseEntity register(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity register(@RequestBody UserSignupRequest userSignupRequest) {
         try {
+            String email = userSignupRequest.getEmail();
+            String password = userSignupRequest.getPassword();
+            if (StringUtils.isBlank(password) || password.length() < 6) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password invalid.");
+            }
+            if (StringUtils.isBlank(email)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email invalid.");
+            }
             email = email.toLowerCase().trim();
-            if (StringUtils.isBlank(email) || userService.getByEmail(email) != null) {
+            if (userService.getByEmail(email) != null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already in use.");
             }
             userService.addNewUser(email, password);

@@ -25,15 +25,6 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getFirst() {
-        List list = sessionFactory.getCurrentSession().createCriteria(User.class).list();
-        if (list.isEmpty()) {
-            return null;
-        }
-        return (User) list.get(0);
-    }
-
-    @Override
     public User getByEmail(String email) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
         criteria.add(Restrictions.eq("email", email));

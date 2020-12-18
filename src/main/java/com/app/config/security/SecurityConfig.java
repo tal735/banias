@@ -124,6 +124,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/home").permitAll()
+                    .antMatchers("/forgot-password").permitAll()
+                    .antMatchers("/reset-password").permitAll()
                     .antMatchers("/user/register").permitAll()
                     .antMatchers("/api/authentication").permitAll()
                     .antMatchers("/api/logout").permitAll()
