@@ -34,7 +34,7 @@ public class PasswordController {
     @ResponseBody
     public ResponseEntity forgotPassword(@RequestBody String email) {
         try {
-            LOGGER.debug("forgotPassword: Started for email " + email);
+            LOGGER.debug("forgotPassword: Sending reset token for email  " + email);
             User user = userService.getByEmail(email.trim());
             if (user == null) {
                 return ResponseEntity.badRequest().body("Cannot reset email for this user.");
@@ -48,13 +48,13 @@ public class PasswordController {
         }
     }
 
-    @PostMapping(value = "/reset-password", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/reset-password")
     @ResponseBody
     public ResponseEntity resetPassword(@RequestBody PasswordResetRequest request) {
         String token = request.getToken();
         String password = request.getPassword();
         try {
-            LOGGER.debug("resetPassword: Started for token " + token);
+            LOGGER.debug("resetPassword: Resetting password for token " + token);
             PasswordReset passwordReset = passwordService.getByToken(token);
             if (passwordReset == null || passwordReset.getUsed() ||
                     passwordReset.getDateCreated().before(DateTime.now().minusDays(7).toDate())) {
