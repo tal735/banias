@@ -1,5 +1,7 @@
 package com.app.controller.user;
 
+import com.app.model.user.SessionUser;
+import com.app.security.SecurityUtils;
 import com.app.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -7,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -22,6 +26,22 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/user")
+    @ResponseBody
+    public UserDTO getUserDetails() {
+        UserDTO userDTO = new UserDTO();
+
+        SessionUser user = SecurityUtils.getLoggedInUser();
+        if (user != null) {
+            List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).map(role -> role.replace("ROLE_", "")).collect(Collectors.toList());
+            roles.add("ADMIN");
+            userDTO.setEmail(user.getEmail());
+            userDTO.setRoles(roles);
+        }
+
+        return userDTO;
     }
 
     @PostMapping("/user/register")

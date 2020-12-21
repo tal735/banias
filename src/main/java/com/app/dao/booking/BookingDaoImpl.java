@@ -59,6 +59,19 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
+    public List<Booking> getForDates(Date dateFrom, Date dateTo) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
+        if (dateFrom != null) {
+            criteria.add(Restrictions.ge("dateFrom", dateFrom));
+        }
+        if (dateTo != null) {
+            criteria.add(Restrictions.le("dateTo", dateTo));
+        }
+        criteria.addOrder(Order.desc("dateFrom"));
+        return criteria.list();
+    }
+
+    @Override
     public List<Booking> getBookings(Long userId, Integer offset) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
         criteria.add(Restrictions.eq("user.id", userId));

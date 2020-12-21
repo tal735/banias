@@ -30,8 +30,10 @@ public final class SecurityUtils {
 
     public static SessionUser getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        SessionUser sessionUser = (SessionUser) authentication.getPrincipal();
-        return sessionUser;
+        if (authentication.getPrincipal() instanceof SessionUser) {
+            return  (SessionUser) authentication.getPrincipal();
+        }
+        return null;
     }
 
     private static String extractPrincipal(Authentication authentication) {

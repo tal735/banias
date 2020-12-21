@@ -86,6 +86,12 @@ public class BookingServiceImpl implements BookingService {
         return bookingDao.getExistingBookings(userId, dateFrom, dateTo);
     }
 
+    @Override
+    @Transactional
+    public List<Booking> getForDates(Date dateFrom, Date dateTo) {
+        return bookingDao.getForDates(dateFrom, dateTo);
+    }
+
     private BookingNote saveNote(User user, Booking booking, String note) {
         BookingNote bookingNote = new BookingNote();
         bookingNote.setBooking(booking);
