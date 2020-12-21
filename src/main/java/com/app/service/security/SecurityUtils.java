@@ -1,4 +1,4 @@
-package com.app.security;
+package com.app.service.security;
 
 import com.app.model.user.SessionUser;
 import org.springframework.security.core.Authentication;

@@ -1,7 +1,7 @@
 package com.app.controller.user;
 
 import com.app.model.user.SessionUser;
-import com.app.security.SecurityUtils;
+import com.app.service.security.SecurityUtils;
 import com.app.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

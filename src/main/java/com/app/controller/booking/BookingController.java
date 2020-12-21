@@ -4,7 +4,7 @@ import com.app.controller.booking.dto.BookingDto;
 import com.app.controller.booking.dto.BookingRequest;
 import com.app.model.booking.Booking;
 import com.app.model.user.SessionUser;
-import com.app.security.SecurityUtils;
+import com.app.service.security.SecurityUtils;
 import com.app.service.booking.BookingService;
 import com.google.common.collect.Maps;
 import org.slf4j.Logger;
