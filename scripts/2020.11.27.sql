@@ -1,5 +1,7 @@
 create table usr(
 	id numeric(19,0) primary key,
+    first_name character varying(64),
+    last_name character varying(64),
 	email character varying(256),
     password character varying (128),
 	phone character varying(64),

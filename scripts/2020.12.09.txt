@@ -5,3 +5,7 @@ $ npm install ngx-intl-tel-input --save
 
 
 https://stackoverflow.com/questions/27100231/how-to-use-session-in-spring-for-save-user-info
+
+
+npm i jquery -- not useful ?
+npm i --save-dev @types/jquery

@@ -123,7 +123,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                    .deny()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/home").permitAll()
                     .antMatchers("/forgot-password").permitAll()
                     .antMatchers("/reset-password").permitAll()
                     .antMatchers("/user/register").permitAll()

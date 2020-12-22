@@ -1,16 +1,27 @@
 package com.app.model.user;
 
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
+import com.google.common.collect.Lists;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public class SessionUser extends org.springframework.security.core.userdetails.User {
 
     private Long userId;
     private String email;
+    private String firstName;
+    private String lastName;
+    private String countryCode;
+    private String phone;
+    private boolean verified;
 
-    public SessionUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+    public SessionUser(User user) {
+        super(user.getEmail(), user.getPassword(), Lists.newArrayList(new SimpleGrantedAuthority("ROLE_USER")));
+        setUserId(user.getId());
+        setEmail(user.getEmail());
+        setFirstName(user.getFirstName());
+        setLastName(user.getLastName());
+        setCountryCode(user.getCountryCode());
+        setPhone(user.getPhone());
+        setVerified(user.isVerified());
     }
 
     public Long getUserId() {
@@ -27,5 +38,45 @@ public class SessionUser extends org.springframework.security.core.userdetails.U
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }
