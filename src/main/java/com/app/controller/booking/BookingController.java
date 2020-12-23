@@ -103,13 +103,13 @@ public class BookingController {
     private Map<String, String> checkForErrors(SessionUser user, Long bookingId, BookingRequest bookingRequest) {
         Map<String, String> errors = Maps.newHashMap();
         if (!user.isVerified()) {
-            errors.put("error", "You must verify your phone number first.");
+            errors.put("error", "Please verify your phone number.");
         } else if (bookingRequest.getDateFrom() == null || bookingRequest.getDateTo() == null) {
-            errors.put("error", "Dates cannot be empty.");
+            errors.put("error", "Please enter valid dates.");
         } else if (bookingRequest.getDateFrom().after(bookingRequest.getDateTo())) {
-            errors.put("error", "From date is later than To date.");
+            errors.put("error", "Please enter valid dates range.");
         } else if (bookingRequest.getGuests() == null || bookingRequest.getGuests() <= 0) {
-            errors.put("error", "Cannot have less than 1 guest.");
+            errors.put("error", "Please check your number of guests.");
         } else {
             List<Booking> bookings = bookingService.getExistingBookings(user.getUserId(),
                     bookingRequest.getDateFrom(), bookingRequest.getDateTo());
