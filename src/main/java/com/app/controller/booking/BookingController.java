@@ -102,7 +102,9 @@ public class BookingController {
 
     private Map<String, String> checkForErrors(SessionUser user, Long bookingId, BookingRequest bookingRequest) {
         Map<String, String> errors = Maps.newHashMap();
-        if (bookingRequest.getDateFrom() == null || bookingRequest.getDateTo() == null) {
+        if (!user.isVerified()) {
+            errors.put("error", "You must verify your phone number first.");
+        } else if (bookingRequest.getDateFrom() == null || bookingRequest.getDateTo() == null) {
             errors.put("error", "Dates cannot be empty.");
         } else if (bookingRequest.getDateFrom().after(bookingRequest.getDateTo())) {
             errors.put("error", "From date is later than To date.");

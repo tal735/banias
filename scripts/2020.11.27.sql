@@ -40,7 +40,7 @@ create table booking_notes (
 	booking_id numeric(19,0),
 	date timestamp,
 	note character varying(2048),
-	constraint booking_member_user_id_fk FOREIGN KEY (booking_id) references usr(id),
+	constraint booking_member_user_id_fk FOREIGN KEY (user_id) references usr(id),
 	constraint booking_member_booking_id_fk FOREIGN KEY (booking_id) references booking(id)
 )
 CREATE SEQUENCE booking_notes_id_sequence START 1;
