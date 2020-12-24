@@ -34,6 +34,11 @@ public class User extends DaoModel {
 
    private String password;
 
+   @Column(name = "admin_notes")
+   private String adminNotes;
+
+   private String type;
+
    public Long getId() {
       return id;
    }
@@ -104,5 +109,21 @@ public class User extends DaoModel {
 
    public void setPassword(String password) {
       this.password = password;
+   }
+
+   public String getAdminNotes() {
+      return adminNotes;
+   }
+
+   public void setAdminNotes(String adminNotes) {
+      this.adminNotes = adminNotes;
+   }
+
+   public String getType() {
+      return type;
+   }
+
+   public void setType(String type) {
+      this.type = type;
    }
 }

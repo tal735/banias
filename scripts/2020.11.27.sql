@@ -7,7 +7,9 @@ create table usr(
 	phone character varying(64),
     country_code character varying(16),
 	verified boolean default false,
-	registration_date timestamp default now()
+	registration_date timestamp default now(),
+    admin_notes character varying (1024),
+    type character varying (32)
 )
 
 CREATE SEQUENCE usr_id_sequence START 1;
