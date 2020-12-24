@@ -1,6 +1,7 @@
 package com.app.model.user;
 
 import com.app.model.DaoModel;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -116,7 +117,7 @@ public class User extends DaoModel {
    }
 
    public void setAdminNotes(String adminNotes) {
-      this.adminNotes = adminNotes;
+      this.adminNotes = StringUtils.left(adminNotes, 1024);
    }
 
    public String getType() {

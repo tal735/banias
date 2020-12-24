@@ -14,7 +14,9 @@ public class SessionUser extends org.springframework.security.core.userdetails.U
     private boolean verified;
 
     public SessionUser(User user) {
-        super(user.getEmail(), user.getPassword(), Lists.newArrayList(new SimpleGrantedAuthority("ROLE_USER")));
+        super(user.getEmail(), user.getPassword(), Lists.newArrayList(
+                        new SimpleGrantedAuthority("ROLE_USER"),
+                        new SimpleGrantedAuthority("ROLE_ADMIN")));
         setUserId(user.getId());
         setEmail(user.getEmail());
         setFirstName(user.getFirstName());

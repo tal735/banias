@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User getByEmail(String email) {
+        email = email.toLowerCase().trim();
         return userDao.getByEmail(email);
     }
 
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User addNewUser(String email, String password) {
         User user = new User();
-        user.setEmail(email);
+        user.setEmail(email.toLowerCase().trim());
         user.setPassword(passwordEncoder.encode(password));
         userDao.save(user);
         return user;

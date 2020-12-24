@@ -1,6 +1,9 @@
 package com.app.controller.user;
 
 import com.app.model.user.SessionUser;
+import com.app.model.user.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.collect.Lists;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
@@ -14,6 +17,10 @@ public class UserDTO {
     private String countryCode;
     private String phone;
     private boolean verified;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String adminNotes;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String type;
 
     public UserDTO(SessionUser user) {
         if (user != null) {
@@ -25,11 +32,26 @@ public class UserDTO {
             this.verified = user.isVerified();
 
             List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).map(role -> role.replace("ROLE_", "")).collect(Collectors.toList());
-            roles.add("ADMIN");
             this.roles = roles;
         }
     }
 
+    public UserDTO(User user) {
+        if (user != null) {
+            this.firstName = user.getFirstName();
+            this.lastName = user.getLastName();
+            this.email = user.getEmail();
+            this.countryCode = user.getCountryCode();
+            this.phone = user.getPhone();
+            this.verified = user.isVerified();
+            List<String> roles = Lists.newArrayList();
+            roles.add("ADMIN");
+            roles.add("USER");
+            this.roles = roles;
+            this.adminNotes = user.getAdminNotes();
+            this.type = user.getType();
+        }
+    }
 
     public String getFirstName() {
         return firstName;
@@ -85,5 +107,21 @@ public class UserDTO {
 
     public void setVerified(boolean verified) {
         this.verified = verified;
+    }
+
+    public String getAdminNotes() {
+        return adminNotes;
+    }
+
+    public void setAdminNotes(String adminNotes) {
+        this.adminNotes = adminNotes;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
