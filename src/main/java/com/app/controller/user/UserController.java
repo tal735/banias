@@ -4,7 +4,8 @@ import com.app.model.user.SessionUser;
 import com.app.model.user.User;
 import com.app.service.security.SecurityUtils;
 import com.app.service.user.UserService;
-import com.google.common.collect.Maps;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 public class UserController {
@@ -26,6 +27,8 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
+
+    private final Cache<Long, String> verificationCache = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
 
     @Autowired
     public UserController(UserService userService) {
@@ -105,12 +108,12 @@ public class UserController {
         return ResponseEntity.ok(new UserDTO(loggedInUser));
     }
 
-    Map<Long, String> tokens = Maps.newHashMap();
     @PostMapping("/api/user/token")
     public ResponseEntity sendPhoneToken() {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
         String token = RandomStringUtils.randomNumeric(6);
-        tokens.put(userId, token);
+        verificationCache.invalidate(userId);
+        verificationCache.put(userId, token);
         LOGGER.debug("user " + userId + " , token " + token);
         return ResponseEntity.ok().build();
     }
@@ -119,7 +122,7 @@ public class UserController {
     public ResponseEntity verifyPhoneToken(@RequestParam String token) {
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
 
-        String savedToken = tokens.get(userId);
+        String savedToken = verificationCache.getIfPresent(userId);
         if (savedToken == null || !StringUtils.equals(savedToken, token)) {
             return ResponseEntity.badRequest().body("Code is not valid. Try again.");
         }
