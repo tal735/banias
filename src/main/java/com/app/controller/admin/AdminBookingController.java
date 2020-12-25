@@ -1,6 +1,5 @@
 package com.app.controller.admin;
 
-import com.app.controller.booking.dto.BookingDto;
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
 import org.slf4j.Logger;
@@ -9,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/booking")
 public class AdminBookingController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminBookingController.class);
@@ -26,12 +24,10 @@ public class AdminBookingController {
         this.bookingService = bookingService;
     }
 
-    @GetMapping(value = "/bookings")
+    @PostMapping(value = "/find")
     @ResponseBody
-    public List<BookingDto> findBookings(@RequestParam(required = false) Date dateFrom,
-                                 @RequestParam(required = false) Date dateTo) {
-        LOGGER.debug("Admin findBookings: dateFrom " + dateFrom + ", dateTo " + dateTo);
-        List<Booking> bookings = bookingService.getForDates(dateFrom, dateTo);
-        return bookings.stream().map(BookingDto::new).collect(Collectors.toList());
+    public List<AdminBookingDto> findBookings(@RequestBody BookingFindRequest bookingFindRequest) {
+        List<Booking> bookings = bookingService.getForDates(bookingFindRequest.getDateFrom(), bookingFindRequest.getDateTo());
+        return bookings.stream().map(AdminBookingDto::new).collect(Collectors.toList());
     }
 }

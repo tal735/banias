@@ -1,22 +1,24 @@
-package com.app.controller.booking.dto;
+package com.app.controller.admin;
 
 import com.app.model.booking.Booking;
 
 import java.util.Date;
 
-public class BookingDto {
+public class AdminBookingDto {
     private Long id;
     private Date dateFrom;
     private Date dateTo;
     private Booking.BookingStatus status;
     private Integer guests;
+    private String email;
 
-    public BookingDto(Booking booking) {
+    public AdminBookingDto(Booking booking) {
         this.id = booking.getId();
         this.dateFrom = booking.getDateFrom();
         this.dateTo = booking.getDateTo();
         this.status = booking.getStatus();
         this.guests = booking.getGuests();
+        this.email = booking.getUser().getEmail();
     }
 
     public Long getId() {
@@ -57,5 +59,13 @@ public class BookingDto {
 
     public void setGuests(Integer guests) {
         this.guests = guests;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

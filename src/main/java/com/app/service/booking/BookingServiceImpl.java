@@ -39,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
-        booking.setStatus("PENDING");
+        booking.setStatus(Booking.BookingStatus.PENDING);
         saveOrUpdate(booking);
         if (StringUtils.isNotBlank(bookingRequest.getNote())) {
             saveNote(user, booking, bookingRequest.getNote());

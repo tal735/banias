@@ -2,6 +2,7 @@ package com.app.dao.booking;
 
 import com.app.model.booking.Booking;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -60,6 +61,7 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public List<Booking> getForDates(Date dateFrom, Date dateTo) {
+//        CriteriaQuery<Booking> query = sessionFactory.getCurrentSession().getCriteriaBuilder().createQuery(Booking.class);
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
         if (dateFrom != null) {
             criteria.add(Restrictions.ge("dateFrom", dateFrom));
@@ -67,7 +69,9 @@ public class BookingDaoImpl implements BookingDao {
         if (dateTo != null) {
             criteria.add(Restrictions.le("dateTo", dateTo));
         }
+        criteria.setFetchMode("user", FetchMode.JOIN);
         criteria.addOrder(Order.desc("dateFrom"));
+//        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 

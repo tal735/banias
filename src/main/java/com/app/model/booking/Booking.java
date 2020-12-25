@@ -31,7 +31,14 @@ public class Booking extends DaoModel {
     @Column(name = "date_modified")
     private Date dateModified;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
+
+    public enum BookingStatus {
+        APPROVED,
+        PENDING,
+        CANCELLED
+    }
 
     private Integer guests;
 
@@ -83,11 +90,11 @@ public class Booking extends DaoModel {
         this.dateModified = dateModified;
     }
 
-    public String getStatus() {
+    public BookingStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BookingStatus status) {
         this.status = status;
     }
 

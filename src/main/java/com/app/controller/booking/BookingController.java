@@ -68,7 +68,7 @@ public class BookingController {
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
         booking.setDateModified(new Date());
-        booking.setStatus("PENDING");
+        booking.setStatus(Booking.BookingStatus.PENDING);
         bookingService.saveOrUpdate(booking);
 
         BookingDto bookingDto = new BookingDto(booking);
