@@ -1,0 +1,27 @@
+<div class="container">
+  <h2 class="my-3">Planning to come?</h2>
+  <ng-container *ngIf="authService.user.verified; else verify_phone">
+    <button type="button" class="btn btn-outline-success" [routerLink]="['/book-new']">Book Now</button>
+  </ng-container>
+  <ng-template #verify_phone>
+    <p class="lead">
+      Please <button type="button" class="btn btn-outline-secondary mx-2" [routerLink]="['/profile']">Verify</button> your phone before booking.
+    </p>
+    
+  </ng-template>
+
+  <h2 class="mt-5">My Visits</h2>
+  <p class="lead" *ngIf="bookings.length == 0">
+    Nothing yet :(
+  </p>
+    <ng-container *ngFor="let booking of bookings;">
+        <div class="card" style="width: 17rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{ booking.dateFrom | date: 'MM-dd-yyyy' }} - {{ booking.dateTo | date: 'MM-dd-yyyy' }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ booking.status }}</h6>
+              <p class="card-text">{{ booking.guests }} Guests</p>
+              <a href="#" class="card-link" [routerLink]="['/booking', booking.id]">More</a>
+            </div>
+        </div>        
+     </ng-container>
+    </div>

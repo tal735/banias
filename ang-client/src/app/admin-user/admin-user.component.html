@@ -1,0 +1,80 @@
+<div class="container">
+    <form class="form-inline mb-5 mt-3">
+        <input [(ngModel)]="email" name="email" class="form-control mr-sm-2" type="search" placeholder="Email" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit" [disabled]="!email" (click)="searchSubmit()">Search</button>
+      </form>
+    
+      <form *ngIf="user">
+        <h6>Name</h6>
+        <div class="form-inline">
+            <div class="form-group mb-2">
+                <label for="firstName" class="sr-only">First Name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="First Name" [(ngModel)]="user.firstName" name="firstName">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" (click)="updateField(user.firstName, 'firstName')">Update</button>
+
+            <div class="form-group mx-sm-3 mb-2">
+                <label for="lastName" class="sr-only">Last Name</label>
+                <input #lastName type="text" class="form-control" id="lastName" placeholder="Last Name" [(ngModel)]="user.lastName" name="lastName">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" (click)="updateField(user.lastName, 'lastName')">Update</button>
+        </div>
+    
+        <h6 class="mt-3">Email</h6>
+        <div class="form-inline">
+            <div class="form-group mb-2 mr-sm-3">
+                <label for="email" class="sr-only">Email</label>
+                <input #email type="text" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email">
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" (click)="updateField(user.email, 'email')" >Update</button>
+        </div>
+    
+        <h6 class="mt-3">Phone</h6>
+        <div class="form-row align-items-center">
+            <div class="col-sm-2 my-1 mr-0">
+                <label class="sr-only" for="inlineFormInputGroupCountryCode">Country Code</label>
+                <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">+</div>
+                </div>
+                <input #countryCode type="text" class="form-control" id="inlineFormInputGroupCountryCode" placeholder="Country Code" [(ngModel)]="user.countryCode" name="countryCode">
+                </div>
+            </div>
+            <div class="col-auto my-1">
+                <button type="submit" class="btn btn-primary" (click)="updateField(user.countryCode, 'countryCode')">Update</button>
+            </div>
+            <div class="col-sm-3 my-1">
+                <label class="sr-only" for="inlineFormInputPhoneNumber">Phone Number</label>
+                <input #phone type="text" class="form-control" id="inlineFormInputPhoneNumber" placeholder="Phone Number" [(ngModel)]="user.phone" name="phone">
+            </div>
+            <div class="col-auto my-1">
+                <button type="submit" class="btn btn-primary" (click)="updateField(user.phone, 'phone')">Update</button>
+            </div>
+    
+            <div class="form-check mx-3">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" checked="user.verified" [(ngModel)]="user.verified" name="verified">
+                <label class="form-check-label" for="exampleCheck1">Phone Verified</label>
+            </div>
+            <button type="submit" class="btn btn-primary" (click)="updateField(user.verified, 'verified')">Update</button>
+        </div>
+    
+        <h6 class="mt-3">User Type</h6>
+        <div class="form-inline">
+            <div class="form-group mb-2 mr-sm-3">
+                <select class="custom-select" id="inlineFormCustomSelect" [(ngModel)]="user.type" name="type">
+                    <option *ngFor="let type of userTypes" [value]="type" [selected]="user.type === type">{{type}}</option>
+                  </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" (click)="updateField(user.type, 'type')">Update</button>
+        </div>
+
+        <h6 class="mt-3">Note</h6>
+        <form role="form" id="contact-form" class="contact-form" >
+            <div class="form-group">
+              <textarea [(ngModel)]="user.adminNotes" class="form-control textarea" rows="3" name="Message" id="Message" placeholder="Notes"></textarea>
+            </div>
+            <button type="submit" class="btn main-btn pull-right" (click)="updateField(user.adminNotes, 'adminNotes')">Update Note</button>
+      </form>
+
+    </form>
+</div>

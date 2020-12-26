@@ -1,0 +1,87 @@
+<div class="container">
+    <h4 class="display-4 my-5">Profile</h4>
+    <form>
+        <h6>Name</h6>
+    <div class="form-inline">
+        <div class="form-group mb-2">
+            <label for="firstName" class="sr-only">First Name</label>
+            <input #firstName type="text" class="form-control" id="firstName" placeholder="First Name" [value]="authService.user.firstName">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="lastName" class="sr-only">Last Name</label>
+            <input #lastName type="text" class="form-control" id="lastName" placeholder="Last Name" [value]="authService.user.lastName">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2" (click)="updateName(firstName, lastName)">Update</button>
+    </div>
+    <h6 class="mt-3">Email</h6>
+    <div class="form-inline">
+        <div class="form-group mb-2 mr-sm-3">
+            <label for="email" class="sr-only">Email</label>
+            <input #email type="text" class="form-control" id="email" placeholder="Email" [value]="authService.user.email">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2" (click)="updateEmail(email)">Update</button>
+    </div>
+    <h6 class="mt-3">Phone</h6>
+    <div class="form-row align-items-center">
+        <div class="col-sm-2 my-1 mr-0">
+            <label class="sr-only" for="inlineFormInputGroupCountryCode">Country Code</label>
+            <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">+</div>
+            </div>
+            <input #countryCode type="text" class="form-control" id="inlineFormInputGroupCountryCode" placeholder="Country Code" [value]="authService.user.countryCode">
+            </div>
+        </div>
+
+        <div class="col-sm-3 my-1">
+        <label class="sr-only" for="inlineFormInputPhoneNumber">Phone Number</label>
+        <input #phone type="text" class="form-control" id="inlineFormInputPhoneNumber" placeholder="Phone Number" [value]="authService.user.phone">
+        </div>
+
+        <div class="col-auto my-1">
+        <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Requires Phone Number Validation" (click)="updatePhone(countryCode, phone)">Update</button>
+        </div>
+
+        <div class="col-auto my-1">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn" [ngClass]="{'btn-success':authService.user.verified, 'btn-warning':!authService.user.verified}" [disabled]="authService.user.verified" data-toggle="modal" data-target="#exampleModal">
+                {{ authService.user.verified ? 'Verified' : 'Verify'}}
+              </button>
+              
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Verify Phone Number</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <button type="submit" class="btn btn-primary mb-2 mx-auto" (click)="getCode()">Get Code</button>
+                        <div class="alert alert-success" role="alert" *ngIf="codeSent">
+                            Code has been sent.
+                          </div>
+                        <hr>
+                        <form class="form-inline">
+                            <div class="form-group mb-2">
+                              <label for="code" class="sr-only">Code</label>
+                              <input #code type="text" class="form-control" id="code" placeholder="Enter Code">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2" (click)="verify(code)">Verify</button>
+                          </form>
+                          <div class="alert alert-danger" role="alert" *ngIf="message">
+                            {{ message }}
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button id="modalDismissButton" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    </form>
+  </div>

@@ -1,0 +1,40 @@
+<div class="container">
+    <form class="example-form" [formGroup]="searchForm" (ngSubmit)="onFormSubmit()">
+        <mat-form-field class="example-full-width">
+          <mat-label>Date From</mat-label>
+          <input matInput type="date" formControlName="dateFrom">
+        </mat-form-field>
+    
+        <mat-form-field class="example-full-width">
+            <mat-label>Date To</mat-label>
+            <input matInput type="date" formControlName="dateTo">
+        </mat-form-field>
+    
+        <button class="btn btn-primary mt-2" [disabled]="!searchForm.valid">Search</button>
+    </form>
+
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Guests</th>
+            <th scope="col">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let booking of bookings">
+                <td> {{ booking.dateFrom | date: 'dd-MM-yyyy' }} </td>
+                <td> {{ booking.dateTo | date: 'dd-MM-yyyy' }} </td>
+                <td> {{ booking.guests }} </td>
+                <td> {{ booking.email }} </td>
+                <td class="alert" [ngClass]="getStatusClass(booking.status)" role="alert"> {{ booking.status }} </td>
+                <td> <a href="#" class="card-link" [routerLink]="['/booking', booking.id]">Edit</a> </td>
+            </tr>
+        </tbody>
+      </table>
+</div>
+
+  

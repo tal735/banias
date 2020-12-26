@@ -1,0 +1,39 @@
+<div class="container">
+    <h4 class="display-4">Book</h4>
+    <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+      <mat-form-field >
+        <mat-label>When</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="From Date" required formControlName="dateFrom">
+          <input matEndDate placeholder="To Date" required formControlName="dateTo">
+        </mat-date-range-input>
+    
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    
+        <mat-error *ngIf="form.controls.dateFrom.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+        <mat-error *ngIf="form.controls.dateTo.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        <mat-error *ngIf="form.controls.dateFrom.errors?.required">From Date Required</mat-error>
+        <mat-error *ngIf="form.controls.dateTo.errors?.required">To Date Required</mat-error>
+      </mat-form-field>
+    
+      <mat-form-field>
+          <mat-label>Guests</mat-label>
+          <input matInput type="number" min="1" class="form-control" name="guests" formControlName="guests">
+          <mat-error *ngIf="form.controls.guests.hasError('matInputInvalid')">Invalid guests</mat-error>
+          <mat-error *ngIf="form.controls.guests.errors?.required">Guests Required</mat-error>
+        </mat-form-field>
+    
+        <mat-form-field>
+            <mat-label>Note</mat-label>
+            <textarea matInput class="form-control" name="note" formControlName="note" rows="3"></textarea>
+        </mat-form-field>
+
+        <div class="alert alert-danger my-3" role="alert" *ngIf="error">
+            {{ error }}
+          </div>
+
+      <button class="btn btn-success mt-2" [disabled]="!form.valid">Book</button>
+
+    </form>
+  </div>
