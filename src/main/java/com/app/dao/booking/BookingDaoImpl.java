@@ -35,7 +35,10 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public Booking getById(Long id) {
-        return sessionFactory.getCurrentSession().get(Booking.class, id);
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
+        criteria.add(Restrictions.idEq(id));
+        criteria.setFetchMode("user", FetchMode.JOIN);
+        return (Booking) criteria.uniqueResult();
     }
 
     @Override

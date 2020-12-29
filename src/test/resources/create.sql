@@ -17,6 +17,15 @@ CREATE SEQUENCE usr_id_sequence START 1;
 
 
 
+create table usr_role (
+                          user_id numeric(19,0),
+                          role character varying (16),
+                          constraint usr_role_user_id_fk FOREIGN KEY (user_id) references usr(id)
+);
+create index usr_role_user_id_idx on usr_role(user_id);
+
+
+
 
 create table booking(
                         id numeric(19,0) primary key,

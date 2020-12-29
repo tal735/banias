@@ -29,6 +29,7 @@ import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminBookingComponent } from './admin-booking/admin-booking.component';
 import { AdminBookingEditModalComponent } from './admin-booking-edit-modal/admin-booking-edit-modal.component';
+import { AdminBookingMessageModalComponent } from './admin-booking-message-modal/admin-booking-message-modal.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AdminBookingEditModalComponent } from './admin-booking-edit-modal/admin
     AdminHomeComponent,
     AdminUserComponent,
     AdminBookingComponent,
-    AdminBookingEditModalComponent
+    AdminBookingEditModalComponent,
+    AdminBookingMessageModalComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,7 @@
 package com.app.controller.booking.dto;
 
+import com.app.model.booking.Booking;
+
 import java.util.Date;
 
 public class BookingRequest {
@@ -7,6 +9,7 @@ public class BookingRequest {
     private Date dateTo;
     private Integer guests;
     private String note;
+    private Booking.BookingStatus status;
 
     public Date getDateFrom() {
         return dateFrom;
@@ -38,5 +41,13 @@ public class BookingRequest {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Booking.BookingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(Booking.BookingStatus status) {
+        this.status = status;
     }
 }

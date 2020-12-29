@@ -2,16 +2,11 @@ package com.app.service.user;
 
 import com.app.model.user.SessionUser;
 import com.app.model.user.User;
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service("UserDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {

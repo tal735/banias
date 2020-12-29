@@ -2,11 +2,11 @@ package com.app.controller.booking;
 
 import com.app.controller.booking.dto.BookingDto;
 import com.app.controller.booking.dto.BookingRequest;
+import com.app.controller.validator.BookingValidator;
 import com.app.model.booking.Booking;
 import com.app.model.user.SessionUser;
 import com.app.service.security.SecurityUtils;
 import com.app.service.booking.BookingService;
-import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,22 +27,22 @@ public class BookingController {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookingController.class);
 
     private final BookingService bookingService;
+    private final BookingValidator bookingValidator;
 
     @Autowired
-    public BookingController(BookingService bookingService) {
+    public BookingController(BookingService bookingService, BookingValidator bookingValidator) {
         this.bookingService = bookingService;
+        this.bookingValidator = bookingValidator;
     }
 
     @PostMapping
     @ResponseBody
     public ResponseEntity book(@RequestBody BookingRequest bookingRequest) {
         SessionUser user = SecurityUtils.getLoggedInUser();
-
-        Map<String, String> errors = checkForErrors(user, null, bookingRequest);
+        Map<String, String> errors = bookingValidator.checkForErrors(user.getUserId(), null, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
-
         Booking booking = bookingService.book(user.getUserId(), bookingRequest);
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok().body(bookingDto);
@@ -53,13 +53,12 @@ public class BookingController {
     public ResponseEntity book(@PathVariable(name = "id") Long bookingId, @RequestBody BookingRequest bookingRequest) {
         SessionUser user = SecurityUtils.getLoggedInUser();
         Booking booking = bookingService.getBookingById(bookingId);
-
         if (booking == null || !booking.getUser().getId().equals(user.getUserId())) {
             LOGGER.warn("getBookings: User " + user.getUserId() + " is trying to access booking "
                     + booking + ", but doesn't have access.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        Map<String, String> errors = checkForErrors(user, bookingId, bookingRequest);
+        Map<String, String> errors = bookingValidator.checkForErrors(user.getUserId(), bookingId, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
@@ -101,33 +100,4 @@ public class BookingController {
         return ResponseEntity.ok().body(bookingDto);
     }
 
-    private Map<String, String> checkForErrors(SessionUser user, Long bookingId, BookingRequest bookingRequest) {
-        Map<String, String> errors = Maps.newHashMap();
-        if (!user.isVerified()) {
-            errors.put("error", "Please verify your phone number.");
-        } else if (bookingRequest.getDateFrom() == null || bookingRequest.getDateTo() == null) {
-            errors.put("error", "Please enter valid dates.");
-        } else if (bookingRequest.getDateFrom().after(bookingRequest.getDateTo())) {
-            errors.put("error", "Please enter valid dates range.");
-        } else if (bookingRequest.getGuests() == null || bookingRequest.getGuests() <= 0) {
-            errors.put("error", "Please check your number of guests.");
-        } else {
-            List<Booking> bookings = bookingService.getExistingBookings(user.getUserId(),
-                    bookingRequest.getDateFrom(), bookingRequest.getDateTo());
-            if (bookingId == null) {
-                if (!bookings.isEmpty()) {
-                    errors.put("error", "There is another booking during these dates.");
-                }
-            } else {
-                if (bookings.size() > 1) {
-                    errors.put("error", "There is another booking during these dates.");
-                } else if (bookings.size() == 1) {
-                    if (!bookings.get(0).getId().equals(bookingId)) {
-                        errors.put("error", "There is another booking during these dates.");
-                    }
-                }
-            }
-        }
-        return errors;
-    }
 }

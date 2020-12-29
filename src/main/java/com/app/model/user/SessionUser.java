@@ -3,6 +3,10 @@ package com.app.model.user;
 import com.google.common.collect.Lists;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class SessionUser extends org.springframework.security.core.userdetails.User {
 
     private Long userId;
@@ -14,9 +18,11 @@ public class SessionUser extends org.springframework.security.core.userdetails.U
     private boolean verified;
 
     public SessionUser(User user) {
-        super(user.getEmail(), user.getPassword(), Lists.newArrayList(
-                        new SimpleGrantedAuthority("ROLE_USER"),
-                        new SimpleGrantedAuthority("ROLE_ADMIN")));
+        super(user.getEmail(), user.getPassword(),
+                Stream.of(user.getRoles(), Lists.newArrayList("USER"))
+                        .flatMap(Collection::stream)
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .collect(Collectors.toList()));
         setUserId(user.getId());
         setEmail(user.getEmail());
         setFirstName(user.getFirstName());

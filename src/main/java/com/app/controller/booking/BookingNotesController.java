@@ -37,7 +37,8 @@ public class BookingNotesController {
                                                          @RequestParam(required = false, defaultValue = "0") Integer offset) {
         SessionUser user = SecurityUtils.getLoggedInUser();
         Booking booking = bookingService.getBookingById(bookingId);
-        if (booking == null || !booking.getUser().getId().equals(user.getUserId())) {
+        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
+                && !booking.getUser().getId().equals(user.getUserId()))) {
             LOGGER.warn("getNotes: User " + user.getUserId() + " is trying to access booking " + booking + ", but doesn't have access.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
@@ -51,7 +52,8 @@ public class BookingNotesController {
     public ResponseEntity<BookingNoteDto> addNote(@PathVariable(value = "id") Long bookingId, @RequestBody String note) {
         SessionUser user = SecurityUtils.getLoggedInUser();
         Booking booking = bookingService.getBookingById(bookingId);
-        if (booking == null || !booking.getUser().getId().equals(user.getUserId())) {
+        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
+                && !booking.getUser().getId().equals(user.getUserId()))) {
             LOGGER.warn("addNote: User " + user.getUserId() + " is trying to access booking " + booking + ", but doesn't have access.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }

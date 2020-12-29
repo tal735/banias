@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "usr")
@@ -39,6 +40,11 @@ public class User extends DaoModel {
    private String adminNotes;
 
    private String type;
+
+   @ElementCollection
+   @CollectionTable(name="usr_role", joinColumns=@JoinColumn(name="user_id"))
+   @Column(name="role")
+   private List<String> roles;
 
    public Long getId() {
       return id;
@@ -126,5 +132,13 @@ public class User extends DaoModel {
 
    public void setType(String type) {
       this.type = type;
+   }
+
+   public List<String> getRoles() {
+      return roles;
+   }
+
+   public void setRoles(List<String> roles) {
+      this.roles = roles;
    }
 }
