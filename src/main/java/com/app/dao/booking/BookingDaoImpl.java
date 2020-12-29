@@ -60,14 +60,20 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public List<Booking> getForDates(Date dateFrom, Date dateTo) {
+    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax,Date dateToMin, Date dateToMax) {
 //        CriteriaQuery<Booking> query = sessionFactory.getCurrentSession().getCriteriaBuilder().createQuery(Booking.class);
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
-        if (dateFrom != null) {
-            criteria.add(Restrictions.ge("dateFrom", dateFrom));
+        if (dateFromMin != null) {
+            criteria.add(Restrictions.ge("dateFrom", dateFromMin));
         }
-        if (dateTo != null) {
-            criteria.add(Restrictions.le("dateTo", dateTo));
+        if (dateFromMax != null) {
+            criteria.add(Restrictions.le("dateFrom", dateFromMax));
+        }
+        if (dateToMin != null) {
+            criteria.add(Restrictions.ge("dateTo", dateToMin));
+        }
+        if (dateToMax != null) {
+            criteria.add(Restrictions.le("dateTo", dateToMax));
         }
         criteria.setFetchMode("user", FetchMode.JOIN);
         criteria.addOrder(Order.desc("dateFrom"));

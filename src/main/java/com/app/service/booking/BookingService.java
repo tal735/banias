@@ -15,5 +15,5 @@ public interface BookingService {
     BookingNote addNote(Long userId, Long bookingId, String note);
     List<BookingNote> getNotes(Long bookingId, Integer offset);
     List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo);
-    List<Booking> getForDates(Date dateFrom, Date dateTo);
+    List<Booking> getForDates(Date dateFromMin, Date dateFromMax, Date dateToMin, Date dateToMax);
 }

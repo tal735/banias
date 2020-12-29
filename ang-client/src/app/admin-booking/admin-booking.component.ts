@@ -10,8 +10,10 @@ import { NetworkService } from '../network.service';
 export class AdminBookingComponent implements OnInit {
 
   searchForm: FormGroup = this.formBuilder.group({
-    dateFrom: new FormControl(NaN, Validators.nullValidator),
-    dateTo: new FormControl(NaN, Validators.nullValidator)
+    dateFromMin: new FormControl(NaN),
+    dateFromMax: new FormControl(NaN),
+    dateToMin: new FormControl(NaN),
+    dateToMax: new FormControl(NaN)
   });
 
   bookings : any = [];
@@ -23,14 +25,14 @@ export class AdminBookingComponent implements OnInit {
 
   onFormSubmit() {
     let searchRequest = {
-      dateFrom: new Date(this.searchForm.value.dateFrom).getTime(),
-      dateTo:new Date(this.searchForm.value.dateTo).getTime()
+      dateFromMin: new Date(this.searchForm.value.dateFromMin).getTime(),
+      dateFromMax:new Date(this.searchForm.value.dateFromMax).getTime(),
+      dateToMin:new Date(this.searchForm.value.dateToMin).getTime(),
+      dateToMax:new Date(this.searchForm.value.dateToMax).getTime(),
     };
-    console.log(searchRequest);
-    this.networkService.adminBookingSearch(searchRequest.dateFrom, searchRequest.dateTo).subscribe(
+    this.networkService.adminBookingSearch(searchRequest).subscribe(
       data => this.bookings = data,
       error => console.log(error)
-      
     );
   }
 

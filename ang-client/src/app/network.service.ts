@@ -111,11 +111,7 @@ export class NetworkService {
     return this.http.post('/admin/user/update', null, { params : params });
   }
 
-  public adminBookingSearch(dateFrom, dateTo) {
-    let body = {
-      dateFrom: dateFrom,
-      dateTo: dateTo
-    }
-    return this.http.post('/admin/booking/find', body);
+  public adminBookingSearch(searchRequest) {
+    return this.http.post('/admin/booking/find', searchRequest);
   }
 }

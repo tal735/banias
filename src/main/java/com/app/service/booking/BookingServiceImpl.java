@@ -88,8 +88,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<Booking> getForDates(Date dateFrom, Date dateTo) {
-        return bookingDao.getForDates(dateFrom, dateTo);
+    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax,Date dateToMin, Date dateToMax) {
+        return bookingDao.getForDates(dateFromMin, dateFromMax, dateToMin, dateToMax);
     }
 
     private BookingNote saveNote(User user, Booking booking, String note) {

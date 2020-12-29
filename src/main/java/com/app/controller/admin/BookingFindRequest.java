@@ -3,22 +3,40 @@ package com.app.controller.admin;
 import java.util.Date;
 
 public class BookingFindRequest {
-    private Date dateFrom;
-    private Date dateTo;
+    private Date dateFromMin;
+    private Date dateFromMax;
+    private Date dateToMin;
+    private Date dateToMax;
 
-    public Date getDateFrom() {
-        return dateFrom;
+    public Date getDateFromMin() {
+        return dateFromMin;
     }
 
-    public void setDateFrom(Date dateFrom) {
-        this.dateFrom = dateFrom;
+    public void setDateFromMin(Date dateFromMin) {
+        this.dateFromMin = dateFromMin;
     }
 
-    public Date getDateTo() {
-        return dateTo;
+    public Date getDateFromMax() {
+        return dateFromMax;
     }
 
-    public void setDateTo(Date dateTo) {
-        this.dateTo = dateTo;
+    public void setDateFromMax(Date dateFromMax) {
+        this.dateFromMax = dateFromMax;
+    }
+
+    public Date getDateToMin() {
+        return dateToMin;
+    }
+
+    public void setDateToMin(Date dateToMin) {
+        this.dateToMin = dateToMin;
+    }
+
+    public Date getDateToMax() {
+        return dateToMax;
+    }
+
+    public void setDateToMax(Date dateToMax) {
+        this.dateToMax = dateToMax;
     }
 }

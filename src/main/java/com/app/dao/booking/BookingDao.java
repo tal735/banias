@@ -10,5 +10,5 @@ public interface BookingDao {
     List<Booking> getBookings(Long userId, Integer offset);
     Booking getById(Long id);
     List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo);
-    List<Booking> getForDates(Date dateFrom, Date dateTo);
+    List<Booking> getForDates(Date dateFromMin, Date dateFromMax,Date dateToMin, Date dateToMax);
 }
