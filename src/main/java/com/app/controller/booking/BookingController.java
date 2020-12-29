@@ -90,7 +90,8 @@ public class BookingController {
         SessionUser user = SecurityUtils.getLoggedInUser();
         Booking booking = bookingService.getBookingById(id);
 
-        if (booking == null || !booking.getUser().getId().equals(user.getUserId())) {
+        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
+                && !booking.getUser().getId().equals(user.getUserId()))) {
             LOGGER.warn("getBookings: User " + user.getUserId() + " is trying to access booking "
                     + booking + ", but doesn't have access.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

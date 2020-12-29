@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { BookNewComponent } from './book-new/book-new.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminBookingComponent } from './admin-booking/admin-booking.component';
+import { AdminBookingEditModalComponent } from './admin-booking-edit-modal/admin-booking-edit-modal.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,8 @@ import { AdminBookingComponent } from './admin-booking/admin-booking.component';
     BookNewComponent,
     AdminHomeComponent,
     AdminUserComponent,
-    AdminBookingComponent
+    AdminBookingComponent,
+    AdminBookingEditModalComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { AdminBookingComponent } from './admin-booking/admin-booking.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbModule
   ],
   providers: [
     AuthenticationService,

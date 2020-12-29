@@ -79,4 +79,7 @@ public final class SecurityUtils {
             .map(GrantedAuthority::getAuthority);
     }
 
+    public static boolean isCurrentUserAdmin() {
+        return isCurrentUserInRole(AuthoritiesConstants.ADMIN);
+    }
 }
