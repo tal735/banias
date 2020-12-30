@@ -20,9 +20,9 @@
               <h5 class="card-title">{{ booking.dateFrom | date: 'MM-dd-yyyy' }} - {{ booking.dateTo | date: 'MM-dd-yyyy' }}</h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ booking.status }}</h6>
               <p class="card-text">{{ booking.guests }} Guests</p>
-                  <button (click)="myModal.openModal()">Edit</button> 
+                  <button type="button" class="btn btn-outline-primary mr-2" (click)="myModal.openModal()">Modify</button> 
                   <app-admin-booking-edit-modal #myModal [id]="booking.id" [mode]="'USER'"></app-admin-booking-edit-modal>
-                  <button (click)="messagesModal.openModal()">Messages</button> 
+                  <button type="button" class="btn btn-outline-primary" (click)="messagesModal.openModal()">Messages</button> 
                   <app-admin-booking-message-modal #messagesModal [id]="booking.id" [mode]="'USER'"></app-admin-booking-message-modal>                  
             </div>
         </div>        
