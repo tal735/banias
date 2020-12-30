@@ -50,13 +50,13 @@ public class BookingController {
 
     @PostMapping(value = "/{id}")
     @ResponseBody
-    public ResponseEntity book(@PathVariable(name = "id") Long bookingId, @RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity updateBooking(@PathVariable(name = "id") Long bookingId, @RequestBody BookingRequest bookingRequest) {
         SessionUser user = SecurityUtils.getLoggedInUser();
         Booking booking = bookingService.getBookingById(bookingId);
 
         if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
                 && !booking.getUser().getId().equals(user.getUserId()))) {
-            LOGGER.warn("getBookings: User " + user.getUserId() + " is trying to access booking "
+            LOGGER.warn("updateBooking: User " + user.getUserId() + " is trying to access booking "
                     + booking + ", but doesn't have access.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
