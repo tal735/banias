@@ -40,9 +40,7 @@ export class NetworkService {
 
   public updateBooking(bookingId, bookingRequest) {
     const headers = { 'content-type': 'application/json'}  
-    const body=JSON.stringify(bookingRequest);
-    console.log('body=' + body);
-    return this.http.post('/api/booking/' + bookingId, body, {'headers':headers , responseType: 'json'});
+    return this.http.post('/api/booking/' + bookingId, bookingRequest, {'headers':headers , responseType: 'json'});
   }
 
   public book(bookingRequest) {
@@ -115,10 +113,4 @@ export class NetworkService {
     return this.http.post('/admin/booking/find', searchRequest);
   }
 
-  public adminUpdateBooking(bookingId, bookingRequest) {
-    const headers = { 'content-type': 'application/json'}  
-    const body=JSON.stringify(bookingRequest);
-    console.log('body=' + body);
-    return this.http.post('/admin/booking/' + bookingId, body, {'headers':headers , responseType: 'json'});
-  }
 }

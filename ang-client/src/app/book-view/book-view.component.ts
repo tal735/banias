@@ -61,7 +61,7 @@ export class BookViewComponent implements OnInit {
 
   submitMessage() {
     this.networkService.postNote(this.booking.id, this.message).subscribe(
-      data => {console.log('success=' + data);this.fetchNotes();},
+      data => {this.message = null; this.fetchNotes();},
       error => console.log('error:'+error)
     );
   }

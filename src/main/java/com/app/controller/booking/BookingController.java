@@ -53,12 +53,15 @@ public class BookingController {
     public ResponseEntity book(@PathVariable(name = "id") Long bookingId, @RequestBody BookingRequest bookingRequest) {
         SessionUser user = SecurityUtils.getLoggedInUser();
         Booking booking = bookingService.getBookingById(bookingId);
-        if (booking == null || !booking.getUser().getId().equals(user.getUserId())) {
+
+        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
+                && !booking.getUser().getId().equals(user.getUserId()))) {
             LOGGER.warn("getBookings: User " + user.getUserId() + " is trying to access booking "
                     + booking + ", but doesn't have access.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        Map<String, String> errors = bookingValidator.checkForErrors(user.getUserId(), bookingId, bookingRequest);
+
+        Map<String, String> errors = bookingValidator.checkForErrors(booking.getUser().getId(), bookingId, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
@@ -67,7 +70,13 @@ public class BookingController {
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
         booking.setDateModified(new Date());
-        booking.setStatus(Booking.BookingStatus.PENDING);
+        if (SecurityUtils.isCurrentUserAdmin()) {
+            if (bookingRequest.getStatus() != null) {
+                booking.setStatus(bookingRequest.getStatus());
+            }
+        } else {
+            booking.setStatus(Booking.BookingStatus.PENDING);
+        }
         bookingService.saveOrUpdate(booking);
 
         BookingDto bookingDto = new BookingDto(booking);
