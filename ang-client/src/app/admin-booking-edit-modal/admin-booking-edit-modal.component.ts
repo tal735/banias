@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NetworkService } from '../network.service';
 
 @Component({
@@ -12,6 +12,7 @@ import { NetworkService } from '../network.service';
 export class AdminBookingEditModalComponent implements OnInit {
   @Input() id : any;
   @Input() mode : string;
+  @Output() bookingUpdatedEvent = new EventEmitter<any>();
   @ViewChild('myModal') myModal: ElementRef;
 
   form: FormGroup;
@@ -21,13 +22,15 @@ export class AdminBookingEditModalComponent implements OnInit {
 
   error : string = null;
 
+  modalRef : NgbModalRef = null;
+
   constructor(private modalService: NgbModal, private networkService : NetworkService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
   }
 
   openModal() {
-    this.modalService.open(this.myModal, { size: 'sm', backdrop: 'static'});
+    this.modalRef = this.modalService.open(this.myModal, { size: 'sm', backdrop: 'static'});
     this.form = this.formBuilder.group({
       dateFrom: new FormControl('', Validators.required),
       dateTo: new FormControl('', Validators.required),
@@ -56,7 +59,11 @@ onFormSubmit() {
     status: this.form.value.status
   }
   this.networkService.updateBooking(this.booking.id, bookingRequest).subscribe(
-    data => {this.handleBookingResponse(data);},
+    data => {
+      this.handleBookingResponse(data);
+      this.bookingUpdatedEvent.emit(this.booking);
+      this.modalRef.close();
+    },
     error => {this.error = error.error.error; console.log(error.error.error)}
     );
   }

@@ -91,6 +91,7 @@ public class BookingDaoImpl implements BookingDao {
         criteria.addOrder(Order.desc("dateFrom"));
         criteria.setFirstResult(offset);
         criteria.setMaxResults(10);
+        criteria.setFetchMode("user", FetchMode.JOIN);
         return criteria.list();
     }
 

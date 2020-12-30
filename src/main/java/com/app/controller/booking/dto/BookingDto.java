@@ -10,6 +10,7 @@ public class BookingDto {
     private Date dateTo;
     private Booking.BookingStatus status;
     private Integer guests;
+    private String email;
 
     public BookingDto(Booking booking) {
         this.id = booking.getId();
@@ -17,6 +18,7 @@ public class BookingDto {
         this.dateTo = booking.getDateTo();
         this.status = booking.getStatus();
         this.guests = booking.getGuests();
+        this.email = booking.getUser().getEmail();
     }
 
     public Long getId() {
@@ -57,5 +59,13 @@ public class BookingDto {
 
     public void setGuests(Integer guests) {
         this.guests = guests;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

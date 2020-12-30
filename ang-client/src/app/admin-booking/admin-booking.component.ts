@@ -47,4 +47,9 @@ export class AdminBookingComponent implements OnInit {
       return 'alert-danger';
     }
   }
+
+  bookingUpdatedEvent(booking) {
+    let index = this.bookings.findIndex(x => x.id == booking.id);
+    this.bookings[index] = booking;
+ }
 }

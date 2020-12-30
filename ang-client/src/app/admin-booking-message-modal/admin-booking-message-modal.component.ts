@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NetworkService } from '../network.service';
 
 @Component({
@@ -16,13 +16,15 @@ export class AdminBookingMessageModalComponent implements OnInit {
   @Input() mode : any;
   @ViewChild('messagesModal') messagesModal: ElementRef;
 
+  modalRef : NgbModalRef = null;
+  
   constructor(private modalService: NgbModal, private networkService : NetworkService) { }
 
   ngOnInit(): void {
   }
 
   openModal() {
-    this.modalService.open(this.messagesModal, { size: 'sm', backdrop: 'static'});
+    this.modalRef = this.modalService.open(this.messagesModal, { size: 'sm', backdrop: 'static'});
     this.fetchNotes();
   }
 
@@ -36,7 +38,7 @@ export class AdminBookingMessageModalComponent implements OnInit {
 
   submitMessage() {
     this.networkService.postNote(this.id, this.message).subscribe(
-      data => {console.log('success=' + data);this.fetchNotes();},
+      data => {this.message = null; this.modalRef.close();},
       error => console.log('error:'+error)
     );
   }

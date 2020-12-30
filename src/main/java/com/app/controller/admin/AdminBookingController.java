@@ -1,5 +1,6 @@
 package com.app.controller.admin;
 
+import com.app.controller.booking.dto.BookingDto;
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
 import org.slf4j.Logger;
@@ -26,13 +27,13 @@ public class AdminBookingController {
 
     @PostMapping(value = "/find")
     @ResponseBody
-    public List<AdminBookingDto> findBookings(@RequestBody BookingFindRequest bookingFindRequest) {
+    public List<BookingDto> findBookings(@RequestBody BookingFindRequest bookingFindRequest) {
         List<Booking> bookings = bookingService.getForDates(
                 bookingFindRequest.getDateFromMin(),
                 bookingFindRequest.getDateFromMax(),
                 bookingFindRequest.getDateToMin(),
                 bookingFindRequest.getDateToMax());
-        return bookings.stream().map(AdminBookingDto::new).collect(Collectors.toList());
+        return bookings.stream().map(BookingDto::new).collect(Collectors.toList());
     }
 
 }

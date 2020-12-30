@@ -46,7 +46,7 @@
                 <td class="alert" [ngClass]="getStatusClass(booking.status)" role="alert"> {{ booking.status }} </td>
                 <td> 
                   <button (click)="myModal.openModal()">Edit</button> 
-                  <app-admin-booking-edit-modal #myModal [id]="booking.id" [mode]="'ADMIN'"></app-admin-booking-edit-modal>
+                  <app-admin-booking-edit-modal #myModal [id]="booking.id" [mode]="'ADMIN'" (bookingUpdatedEvent)="bookingUpdatedEvent($event)"></app-admin-booking-edit-modal>
                 </td>
                 <td> 
                   <button (click)="messagesModal.openModal()">Messages</button> 
