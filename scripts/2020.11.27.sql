@@ -10,7 +10,7 @@ create table usr(
 	registration_date timestamp default now(),
     admin_notes character varying (1024),
     type character varying (32)
-)
+);
 
 CREATE SEQUENCE usr_id_sequence START 1;
 
@@ -20,7 +20,7 @@ create table usr_role (
                           user_id numeric(19,0),
                           role character varying (16),
                           constraint usr_role_user_id_fk FOREIGN KEY (user_id) references usr(id)
-)
+);
 create index usr_role_user_id_idx on usr_role(user_id);
 
 
@@ -52,7 +52,7 @@ create table booking_notes (
 	note character varying(2048),
 	constraint booking_member_user_id_fk FOREIGN KEY (user_id) references usr(id),
 	constraint booking_member_booking_id_fk FOREIGN KEY (booking_id) references booking(id)
-)
+);
 CREATE SEQUENCE booking_notes_id_sequence START 1;
 
 
@@ -61,7 +61,7 @@ create table board_message(
 	id numeric(19,0) primary key,
 	type character varying(32),
 	message text
-)
+);
 CREATE SEQUENCE board_message_id_sequence START 1;
 
 
