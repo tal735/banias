@@ -33,7 +33,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getById(Long id) {
-        User user = sessionFactory.getCurrentSession().get(User.class, id);
-        return user;
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+        criteria.add(Restrictions.idEq(id));
+        criteria.setFetchMode("roles", FetchMode.JOIN);
+        return (User) criteria.uniqueResult();
     }
 }
