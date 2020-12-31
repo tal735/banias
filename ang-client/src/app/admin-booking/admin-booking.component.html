@@ -45,11 +45,11 @@
                 <td> {{ booking.email }} </td>
                 <td class="alert" [ngClass]="getStatusClass(booking.status)" role="alert"> {{ booking.status }} </td>
                 <td> 
-                  <button (click)="myModal.openModal()">Edit</button> 
+                  <button type="button" class="btn btn-outline-primary mr-2" (click)="myModal.openModal()">Edit</button> 
                   <app-admin-booking-edit-modal #myModal [id]="booking.id" [mode]="'ADMIN'" (bookingUpdatedEvent)="bookingUpdatedEvent($event)"></app-admin-booking-edit-modal>
                 </td>
                 <td> 
-                  <button (click)="messagesModal.openModal()">Messages</button> 
+                  <button type="button" class="btn btn-outline-primary" (click)="messagesModal.openModal()">Messages</button> 
                   <app-admin-booking-message-modal #messagesModal [id]="booking.id" [mode]="'ADMIN'"></app-admin-booking-message-modal>
                 </td>
             </tr>

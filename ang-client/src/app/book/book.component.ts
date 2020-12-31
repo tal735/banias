@@ -29,4 +29,16 @@ export class BookComponent implements OnInit {
       let index = this.bookings.findIndex(x => x.id == booking.id);
       this.bookings[index] = booking;
    }
+
+   getStatusClass(status) {
+      if (status.toUpperCase() === 'APPROVED') {
+        return 'alert-success';
+      }
+      if (status.toUpperCase() === 'PENDING') {
+        return 'alert-warning';
+      }
+      if (status.toUpperCase() === 'CANCELLED') {
+        return 'alert-danger';
+      }
+    }
 }
