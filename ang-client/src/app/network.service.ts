@@ -70,9 +70,14 @@ export class NetworkService {
     return this.http.post('/reset-password', JSON.stringify(body), {'headers':headers});
   }
 
-  public signup(email, password) {
-    const params = new HttpParams().append('email', email).append('password', password);
-    return this.http.post('/user/register', null, { params : params , responseType: 'json'});
+  public signup(firstName, lastName, email, password) {
+    const body = {
+      firstName : firstName,
+      lastName: lastName,
+      email: email,
+      password: password
+    }
+    return this.http.post('/user/register', body, { responseType: 'json'});
   }
 
   public updateUserNames(firstName, lastName) {

@@ -34,10 +34,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User addNewUser(String email, String password) {
+    public User addNewUser(String firstName, String lastName, String email, String password) {
         User user = new User();
         user.setEmail(email.toLowerCase().trim());
         user.setPassword(passwordEncoder.encode(password));
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
         userDao.save(user);
         return user;
     }

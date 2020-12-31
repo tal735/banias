@@ -14,7 +14,11 @@ export class SignupComponent implements OnInit {
   }
 
   signup(firstname, lastname, email, password, passwordConfirm) {
-    this.networkService.signup(email.value, password.value).subscribe(
+    if (password.value.length < 6 || !(password.value === password.value)) {
+      alert('You should fill password accordingly');
+      return;
+    }
+    this.networkService.signup(firstname.value, lastname.value, email.value, password.value).subscribe(
       data => {console.log("SUCCESS");},
       error => {console.log('ERROR')}
     );

@@ -57,7 +57,7 @@ public class UserController {
             if (userService.getByEmail(email) != null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email already in use.");
             }
-            userService.addNewUser(email, password);
+            userService.addNewUser(userSignupRequest.getFirstName(), userSignupRequest.getLastName(), email, password);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             LOGGER.error("Error while creating a new user: " + e.getMessage());

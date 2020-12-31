@@ -6,6 +6,6 @@ import com.app.model.user.User;
 public interface UserService {
     User getByEmail(String email);
     User getById(Long id);
-    User addNewUser(String email, String password) throws Exception;
+    User addNewUser(String firstName, String lastName, String email, String password);
     User saveOrUpdate(User user);
 }
