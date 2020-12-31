@@ -21,8 +21,6 @@ public class PasswordReset extends DaoModel {
 
     private String token;
 
-    private Boolean used;
-
     @Column(name = "date_created", insertable = false, updatable = false)
     private Date dateCreated;
 
@@ -48,14 +46,6 @@ public class PasswordReset extends DaoModel {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public Boolean getUsed() {
-        return used;
-    }
-
-    public void setUsed(Boolean used) {
-        this.used = used;
     }
 
     public Date getDateCreated() {

@@ -61,9 +61,10 @@ export class NetworkService {
     return this.http.post('/forgot-password', email);
   }
 
-  public resetPassword(token, password) {
+  public resetPassword(token, userId, password) {
     const body = {
       token : token,
+      userId: userId,
       password: password
     }
     const headers = { 'content-type': 'application/json'}  

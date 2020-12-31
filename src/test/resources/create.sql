@@ -72,7 +72,6 @@ create table password_reset(
                                id numeric(19,0) primary key,
                                user_id numeric(19,0) not null,
                                token character varying (50) not null,
-                               used boolean default false,
                                date_created timestamp default now(),
                                constraint password_reset_user_id_fk FOREIGN KEY (user_id) references usr(id)
 );

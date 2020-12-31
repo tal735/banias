@@ -23,13 +23,17 @@ public class PasswordDaoImpl implements PasswordDao {
     }
 
     @Override
-    public PasswordReset getByToken(String token) {
-        if (token == null) {
-            return null;
-        }
+    public PasswordReset getByUserId(Long userId) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(PasswordReset.class);
-        criteria.add(Restrictions.eq("token", token));
-        criteria.add(Restrictions.eq("used", false));
+        criteria.add(Restrictions.eq("user.id", userId));
         return (PasswordReset) criteria.uniqueResult();
+    }
+
+    @Override
+    public void deleteAllForUser(Long userId) {
+        sessionFactory.getCurrentSession()
+                .createQuery("delete from PasswordReset where user.id = :id")
+                .setParameter("id", userId)
+                .executeUpdate();
     }
 }

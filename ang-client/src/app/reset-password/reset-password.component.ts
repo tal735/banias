@@ -10,6 +10,7 @@ import { NetworkService } from '../network.service';
 export class ResetPasswordComponent implements OnInit {
 
   token: string;
+  userId : number = null;
   error: string;
   message: string;
 
@@ -17,7 +18,12 @@ export class ResetPasswordComponent implements OnInit {
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token');
-    console.log('token='+this.token);
+    let i = this.token.indexOf('|');
+    if (i > 0) {
+      let userIdStr = this.token.substring(0, i);
+      this.userId = +userIdStr;
+      this.token = this.token.substring(i + 1);
+    }
   }
 
   resetPassword(password, confirm) {
@@ -34,7 +40,7 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
 
-    this.networkService.resetPassword(this.token, pass).subscribe(
+    this.networkService.resetPassword(this.token, this.userId, pass).subscribe(
       data => {this.message = "Password Changed Succesfully."},
       error => {
         this.error = error.error;/*"There was an error. Try Again."*/

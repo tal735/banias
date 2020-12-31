@@ -40,7 +40,8 @@ public class PasswordController {
                 return ResponseEntity.badRequest().body("Cannot reset email for this user.");
             }
             String token = passwordService.createResetToken(user.getId());
-            LOGGER.debug("created token=" + token);
+            String tokenWithUser = user.getId() + "|" + token;
+            LOGGER.debug("created token=" + tokenWithUser);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             LOGGER.error("Error while creating reset token for user: " + email, e);
@@ -51,19 +52,20 @@ public class PasswordController {
     @PostMapping(value = "/reset-password")
     @ResponseBody
     public ResponseEntity resetPassword(@RequestBody PasswordResetRequest request) {
-        String token = request.getToken();
         String password = request.getPassword();
+        String token = request.getToken();
+        Long userId = request.getUserId();
         try {
             LOGGER.debug("resetPassword: Resetting password for token " + token);
-            PasswordReset passwordReset = passwordService.getByToken(token);
-            if (passwordReset == null || passwordReset.getUsed() ||
-                    passwordReset.getDateCreated().before(DateTime.now().minusDays(7).toDate())) {
+            PasswordReset passwordReset = passwordService.getByUserIdAndToken(userId, token);
+            if (passwordReset == null || passwordReset.getDateCreated().before(DateTime.now().minusDays(7).toDate())) {
                 return ResponseEntity.badRequest().body("Token is invalid");
             }
             if (StringUtils.length(password) < 6) {
                 return ResponseEntity.badRequest().body("Password too weak.");
             }
-            passwordService.resetPassword(token, password);
+            passwordService.resetPassword(userId, password);
+            passwordService.deleteAllTokensForUser(userId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             LOGGER.error("Error while resetting password for token: " + token, e);

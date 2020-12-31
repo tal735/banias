@@ -27,13 +27,9 @@ public class PasswordServiceImpl implements PasswordService {
     @Override
     @Transactional
     public String createResetToken(Long userId) {
-        String token;
-        String tokenEncoded;
-
-        do {
-            token = RandomStringUtils.randomAlphanumeric(50);
-            tokenEncoded = passwordEncoder.encode(token);
-        } while (passwordDao.getByToken(tokenEncoded) != null);
+        deleteAllTokensForUser(userId);
+        String token = RandomStringUtils.randomAlphanumeric(20);
+        String tokenEncoded = passwordEncoder.encode(token);
 
         User user = userService.getById(userId);
         PasswordReset passwordReset = new PasswordReset();
@@ -45,21 +41,24 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     @Transactional
-    public boolean resetPassword(String token, String password) {
-        PasswordReset passwordReset = passwordDao.getByToken(passwordEncoder.encode(token));
-        passwordReset.setUsed(true);
-        passwordDao.save(passwordReset);
-
-        User user = passwordReset.getUser();
+    public boolean resetPassword(Long userId, String password) {
+        User user = userService.getById(userId);
         user.setPassword(passwordEncoder.encode(password));
         userService.saveOrUpdate(user);
-
         return true;
     }
 
     @Override
     @Transactional
-    public PasswordReset getByToken(String token) {
-        return passwordDao.getByToken(passwordEncoder.encode(token));
+    public PasswordReset getByUserIdAndToken(Long userId, String token) {
+        PasswordReset passwordReset = passwordDao.getByUserId(userId);
+        boolean match = passwordEncoder.matches(token, passwordReset.getToken());
+        return match ? passwordReset : null;
+    }
+
+    @Override
+    @Transactional
+    public void deleteAllTokensForUser(Long userId) {
+        passwordDao.deleteAllForUser(userId);
     }
 }
