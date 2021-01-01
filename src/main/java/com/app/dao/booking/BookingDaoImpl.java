@@ -37,30 +37,7 @@ public class BookingDaoImpl implements BookingDao {
     public Booking getById(Long id) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
         criteria.add(Restrictions.idEq(id));
-        criteria.setFetchMode("user", FetchMode.JOIN);
         return (Booking) criteria.uniqueResult();
-    }
-
-    @Override
-    public List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo) {
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
-        criteria.add(Restrictions.eq("user.id", userId));
-        criteria.add(Restrictions.ne("status", Booking.BookingStatus.CANCELLED.name()));
-        criteria.add(Restrictions.disjunction(
-                Restrictions.conjunction(
-                        Restrictions.ge("dateFrom", dateFrom),
-                        Restrictions.le("dateFrom", dateTo)
-                ),
-                Restrictions.conjunction(
-                        Restrictions.ge("dateTo", dateFrom),
-                        Restrictions.le("dateTo", dateTo)
-                ),
-                Restrictions.conjunction(
-                        Restrictions.le("dateFrom", dateFrom),
-                        Restrictions.ge("dateTo", dateTo)
-                )
-        ));
-        return criteria.list();
     }
 
     @Override
@@ -79,21 +56,15 @@ public class BookingDaoImpl implements BookingDao {
         if (dateToMax != null) {
             criteria.add(Restrictions.le("dateTo", dateToMax));
         }
-        criteria.setFetchMode("user", FetchMode.JOIN);
         criteria.addOrder(Order.desc("dateFrom"));
-//        criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         return criteria.list();
     }
 
     @Override
-    public List<Booking> getBookings(Long userId, Integer offset) {
+    public Booking getByReference(String reference) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
-        criteria.add(Restrictions.eq("user.id", userId));
-        criteria.addOrder(Order.desc("dateFrom"));
-        criteria.setFirstResult(offset);
-        criteria.setMaxResults(10);
-        criteria.setFetchMode("user", FetchMode.JOIN);
-        return criteria.list();
+        criteria.add(Restrictions.eq("reference", reference));
+        return (Booking) criteria.uniqueResult();
     }
 
 }

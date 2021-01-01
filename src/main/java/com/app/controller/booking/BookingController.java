@@ -10,15 +10,12 @@ import com.app.service.booking.BookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/booking")
@@ -35,11 +32,21 @@ public class BookingController {
         this.bookingValidator = bookingValidator;
     }
 
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<BookingDto> getBooking() {
+        SessionUser user = SecurityUtils.getLoggedInUser();
+        Long id = null;
+        Booking booking = bookingService.getBookingById(id);
+        BookingDto bookingDto = new BookingDto(booking);
+        return ResponseEntity.ok().body(bookingDto);
+    }
+
     @PostMapping
     @ResponseBody
     public ResponseEntity book(@RequestBody BookingRequest bookingRequest) {
         SessionUser user = SecurityUtils.getLoggedInUser();
-        Map<String, String> errors = bookingValidator.checkForErrors(user.getUserId(), null, bookingRequest);
+        Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
@@ -48,20 +55,14 @@ public class BookingController {
         return ResponseEntity.ok().body(bookingDto);
     }
 
-    @PostMapping(value = "/{id}")
+    @PatchMapping
     @ResponseBody
-    public ResponseEntity updateBooking(@PathVariable(name = "id") Long bookingId, @RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity updateBooking(@RequestBody BookingRequest bookingRequest) {
         SessionUser user = SecurityUtils.getLoggedInUser();
+        Long bookingId = null;
         Booking booking = bookingService.getBookingById(bookingId);
 
-        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
-                && !booking.getUser().getId().equals(user.getUserId()))) {
-            LOGGER.warn("updateBooking: User " + user.getUserId() + " is trying to access booking "
-                    + booking + ", but doesn't have access.");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        Map<String, String> errors = bookingValidator.checkForErrors(booking.getUser().getId(), bookingId, bookingRequest);
+        Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
@@ -70,43 +71,12 @@ public class BookingController {
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
         booking.setDateModified(new Date());
-        if (SecurityUtils.isCurrentUserAdmin()) {
-            if (bookingRequest.getStatus() != null) {
-                booking.setStatus(bookingRequest.getStatus());
-            }
-        } else {
-            booking.setStatus(Booking.BookingStatus.PENDING);
-        }
+        booking.setStatus(Booking.BookingStatus.PENDING);
+        booking.setContactName(bookingRequest.getContactName());
         bookingService.saveOrUpdate(booking);
 
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok(bookingDto);
-    }
-
-    @GetMapping
-    @ResponseBody
-    public List<BookingDto> getBookings(@RequestParam(required = false, defaultValue = "0") Integer offset) {
-        SessionUser user = SecurityUtils.getLoggedInUser();
-        List<Booking> bookings = bookingService.getBookings(user.getUserId(), offset);
-        List<BookingDto> bookingDtos = bookings.stream().map(BookingDto::new).collect(Collectors.toList());
-        return bookingDtos;
-    }
-
-    @GetMapping(value = "/{id}")
-    @ResponseBody
-    public ResponseEntity<BookingDto> getBooking(@PathVariable Long id) {
-        SessionUser user = SecurityUtils.getLoggedInUser();
-        Booking booking = bookingService.getBookingById(id);
-
-        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
-                && !booking.getUser().getId().equals(user.getUserId()))) {
-            LOGGER.warn("getBookings: User " + user.getUserId() + " is trying to access booking "
-                    + booking + ", but doesn't have access.");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-
-        BookingDto bookingDto = new BookingDto(booking);
-        return ResponseEntity.ok().body(bookingDto);
     }
 
 }

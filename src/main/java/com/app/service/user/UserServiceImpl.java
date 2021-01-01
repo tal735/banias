@@ -3,7 +3,6 @@ package com.app.service.user;
 import com.app.dao.user.UserDao;
 import com.app.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,18 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
     public User getByEmail(String email) {
-        email = email.toLowerCase().trim();
         return userDao.getByEmail(email);
     }
 
@@ -30,18 +26,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User getById(Long id) {
         return userDao.getById(id);
-    }
-
-    @Override
-    @Transactional
-    public User addNewUser(String firstName, String lastName, String email, String password) {
-        User user = new User();
-        user.setEmail(email.toLowerCase().trim());
-        user.setPassword(passwordEncoder.encode(password));
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        userDao.save(user);
-        return user;
     }
 
     @Override

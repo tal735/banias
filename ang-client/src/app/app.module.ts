@@ -17,16 +17,10 @@ import { AuthenticationService } from './authentication.service';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
-import { BookComponent } from './book/book.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BookViewComponent } from './book-view/book-view.component';
-import { SignupComponent } from './signup/signup.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { ProfileComponent } from './profile/profile.component';
 import { BookNewComponent } from './book-new/book-new.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
-import { AdminUserComponent } from './admin-user/admin-user.component';
 import { AdminBookingComponent } from './admin-booking/admin-booking.component';
 import { AdminBookingEditModalComponent } from './admin-booking-edit-modal/admin-booking-edit-modal.component';
 import { AdminBookingMessageModalComponent } from './admin-booking-message-modal/admin-booking-message-modal.component';
@@ -37,15 +31,9 @@ import { AdminBookingMessageModalComponent } from './admin-booking-message-modal
     LoginComponent,
     HomeComponent,
     HeaderComponent,
-    BookComponent,
     BookViewComponent,
-    SignupComponent,
-    ForgotPasswordComponent,
-    ResetPasswordComponent,
-    ProfileComponent,
     BookNewComponent,
     AdminHomeComponent,
-    AdminUserComponent,
     AdminBookingComponent,
     AdminBookingEditModalComponent,
     AdminBookingMessageModalComponent

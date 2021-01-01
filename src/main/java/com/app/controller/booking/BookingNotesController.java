@@ -31,32 +31,23 @@ public class BookingNotesController {
         this.bookingService = bookingService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping
     @ResponseBody
-    public ResponseEntity<List<BookingNoteDto>> getNotes(@PathVariable(value = "id") Long bookingId,
-                                                         @RequestParam(required = false, defaultValue = "0") Integer offset) {
+    public ResponseEntity<List<BookingNoteDto>> getNotes(@RequestParam(required = false, defaultValue = "0") Integer offset) {
         SessionUser user = SecurityUtils.getLoggedInUser();
+        Long bookingId = null;
         Booking booking = bookingService.getBookingById(bookingId);
-        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
-                && !booking.getUser().getId().equals(user.getUserId()))) {
-            LOGGER.warn("getNotes: User " + user.getUserId() + " is trying to access booking " + booking + ", but doesn't have access.");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         List<BookingNote> bookingNotes = bookingService.getNotes(bookingId, offset);
         List<BookingNoteDto> bookingNoteDtos = bookingNotes.stream().map(BookingNoteDto::new).collect(Collectors.toList());
         return ResponseEntity.ok(bookingNoteDtos);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping
     @ResponseBody
-    public ResponseEntity<BookingNoteDto> addNote(@PathVariable(value = "id") Long bookingId, @RequestBody String note) {
+    public ResponseEntity<BookingNoteDto> addNote(@RequestBody String note) {
         SessionUser user = SecurityUtils.getLoggedInUser();
+        Long bookingId = null;
         Booking booking = bookingService.getBookingById(bookingId);
-        if (booking == null || (!SecurityUtils.isCurrentUserAdmin()
-                && !booking.getUser().getId().equals(user.getUserId()))) {
-            LOGGER.warn("addNote: User " + user.getUserId() + " is trying to access booking " + booking + ", but doesn't have access.");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
         if (StringUtils.isBlank(note)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

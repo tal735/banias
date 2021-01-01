@@ -35,11 +35,12 @@ public class BookingServiceImpl implements BookingService {
         User user = userService.getById(userId);
 
         Booking booking = new Booking();
-        booking.setUser(user);
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
         booking.setStatus(Booking.BookingStatus.PENDING);
+        booking.setEmail(bookingRequest.getEmail());
+        booking.setContactName(bookingRequest.getContactName());
         saveOrUpdate(booking);
         if (StringUtils.isNotBlank(bookingRequest.getNote())) {
             saveNote(user, booking, bookingRequest.getNote());
@@ -52,12 +53,6 @@ public class BookingServiceImpl implements BookingService {
     public Booking saveOrUpdate(Booking booking) {
         bookingDao.saveOrUpdate(booking);
         return booking;
-    }
-
-    @Override
-    @Transactional
-    public List<Booking> getBookings(Long userId, Integer offset) {
-        return bookingDao.getBookings(userId, offset);
     }
 
     @Override
@@ -82,14 +77,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo) {
-        return bookingDao.getExistingBookings(userId, dateFrom, dateTo);
+    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax,Date dateToMin, Date dateToMax) {
+        return bookingDao.getForDates(dateFromMin, dateFromMax, dateToMin, dateToMax);
     }
 
     @Override
     @Transactional
-    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax,Date dateToMin, Date dateToMax) {
-        return bookingDao.getForDates(dateFromMin, dateFromMax, dateToMin, dateToMax);
+    public Booking getByReference(String reference) {
+        return bookingDao.getByReference(reference);
     }
 
     private BookingNote saveNote(User user, Booking booking, String note) {

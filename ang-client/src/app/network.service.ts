@@ -25,15 +25,6 @@ export class NetworkService {
     return this.http.post('/api/logout', {withCredentials: true, observe : 'response'});
   }
 
-  public getHome() {
-    return this.http.get('/home', {responseType: 'text'});
-  }
-
-  public getBookings(offset) {
-    const params = new HttpParams().append('offset', offset);
-    return this.http.get('/api/booking', { params : params , responseType: 'json'});
-  }
-
   public getBooking(id) {
     return this.http.get('/api/booking/' + id, { responseType: 'json'});
   }
@@ -55,64 +46,6 @@ export class NetworkService {
 
   public postNote(bookingId, note) {
     return this.http.post('/api/booking/notes/' + bookingId, note);
-  }
-
-  public forgotPassword(email) {
-    return this.http.post('/forgot-password', email);
-  }
-
-  public resetPassword(token, userId, password) {
-    const body = {
-      token : token,
-      userId: userId,
-      password: password
-    }
-    const headers = { 'content-type': 'application/json'}  
-    return this.http.post('/reset-password', JSON.stringify(body), {'headers':headers});
-  }
-
-  public signup(firstName, lastName, email, password) {
-    const body = {
-      firstName : firstName,
-      lastName: lastName,
-      email: email,
-      password: password
-    }
-    return this.http.post('/user/register', body, { responseType: 'json'});
-  }
-
-  public updateUserNames(firstName, lastName) {
-    const params = new HttpParams().append('firstName', firstName).append('lastName', lastName);
-    return this.http.post('/api/user/update-name', null, { params : params, responseType: 'json'});
-  }
-
-  public updateUserEmail(email) {
-    const params = new HttpParams().append('email', email);
-    return this.http.post('/api/user/update-email', null, { params : params, responseType: 'json'});
-  }
-
-  public updateUserPhone(countryCode, phone) {
-    const params = new HttpParams().append('countryCode', countryCode).append('phone', phone);
-    return this.http.post('/api/user/update-phone', null, { params : params, responseType: 'json'});
-  }
-
-  public sendPhoneToken() {
-    return this.http.post('/api/user/token', null, { responseType: 'text'});
-  }
-
-  public verifyPhoneToken(token) {
-    const params = new HttpParams().append('token', token);
-    return this.http.post('/api/user/verify', null, { params : params });
-  }
-
-  public adminUserSearch(email) {
-    const params = new HttpParams().append('email', email);
-    return this.http.post('/admin/user/find', null, { params : params });
-  }
-
-  public adminUserUpdate(email,value,field) {
-    const params = new HttpParams().append('email', email).append('value', value).append('field', field);
-    return this.http.post('/admin/user/update', null, { params : params });
   }
 
   public adminBookingSearch(searchRequest) {

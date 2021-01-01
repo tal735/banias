@@ -1,3 +1,20 @@
+-- CREATE EXTENSION pgcrypto;
+-- CREATE OR REPLACE FUNCTION generate_uid(size INT) RETURNS TEXT AS $$
+-- DECLARE
+-- characters TEXT := 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+--   bytes BYTEA := gen_random_bytes(size);
+--   l INT := length(characters);
+--   i INT := 0;
+-- output TEXT := '';
+-- BEGIN
+--   WHILE i < size LOOP
+--     output := output || substr(characters, get_byte(bytes, i) % l + 1, 1);
+--     i := i + 1;
+-- END LOOP;
+--   RETURN output;
+-- END;
+-- $$ LANGUAGE plpgsql VOLATILE;
+
 create table usr(
                     id numeric(19,0) primary key,
                     email character varying(256),
@@ -24,7 +41,8 @@ create table booking(
                         guests integer,
                         contact_name character varying (128),
                         email character varying (128),
-                        reference character varying (128),
+--                         reference character varying (32) not null UNIQUE DEFAULT generate_uid(10),
+                        reference character varying (32),
                         date_created timestamp default now(),
                         date_modified timestamp
 );

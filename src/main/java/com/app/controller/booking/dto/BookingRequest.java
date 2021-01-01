@@ -10,6 +10,8 @@ public class BookingRequest {
     private Integer guests;
     private String note;
     private Booking.BookingStatus status;
+    private String contactName;
+    private String email;
 
     public Date getDateFrom() {
         return dateFrom;
@@ -49,5 +51,21 @@ public class BookingRequest {
 
     public void setStatus(Booking.BookingStatus status) {
         this.status = status;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

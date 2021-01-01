@@ -18,7 +18,7 @@ public class BookingDto {
         this.dateTo = booking.getDateTo();
         this.status = booking.getStatus();
         this.guests = booking.getGuests();
-        this.email = booking.getUser().getEmail();
+        this.email = booking.getEmail();
     }
 
     public Long getId() {
