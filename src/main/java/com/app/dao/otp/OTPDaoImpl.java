@@ -31,7 +31,7 @@ public class OTPDaoImpl implements OTPDao {
     @Override
     public void delete(String reference) {
         sessionFactory.getCurrentSession()
-                .createSQLQuery("delete from otp where reference = :r")
+                .createSQLQuery("delete from OTP where reference = :r")
                 .setParameter("r", reference)
                 .executeUpdate();
     }
