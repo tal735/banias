@@ -10,11 +10,13 @@ import java.util.List;
 
 public class BookerUserDetails implements UserDetails {
 
+    private final Long bookingId;
     private final String reference;
     private final String otp;
     private final List<SimpleGrantedAuthority> authorities = Lists.newArrayList(new SimpleGrantedAuthority("ROLE_OTP"));
 
-    public BookerUserDetails(String reference, String otp) {
+    public BookerUserDetails(Long bookingId, String reference, String otp) {
+        this.bookingId = bookingId;
         this.reference = reference;
         this.otp = otp;
     }
@@ -52,5 +54,9 @@ public class BookerUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getBookingId() {
+        return bookingId;
     }
 }

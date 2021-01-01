@@ -5,28 +5,22 @@ import com.app.model.booking.Booking;
 import java.util.Date;
 
 public class BookingDto {
-    private Long id;
     private Date dateFrom;
     private Date dateTo;
     private Booking.BookingStatus status;
     private Integer guests;
     private String email;
+    private String contactName;
+    private String reference;
 
     public BookingDto(Booking booking) {
-        this.id = booking.getId();
         this.dateFrom = booking.getDateFrom();
         this.dateTo = booking.getDateTo();
         this.status = booking.getStatus();
         this.guests = booking.getGuests();
         this.email = booking.getEmail();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.contactName = booking.getContactName();
+        this.reference = booking.getReference();
     }
 
     public Date getDateFrom() {
@@ -67,5 +61,21 @@ public class BookingDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 }

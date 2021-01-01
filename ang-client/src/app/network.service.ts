@@ -18,11 +18,11 @@ export class NetworkService {
     body.set('username', username);
     body.set('password', password);
     let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
-    return this.http.post('/api/authentication',body.toString(), { withCredentials: true, headers : headers, responseType : 'text', observe: 'response'});
+    return this.http.post('/authentication',body.toString(), { withCredentials: true, headers : headers, responseType : 'text', observe: 'response'});
   }
 
   public logout() {
-    return this.http.post('/api/logout', {withCredentials: true, observe : 'response'});
+    return this.http.post('/logout', {withCredentials: true, observe : 'response'});
   }
 
   public getBooking(id) {

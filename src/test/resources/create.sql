@@ -63,3 +63,10 @@ create table booking_notes (
 );
 create index booking_notes_booking_id_idx on booking(id);
 CREATE SEQUENCE booking_notes_id_sequence START 1;
+
+create table otp(
+                    reference character varying (32) primary key,
+                    otp character varying (32),
+                    date_created timestamp default now()
+);
+create index otp_reference on otp(reference);

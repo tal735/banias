@@ -1,22 +1,28 @@
 package com.app.service.otp;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import org.apache.commons.lang3.RandomStringUtils;
+import com.app.service.otp.store.OTPStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.TimeUnit;
-
-//@Service
+@Service
 public class OTPServiceImpl implements OTPService {
 
-    private final Cache<String, String> otpStore = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
+    private final OTPStore otpStore;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(OTPServiceImpl.class);
+
+    @Autowired
+    public OTPServiceImpl(@Qualifier("DaoOTPStoreImpl") OTPStore otpStore) {
+        this.otpStore = otpStore;
+        LOGGER.debug("OTPServiceImpl CONSTRUCTOR");
+    }
 
     @Override
-    public void generateOtp(String key) {
-        invalidate(key);
-        String otp = RandomStringUtils.randomNumeric(6);
-        otpStore.put(key, otp);
+    public String generateOtp(String key) {
+        return otpStore.generateOtp(key);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.app.service.user.booker;
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
 import com.app.service.otp.OTPService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,9 @@ public class BookerUserDetailsServiceImpl implements UserDetailsService {
             throw new BadCredentialsException("Booking reference was not found.");
         }
         String otp = otpService.getIfPresent(reference);
-        return new BookerUserDetails(reference, "622354");
+        if (StringUtils.isBlank(otp)) {
+            throw new BadCredentialsException("OTP not found in DB.");
+        }
+        return new BookerUserDetails(booking.getId(), reference, otp);
     }
 }

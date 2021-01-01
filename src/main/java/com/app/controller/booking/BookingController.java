@@ -4,7 +4,6 @@ import com.app.controller.booking.dto.BookingDto;
 import com.app.controller.booking.dto.BookingRequest;
 import com.app.controller.validator.BookingValidator;
 import com.app.model.booking.Booking;
-import com.app.model.user.SessionUser;
 import com.app.service.security.SecurityUtils;
 import com.app.service.booking.BookingService;
 import org.slf4j.Logger;
@@ -35,22 +34,20 @@ public class BookingController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<BookingDto> getBooking() {
-        SessionUser user = SecurityUtils.getLoggedInUser();
-        Long id = null;
-        Booking booking = bookingService.getBookingById(id);
+        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
+        Booking booking = bookingService.getBookingById(bookingId);
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok().body(bookingDto);
     }
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity book(@RequestBody BookingRequest bookingRequest) {
-        SessionUser user = SecurityUtils.getLoggedInUser();
+    public ResponseEntity book(@RequestBody BookingRequest bookingRequest) { // todo should not be here?
         Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
-        Booking booking = bookingService.book(user.getUserId(), bookingRequest);
+        Booking booking = bookingService.book(1L, bookingRequest);
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok().body(bookingDto);
     }
@@ -58,15 +55,13 @@ public class BookingController {
     @PatchMapping
     @ResponseBody
     public ResponseEntity updateBooking(@RequestBody BookingRequest bookingRequest) {
-        SessionUser user = SecurityUtils.getLoggedInUser();
-        Long bookingId = null;
-        Booking booking = bookingService.getBookingById(bookingId);
-
         Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
 
+        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
+        Booking booking = bookingService.getBookingById(bookingId);
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
@@ -78,5 +73,4 @@ public class BookingController {
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok(bookingDto);
     }
-
 }

@@ -56,8 +56,7 @@ public class OTPController {
         if (booking == null) {
             return ResponseEntity.badRequest().body("Booking not found.");
         }
-        otpService.generateOtp(reference);
-        String otp = otpService.getIfPresent(reference);
+        String otp = otpService.generateOtp(reference);
         emailService.sendEmail(booking.getEmail(), "Your OTP is: " + otp);
         LOGGER.debug("Reference: " + reference + ", OTP: " + otp);
         return ResponseEntity.ok().build();

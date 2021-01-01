@@ -15,14 +15,10 @@ import java.util.concurrent.TimeUnit;
 @ComponentScan(basePackages = {"com.app"})
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-    protected static final String[] RESOURCE_LOCATIONS = new String[]{"classpath:/static/content/"};
-    protected static final String[] RESOURCE_PATHS = new String[]{"/content/*"};
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        ResourceHandlerRegistration resourceHandlerRegistration = appendResourceHandler(registry);
-        initializeResourceHandler(resourceHandlerRegistration);
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("*").allowCredentials(true).allowedHeaders("*").allowedMethods("*").allowedOrigins("http://localhost:4200");
+//    }
 
     protected ResourceHandlerRegistration appendResourceHandler(ResourceHandlerRegistry registry) {
         return registry.addResourceHandler(RESOURCE_PATHS);
