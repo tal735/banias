@@ -45,6 +45,7 @@ public class BookingDaoImpl implements BookingDao {
     public List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
         criteria.add(Restrictions.eq("user.id", userId));
+        criteria.add(Restrictions.ne("status", Booking.BookingStatus.CANCELLED.name()));
         criteria.add(Restrictions.disjunction(
                 Restrictions.conjunction(
                         Restrictions.ge("dateFrom", dateFrom),
