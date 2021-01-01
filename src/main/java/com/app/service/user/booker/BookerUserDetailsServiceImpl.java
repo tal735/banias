@@ -26,7 +26,7 @@ public class BookerUserDetailsServiceImpl implements UserDetailsService {
             throw new BadCredentialsException("Booking reference was not found.");
         }
         String otp = otpService.getIfPresent(reference);
-        if (StringUtils.isBlank(otp)) {
+        if (StringUtils.isBlank(otp)) { // todo check if expired
             throw new BadCredentialsException("OTP not found in DB.");
         }
         return new BookerUserDetails(booking.getId(), reference, otp);
