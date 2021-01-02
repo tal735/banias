@@ -25,6 +25,19 @@ export class NetworkService {
     return this.http.post('/logout', {withCredentials: true, observe : 'response'});
   }
 
+
+  public otpLogin(username : string, password : string) {
+    const body = new URLSearchParams();
+    body.set('username', username);
+    body.set('password', password);
+    let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+    return this.http.post('/api/authentication',body.toString(), { withCredentials: true, headers : headers, responseType : 'text', observe: 'response'});
+  }
+
+  public otpLogout() {
+    return this.http.post('/api/logout', {withCredentials: true, observe : 'response'});
+  }
+
   public getBooking(id) {
     return this.http.get('/api/booking/' + id, { responseType: 'json'});
   }

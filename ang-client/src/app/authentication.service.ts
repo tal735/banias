@@ -47,7 +47,7 @@ export class AuthenticationService {
   }
 
   isAuthenticated() {
-    return this.user && this.user.email && this.user.email.length > 0;
+    return this.user && this.user.roles &&  this.user.roles.length > 0;
   }
   
   isAdmin() {

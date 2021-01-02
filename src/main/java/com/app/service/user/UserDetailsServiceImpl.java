@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         SessionUserDetails u = new SessionUserDetails();
         u.setUsername(user.getEmail());
-        u.setPassword(u.getPassword());
+        u.setPassword(user.getPassword());
         u.setAuthorities(authorities);
 
         return u;
