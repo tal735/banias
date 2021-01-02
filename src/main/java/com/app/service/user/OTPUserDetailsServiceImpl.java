@@ -6,7 +6,6 @@ import com.app.service.booking.BookingService;
 import com.app.service.otp.OTPService;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,7 +29,7 @@ public class OTPUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         String otp = otpService.getIfPresent(username);
         if (StringUtils.isBlank(otp)) {
-            throw new BadCredentialsException("OTP not found in DB for " + username);
+            throw new UsernameNotFoundException("OTP not found in DB for " + username);
         }
 
         Set<SimpleGrantedAuthority> authorities = Sets.newHashSet(new SimpleGrantedAuthority("ROLE_OTP"));
@@ -42,7 +41,7 @@ public class OTPUserDetailsServiceImpl implements UserDetailsService {
             String email = username.toLowerCase().trim();
             User user = userService.getByEmail(email);
             if (user == null) {
-                throw new BadCredentialsException("Booker email [" + username + "] was not found.");
+                throw new UsernameNotFoundException("Booker email [" + username + "] was not found.");
             }
             authorities.add(new SimpleGrantedAuthority("ROLE_OTP_BOOK"));
             u.setUsername(user.getEmail());
@@ -51,7 +50,7 @@ public class OTPUserDetailsServiceImpl implements UserDetailsService {
         else {
             Booking booking = bookingService.getByReference(username);
             if (booking == null) {
-                throw new BadCredentialsException("Booker reference [" + username + "] was not found.");
+                throw new UsernameNotFoundException("Booker reference [" + username + "] was not found.");
             }
             authorities.add(new SimpleGrantedAuthority("ROLE_OTP_VIEW"));
             u.setUsername(booking.getReference());
