@@ -31,6 +31,19 @@ public class BookingController {
         this.bookingValidator = bookingValidator;
     }
 
+    @PostMapping("/new")
+    @ResponseBody
+    public ResponseEntity book(@RequestBody BookingRequest bookingRequest) {
+        Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        Booking booking = bookingService.book(userId, bookingRequest);
+        BookingDto bookingDto = new BookingDto(booking);
+        return ResponseEntity.ok().body(bookingDto);
+    }
+
     @GetMapping
     @ResponseBody
     public ResponseEntity<BookingDto> getBooking() {
@@ -41,18 +54,6 @@ public class BookingController {
     }
 
     @PostMapping
-    @ResponseBody
-    public ResponseEntity book(@RequestBody BookingRequest bookingRequest) { // todo should not be here?
-        Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
-        if (!errors.isEmpty()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
-        Booking booking = bookingService.book(1L, bookingRequest);
-        BookingDto bookingDto = new BookingDto(booking);
-        return ResponseEntity.ok().body(bookingDto);
-    }
-
-    @PatchMapping
     @ResponseBody
     public ResponseEntity updateBooking(@RequestBody BookingRequest bookingRequest) {
         Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);

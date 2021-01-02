@@ -1,7 +1,6 @@
 package com.app.service.security;
 
-import com.app.model.user.SessionUser;
-import com.app.service.user.booker.BookerUserDetails;
+import com.app.service.user.SessionUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -29,24 +28,17 @@ public final class SecurityUtils {
         return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
     }
 
-    public static SessionUser getLoggedInUser() {
+    public static SessionUserDetails getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof SessionUser) {
-            return  (SessionUser) authentication.getPrincipal();
+        if (authentication.getPrincipal() instanceof SessionUserDetails) {
+            return  (SessionUserDetails) authentication.getPrincipal();
         }
         return null;
     }
 
-    public static BookerUserDetails getLoggedInOTPUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof BookerUserDetails) {
-            return (BookerUserDetails) authentication.getPrincipal();
-        }
-        return null;
-    }
 
     public static Long getBookingIdFromAuthentication() {
-        return getLoggedInOTPUser().getBookingId();
+        return getLoggedInUser().getBookingId();
     }
 
     private static String extractPrincipal(Authentication authentication) {

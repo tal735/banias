@@ -1,11 +1,9 @@
 package com.app.controller.booking;
 
 import com.app.controller.booking.dto.BookingNoteDto;
-import com.app.model.booking.Booking;
 import com.app.model.booking.BookingNote;
-import com.app.model.user.SessionUser;
-import com.app.service.security.SecurityUtils;
 import com.app.service.booking.BookingService;
+import com.app.service.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +32,7 @@ public class BookingNotesController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<BookingNoteDto>> getNotes(@RequestParam(required = false, defaultValue = "0") Integer offset) {
-        SessionUser user = SecurityUtils.getLoggedInUser();
-        Long bookingId = null;
-        Booking booking = bookingService.getBookingById(bookingId);
+        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
         List<BookingNote> bookingNotes = bookingService.getNotes(bookingId, offset);
         List<BookingNoteDto> bookingNoteDtos = bookingNotes.stream().map(BookingNoteDto::new).collect(Collectors.toList());
         return ResponseEntity.ok(bookingNoteDtos);
@@ -45,13 +41,12 @@ public class BookingNotesController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<BookingNoteDto> addNote(@RequestBody String note) {
-        SessionUser user = SecurityUtils.getLoggedInUser();
-        Long bookingId = null;
-        Booking booking = bookingService.getBookingById(bookingId);
         if (StringUtils.isBlank(note)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        BookingNote bookingNote = bookingService.addNote(user.getUserId(), bookingId, note);
+        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        BookingNote bookingNote = bookingService.addNote(userId, bookingId, note);
         BookingNoteDto bookingNoteDto = new BookingNoteDto(bookingNote);
         return ResponseEntity.ok(bookingNoteDto);
     }

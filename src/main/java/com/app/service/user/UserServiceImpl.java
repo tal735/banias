@@ -30,8 +30,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User saveOrUpdate(User user) {
-        userDao.save(user);
+    public synchronized User createUser(String email) {
+        User user = getByEmail(email);
+        if (user == null) {
+            user = new User();
+            user.setEmail(email);
+            userDao.save(user);
+        }
         return user;
     }
 

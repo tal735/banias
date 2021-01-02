@@ -1,13 +1,13 @@
 package com.app.service.user;
 
 import com.app.model.user.User;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.List;
+import java.util.Set;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -25,15 +25,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User " + email + " Not Found.");
         }
 
-        List<SimpleGrantedAuthority> authorities = Lists.newArrayList();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        Set<SimpleGrantedAuthority> authorities = Sets.newHashSet(new SimpleGrantedAuthority("ROLE_USER"));
         user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
 
-        return org.springframework.security.core.userdetails.User
-                .builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .authorities(authorities)
-                .build();
+        SessionUserDetails u = new SessionUserDetails();
+        u.setUsername(user.getEmail());
+        u.setPassword(u.getPassword());
+        u.setAuthorities(authorities);
+
+        return u;
     }
 }

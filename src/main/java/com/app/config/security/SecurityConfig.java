@@ -4,7 +4,7 @@ import com.app.service.booking.BookingService;
 import com.app.service.otp.OTPService;
 import com.app.service.user.UserDetailsServiceImpl;
 import com.app.service.user.UserService;
-import com.app.service.user.booker.BookerUserDetailsServiceImpl;
+import com.app.service.user.OTPUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -32,11 +32,36 @@ import java.util.Collections;
 @ComponentScan(basePackages = "com.app.config")
 public class SecurityConfig  {
 
-    @Configuration
-    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+    @Autowired
+    UserService userService;
 
-        @Autowired
-        UserService userService;
+    @Bean
+    public AccessDeniedHandler restAccessDeniedHandler() {
+        return new RestAccessDeniedHandler();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint restAuthenticationEntryPoint() {
+        return new RestUnauthorizedEntryPoint();
+    }
+
+    @Bean
+    public AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
+        return new AjaxAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
+        return new AjaxAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
+        return new AjaxLogoutSuccessHandler();
+    }
+
+    @Configuration
+    public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         @Bean
         public PasswordEncoder BCryptPasswordEncoder() {
@@ -54,31 +79,6 @@ public class SecurityConfig  {
             provider.setUserDetailsService(UserDetailsService());
             provider.setPasswordEncoder(BCryptPasswordEncoder());
             return provider;
-        }
-
-        @Bean
-        public AccessDeniedHandler restAccessDeniedHandler() {
-            return new RestAccessDeniedHandler();
-        }
-
-        @Bean
-        public AuthenticationEntryPoint restAuthenticationEntryPoint() {
-            return new RestUnauthorizedEntryPoint();
-        }
-
-        @Bean
-        public AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
-            return new AjaxAuthenticationSuccessHandler();
-        }
-
-        @Bean
-        public AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
-            return new AjaxAuthenticationFailureHandler();
-        }
-
-        @Bean
-        public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
-            return new AjaxLogoutSuccessHandler();
         }
 
         @Override
@@ -119,13 +119,14 @@ public class SecurityConfig  {
                     .and()
                     .authorizeRequests()
                     .antMatchers("/otp/**").permitAll()
+                    .antMatchers("/user").permitAll()
                     .antMatchers("/admin/**").hasAuthority(AuthoritiesConstants.ADMIN);
         }
     }
 
     @Configuration
     @Order(1)
-    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    public class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         @Autowired
         OTPService otpService;
@@ -140,7 +141,7 @@ public class SecurityConfig  {
 
         @Bean
         public UserDetailsService otpUserDetailsService() {
-            return new BookerUserDetailsServiceImpl(bookingService, otpService);
+            return new OTPUserDetailsServiceImpl(userService, bookingService, otpService);
         }
 
         @Bean
@@ -149,31 +150,6 @@ public class SecurityConfig  {
             provider.setUserDetailsService(otpUserDetailsService());
             provider.setPasswordEncoder(noOpPasswordEncoder());
             return provider;
-        }
-
-        @Bean
-        public AccessDeniedHandler restAccessDeniedHandler() {
-            return new RestAccessDeniedHandler();
-        }
-
-        @Bean
-        public AuthenticationEntryPoint restAuthenticationEntryPoint() {
-            return new RestUnauthorizedEntryPoint();
-        }
-
-        @Bean
-        public AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
-            return new AjaxAuthenticationSuccessHandler();
-        }
-
-        @Bean
-        public AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
-            return new AjaxAuthenticationFailureHandler();
-        }
-
-        @Bean
-        public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
-            return new AjaxLogoutSuccessHandler();
         }
 
         @Override
@@ -203,7 +179,7 @@ public class SecurityConfig  {
                     .and()
                     .formLogin()
                     .loginProcessingUrl("/api/auth")
-                    .usernameParameter("reference")
+                    .usernameParameter("username")
                     .passwordParameter("otp")
                     .successHandler(ajaxAuthenticationSuccessHandler())
                     .failureHandler(ajaxAuthenticationFailureHandler())
@@ -215,6 +191,8 @@ public class SecurityConfig  {
                     .permitAll()
                     .and()
                     .authorizeRequests()
+                    .antMatchers("/api/booking/new").hasAuthority("ROLE_OTP_BOOK")
+                    .antMatchers("/api/booking/**").hasAuthority("ROLE_OTP_VIEW")
                     .anyRequest().hasRole("OTP");
         }
     }
