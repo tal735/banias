@@ -15,6 +15,10 @@ public class Booking extends DaoModel {
     @SequenceGenerator(name="BookingIdGenerator", sequenceName = "booking_id_sequence", allocationSize=1)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "date_from")
     private Date dateFrom;
 
@@ -38,13 +42,13 @@ public class Booking extends DaoModel {
 
     private Integer guests;
 
-    private String email;
-
     @Column(name = "reference", insertable = false, updatable = false)
     private String reference;
 
     @Column(name = "contact_name")
     private String contactName;
+
+    private String phone;
 
     public Long getId() {
         return id;
@@ -52,6 +56,14 @@ public class Booking extends DaoModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Date getDateFrom() {
@@ -102,14 +114,6 @@ public class Booking extends DaoModel {
         this.guests = guests;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getReference() {
         return reference;
     }
@@ -124,5 +128,13 @@ public class Booking extends DaoModel {
 
     public void setContactName(String contactName) {
         this.contactName = contactName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

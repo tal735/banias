@@ -42,6 +42,15 @@ export class NetworkService {
     return this.http.get('/api/booking/' + id, { responseType: 'json'});
   }
 
+  public getBooking2() {
+    return this.http.get('/api/booking', { responseType: 'json'});
+  }
+
+  public updateBooking2(bookingRequest) {
+    const headers = { 'content-type': 'application/json'}  
+    return this.http.post('/api/booking', bookingRequest, {'headers':headers , responseType: 'json'});
+  }
+
   public updateBooking(bookingId, bookingRequest) {
     const headers = { 'content-type': 'application/json'}  
     return this.http.post('/api/booking/' + bookingId, bookingRequest, {'headers':headers , responseType: 'json'});
@@ -49,7 +58,7 @@ export class NetworkService {
 
   public book(bookingRequest) {
     const headers = { 'content-type': 'application/json'}  
-    return this.http.post('/api/booking/', bookingRequest, {'headers': headers , responseType: 'json'});
+    return this.http.post('/api/booking/new', bookingRequest, {'headers': headers , responseType: 'json'});
   }
 
   public getNotes(bookingId, offset) {
@@ -65,4 +74,11 @@ export class NetworkService {
     return this.http.post('/admin/booking/find', searchRequest);
   }
 
+  public requestBookingOtp(email) {
+    return this.http.post('/otp/book' ,email);
+  }
+
+  public requestViewOtp(reference) {
+    return this.http.post('/otp/view' ,reference);
+  }
 }

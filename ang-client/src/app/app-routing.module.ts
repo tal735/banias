@@ -7,12 +7,16 @@ import { BookViewComponent } from './book-view/book-view.component';
 import { BookNewComponent } from './book-new/book-new.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminBookingComponent } from './admin-booking/admin-booking.component';
+import { BookNewOtpComponent } from './book-new-otp/book-new-otp.component';
+import { BookViewOtpComponent } from './book-view-otp/book-view-otp.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: 'home', component : HomeComponent},
   {path: 'login', component : LoginComponent},
   {path: 'booking/:id', component : BookViewComponent, canActivate: [AuthGuardService]},
+  {path: 'book-new-otp', component : BookNewOtpComponent},
+  {path: 'book-view-otp', component : BookViewOtpComponent},
   {path: 'book-new', component : BookNewComponent, canActivate: [AuthGuardService]},
   {path: 'admin', component : AdminHomeComponent, canActivate: [AuthGuardService]},
   {path: 'admin/admin-booking', component : AdminBookingComponent, canActivate: [AuthGuardService]}

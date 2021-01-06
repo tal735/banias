@@ -55,6 +55,7 @@ public class OTPUserDetailsServiceImpl implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority("ROLE_OTP_VIEW"));
             u.setUsername(booking.getReference());
             u.setBookingId(booking.getId());
+            u.setUserId(booking.getUser().getId());
         }
 
         return u;

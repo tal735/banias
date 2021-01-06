@@ -15,6 +15,15 @@ export class AuthenticationService {
     this.user = user;
   }
 
+
+  otpLogin(username, password) {
+    this.networkService.otpLogin(username, password).subscribe(
+      () => {
+        this.checkAuthentication();
+      } 
+    )
+  }
+
   login(username, password) {
     this.networkService.login(username, password).subscribe(
       () => {
@@ -27,9 +36,9 @@ export class AuthenticationService {
     this.networkService.getUser().subscribe(
       response => {
         this.setUser(response);
-        if (this.isAuthenticated()) { /* move from here */
-          this.router.navigate(["/home"]);
-        }
+        // if (this.isAuthenticated()) { /* move from here */
+        //   this.router.navigate(["/home"]);
+        // }
       },
       error => {
         console.log('error: ' + error);
@@ -41,12 +50,16 @@ export class AuthenticationService {
     this.networkService.logout().subscribe(
       () => {
         this.setUser(null);
+        console.log('here?');
         this.router.navigate(["/home"]);
       }
     )
   }
 
   isAuthenticated() {
+    // console.log('this.user');
+    // console.log(this.user);
+    // console.log(this.user && this.user.roles &&  this.user.roles.length > 0);
     return this.user && this.user.roles &&  this.user.roles.length > 0;
   }
   

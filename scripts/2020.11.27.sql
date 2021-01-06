@@ -40,14 +40,17 @@ create table booking(
                         id numeric(19,0) primary key,
                         date_from timestamp,
                         date_to timestamp,
+                        user_id numeric(19,0),
                         status character varying(32),
                         guests integer,
                         contact_name character varying (128),
-                        email character varying (128),
                         reference character varying (32) not null UNIQUE DEFAULT generate_uid(10),
+                        phone character varying(64),
                         date_created timestamp default now(),
-                        date_modified timestamp
+                        date_modified timestamp,
+                        constraint user_id_fk FOREIGN KEY (user_id) references usr(id)
 );
+create index booking_user_id_idx on booking(user_id);
 create index booking_date_idx on booking(date_from, date_to);
 CREATE SEQUENCE booking_id_sequence START 1;
 

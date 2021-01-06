@@ -6,6 +6,7 @@ import com.app.controller.validator.BookingValidator;
 import com.app.model.booking.Booking;
 import com.app.service.security.SecurityUtils;
 import com.app.service.booking.BookingService;
+import com.app.service.user.SessionUserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
 
@@ -31,19 +33,6 @@ public class BookingController {
         this.bookingValidator = bookingValidator;
     }
 
-    @PostMapping("/new")
-    @ResponseBody
-    public ResponseEntity book(@RequestBody BookingRequest bookingRequest) {
-        Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
-        if (!errors.isEmpty()) {
-            return ResponseEntity.badRequest().body(errors);
-        }
-        Long userId = SecurityUtils.getLoggedInUser().getUserId();
-        Booking booking = bookingService.book(userId, bookingRequest);
-        BookingDto bookingDto = new BookingDto(booking);
-        return ResponseEntity.ok().body(bookingDto);
-    }
-
     @GetMapping
     @ResponseBody
     public ResponseEntity<BookingDto> getBooking() {
@@ -53,10 +42,25 @@ public class BookingController {
         return ResponseEntity.ok().body(bookingDto);
     }
 
+    @PostMapping("/new")
+    @ResponseBody
+    public ResponseEntity book(@RequestBody BookingRequest bookingRequest, HttpServletRequest httpServletRequest) throws Exception {
+        SessionUserDetails user = SecurityUtils.getLoggedInUser();
+        Map<String, String> errors = bookingValidator.validate(user, bookingRequest);
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+        Booking booking = bookingService.book(user.getUserId(), bookingRequest);
+        BookingDto bookingDto = new BookingDto(booking);
+        httpServletRequest.logout();
+        return ResponseEntity.ok().body(bookingDto);
+    }
+
     @PostMapping
     @ResponseBody
     public ResponseEntity updateBooking(@RequestBody BookingRequest bookingRequest) {
-        Map<String, String> errors = bookingValidator.checkForErrors(bookingRequest);
+        SessionUserDetails user = SecurityUtils.getLoggedInUser();
+        Map<String, String> errors = bookingValidator.validate(user, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
@@ -66,9 +70,10 @@ public class BookingController {
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
-        booking.setDateModified(new Date());
-        booking.setStatus(Booking.BookingStatus.PENDING);
         booking.setContactName(bookingRequest.getContactName());
+        booking.setPhone(bookingRequest.getPhone());
+        booking.setStatus(Booking.BookingStatus.PENDING);
+        booking.setDateModified(new Date());
         bookingService.saveOrUpdate(booking);
 
         BookingDto bookingDto = new BookingDto(booking);

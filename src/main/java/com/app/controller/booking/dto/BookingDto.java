@@ -9,18 +9,18 @@ public class BookingDto {
     private Date dateTo;
     private Booking.BookingStatus status;
     private Integer guests;
-    private String email;
     private String contactName;
     private String reference;
+    private String phone;
 
     public BookingDto(Booking booking) {
         this.dateFrom = booking.getDateFrom();
         this.dateTo = booking.getDateTo();
         this.status = booking.getStatus();
         this.guests = booking.getGuests();
-        this.email = booking.getEmail();
         this.contactName = booking.getContactName();
         this.reference = booking.getReference();
+        this.phone = booking.getPhone();
     }
 
     public Date getDateFrom() {
@@ -55,14 +55,6 @@ public class BookingDto {
         this.guests = guests;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getContactName() {
         return contactName;
     }
@@ -77,5 +69,13 @@ public class BookingDto {
 
     public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
