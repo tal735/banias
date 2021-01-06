@@ -39,8 +39,9 @@ public class BookingServiceImpl implements BookingService {
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());
-        booking.setStatus(Booking.BookingStatus.PENDING);
         booking.setContactName(bookingRequest.getContactName());
+        booking.setPhone(bookingRequest.getPhone());
+        booking.setStatus(Booking.BookingStatus.PENDING);
         saveOrUpdate(booking);
         if (StringUtils.isNotBlank(bookingRequest.getNote())) {
             saveNote(user, booking, bookingRequest.getNote());
@@ -57,7 +58,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public Booking getBookingById(Long id) {
+    public Booking getById(Long id) {
         return bookingDao.getById(id);
     }
 

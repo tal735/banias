@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NetworkService } from '../network.service';
 
@@ -11,15 +11,18 @@ import { NetworkService } from '../network.service';
 export class BookNewComponent implements OnInit {
 
   form: FormGroup = this.formBuilder.group({
-    dateFrom: new FormControl(null, Validators.required),
-    dateTo: new FormControl(null, Validators.required),
-    guests: new FormControl(null, Validators.required),
-    note: new FormControl(null, Validators.nullValidator)
+    dateFrom: new FormControl('', Validators.required),
+    dateTo: new FormControl('', Validators.required),
+    guests: new FormControl('', Validators.required),
+    note: new FormControl('', Validators.nullValidator),
+    contactName: new FormControl('', Validators.required),
+    phone: new FormControl('', Validators.required)
   });
 
+  reference : string = null;
   error : string = null;
 
-  constructor(private networkService : NetworkService, private formBuilder: FormBuilder, private router : Router) { }
+  constructor(private router : Router, private networkService : NetworkService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
   }
@@ -30,12 +33,25 @@ export class BookNewComponent implements OnInit {
       dateFrom: new Date(this.form.value.dateFrom).getTime(),
       dateTo:new Date(this.form.value.dateTo).getTime(),
       guests: this.form.value.guests,
-      note: this.form.value.note
+      contactName: this.form.value.contactName,
+      phone: this.form.value.phone,
+      note : this.form.value.note
     }
     this.networkService.book(bookingRequest).subscribe(
-      data => {this.router.navigate(["/booking"]);},
+      data => {
+        console.log('GUT!');
+        console.log(data);
+        this.handleResponse(data);
+      },
       error => {this.error = error.error.error; console.log(error.error.error)}
     );
+  }
 
+  handleResponse(data) {
+    this.reference = data.reference;
+  }
+
+  goHome() {
+    this.router.navigate(["/home"]);
   }
 }

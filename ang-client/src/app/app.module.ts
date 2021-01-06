@@ -19,7 +19,6 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BookViewComponent } from './book-view/book-view.component';
-import { BookNewComponent } from './book-new/book-new.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminBookingComponent } from './admin-booking/admin-booking.component';
 import { AdminBookingEditModalComponent } from './admin-booking-edit-modal/admin-booking-edit-modal.component';
@@ -27,6 +26,7 @@ import { AdminBookingMessageModalComponent } from './admin-booking-message-modal
 import { BookNewOtpComponent } from './book-new-otp/book-new-otp.component';
 import { BookViewOtpComponent } from './book-view-otp/book-view-otp.component';
 import { BookEditComponent } from './book-edit/book-edit.component';
+import { BookNewComponent } from './book-new/book-new.component';
 
 @NgModule({
   declarations: [
@@ -35,14 +35,14 @@ import { BookEditComponent } from './book-edit/book-edit.component';
     HomeComponent,
     HeaderComponent,
     BookViewComponent,
-    BookNewComponent,
     AdminHomeComponent,
     AdminBookingComponent,
     AdminBookingEditModalComponent,
     AdminBookingMessageModalComponent,
     BookNewOtpComponent,
     BookViewOtpComponent,
-    BookEditComponent
+    BookEditComponent,
+    BookNewComponent
   ],
   imports: [
     BrowserModule,

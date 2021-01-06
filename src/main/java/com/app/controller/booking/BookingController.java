@@ -37,7 +37,7 @@ public class BookingController {
     @ResponseBody
     public ResponseEntity<BookingDto> getBooking() {
         Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
-        Booking booking = bookingService.getBookingById(bookingId);
+        Booking booking = bookingService.getById(bookingId);
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok().body(bookingDto);
     }
@@ -51,6 +51,8 @@ public class BookingController {
             return ResponseEntity.badRequest().body(errors);
         }
         Booking booking = bookingService.book(user.getUserId(), bookingRequest);
+        Long bookingId = booking.getId();
+        booking = bookingService.getById(bookingId);
         BookingDto bookingDto = new BookingDto(booking);
         httpServletRequest.logout();
         return ResponseEntity.ok().body(bookingDto);
@@ -66,7 +68,7 @@ public class BookingController {
         }
 
         Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
-        Booking booking = bookingService.getBookingById(bookingId);
+        Booking booking = bookingService.getById(bookingId);
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());

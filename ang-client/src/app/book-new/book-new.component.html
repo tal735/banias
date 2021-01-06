@@ -1,33 +1,32 @@
-<div class="container">
-    <h4 class="display-4">Book</h4>
+<div class="container" *ngIf="!reference">
+    <h4 class="display-4">New Booking</h4>
     <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
-      <mat-form-field >
-        <mat-label>When</mat-label>
-        <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="From Date" required formControlName="dateFrom">
-          <input matEndDate placeholder="To Date" required formControlName="dateTo">
-        </mat-date-range-input>
+
+        <div class="form-group">
+            <label style="display: block;">Dates</label>
+            <input type="date" name="dateFrom" required formControlName="dateFrom">
+            <input type="date" name="dateTo" required formControlName="dateTo">
+        </div>
     
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-    
-        <mat-error *ngIf="form.controls.dateFrom.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-        <mat-error *ngIf="form.controls.dateTo.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-        <mat-error *ngIf="form.controls.dateFrom.errors?.required">From Date Required</mat-error>
-        <mat-error *ngIf="form.controls.dateTo.errors?.required">To Date Required</mat-error>
-      </mat-form-field>
-    
-      <mat-form-field>
-          <mat-label>Guests</mat-label>
-          <input matInput type="number" min="1" class="form-control" name="guests" formControlName="guests">
-          <mat-error *ngIf="form.controls.guests.hasError('matInputInvalid')">Invalid guests</mat-error>
-          <mat-error *ngIf="form.controls.guests.errors?.required">Guests Required</mat-error>
-        </mat-form-field>
-    
-        <mat-form-field>
-            <mat-label>Note</mat-label>
-            <textarea matInput class="form-control" name="note" formControlName="note" rows="3"></textarea>
-        </mat-form-field>
+        <div class="form-group">
+            <label for="guests">Guests</label>
+            <input type="number" class="form-control" id="guests" min="1" name="guests" formControlName="guests" required>
+          </div>
+
+          <div class="form-group">
+            <label for="contactName">Contant Name</label>
+            <input type="text" class="form-control" id="contactName" name="contactName" formControlName="contactName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone" formControlName="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="note">Additional Notes</label>
+            <textarea type="text" class="form-control" id="note" name="note" formControlName="note" rows="3"></textarea>
+          </div>
 
         <div class="alert alert-danger my-3" role="alert" *ngIf="error">
             {{ error }}
@@ -36,4 +35,15 @@
       <button class="btn btn-success mt-2" [disabled]="!form.valid">Book</button>
 
     </form>
+  </div>
+
+  <div class="wrapper" *ngIf="reference">
+    <div class="form">
+        <h1 class="form-title display-3">Thank You</h1>    
+        <i class="top-icon fa fa-barcode"></i>        
+        <p class="lead">Please write down your booking number for future reference.</p>
+        <input #email class="email-input" type="text" [value]="reference" disabled>
+    </div>
+  
+    <button type="submit" class="back-submit-btn btn btn-light" (click)="goHome()">Finish</button>
   </div>
