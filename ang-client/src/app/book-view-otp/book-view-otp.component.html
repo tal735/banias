@@ -1,0 +1,23 @@
+<div class="wrapper" *ngIf="step!=2">
+    <div class="form" *ngIf="step==0">
+        <h1 class="form-title display-3">View Details</h1>    
+        <i class="top-icon fa fa-barcode"></i>        
+        <input #ref class="email-input" type="text" placeholder="Reference Number">
+        <button type="submit" class="submit-btn btn btn-primary" (click)="requestOtp(ref)">Request Code</button>
+    </div>
+
+    <div class="form" *ngIf="step==1">
+        <h1 class="form-title display-3">Verify</h1>    
+        <i class="top-icon fa fa-asterisk"></i>        
+        <input #otp class="email-input" type="text"  id="inputOtp" placeholder="Code">
+        <button type="submit" class="submit-btn btn btn-primary" (click)="verifyOtp(otp)">Proceed</button>
+    </div>
+    
+    <div class="alert alert-danger my-3" role="alert" *ngIf="error">
+        {{ error }}
+      </div>
+
+    <button type="submit" class="back-submit-btn btn btn-light" (click)="backClicked()">Back</button>
+</div>
+
+<app-book-edit *ngIf="step==2"></app-book-edit>

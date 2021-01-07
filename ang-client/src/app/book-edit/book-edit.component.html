@@ -1,0 +1,43 @@
+<div class="container" *ngIf="booking">
+    <h4 class="display-4">Booking Details</h4>
+    <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
+
+        <div class="form-group">
+            <label for="reference">Reference Number</label>
+            <input type="text" readonly class="form-control" id="reference" name="reference" [value]="booking.reference">
+          </div>
+
+          <div class="form-group">
+            <label for="status">Status</label>
+            <input type="text" readonly class="form-control" id="status" name="status" [value]="booking.status">
+          </div>
+
+        <div class="form-group">
+            <label style="display: block;">Dates</label>
+            <input type="date" name="dateFrom" required formControlName="dateFrom">
+            <input type="date" name="dateTo" required formControlName="dateTo">
+        </div>
+    
+        <div class="form-group">
+            <label for="guests">Guests</label>
+            <input type="number" class="form-control" id="guests" min="1" name="guests" formControlName="guests">
+          </div>
+
+          <div class="form-group">
+            <label for="contactName">Contant Name</label>
+            <input type="text" class="form-control" id="contactName" name="contactName" formControlName="contactName">
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone" formControlName="phone">
+          </div>
+
+        <div class="alert alert-danger my-3" role="alert" *ngIf="error">
+            {{ error }}
+          </div>
+
+      <button class="btn btn-success mt-2" [disabled]="!form.valid">Request Changes</button>
+
+    </form>
+  </div>
