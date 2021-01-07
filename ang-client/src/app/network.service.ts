@@ -66,8 +66,20 @@ export class NetworkService {
     return this.http.get('/api/booking/notes/' + bookingId, { params : params, responseType: 'json'});
   }
 
+  public getNotes2(offset) {
+    let params = new HttpParams();
+    if (offset != null) {
+      params = params.append('offset', offset);
+    }
+    return this.http.get('/api/booking/notes', { params : params, responseType: 'json'});
+  }
+  
   public postNote(bookingId, note) {
     return this.http.post('/api/booking/notes/' + bookingId, note);
+  }
+
+  public postNote2(note) {
+    return this.http.post('/api/booking/notes', note);
   }
 
   public adminBookingSearch(searchRequest) {

@@ -72,7 +72,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<BookingNote> getNotes(Long bookingId, Integer offset) {
+    public List<BookingNote> getNotes(Long bookingId, Long offset) {
         return bookingNoteDao.getNotes(bookingId, offset);
     }
 

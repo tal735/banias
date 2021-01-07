@@ -1,7 +1,7 @@
-<div class="container" *ngIf="booking">
-    <h4 class="display-4">Booking Details</h4>
+<div class="container wrapper" *ngIf="booking">
+    
     <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
-
+      <h4 class="display-4">Booking Details</h4>  
         <div class="form-group">
             <label for="reference">Reference Number</label>
             <input type="text" readonly class="form-control" id="reference" name="reference" [value]="booking.reference">
@@ -37,7 +37,31 @@
             {{ error }}
           </div>
 
-      <button class="btn btn-success mt-2" [disabled]="!form.valid">Request Changes</button>
+      <button class="btn btn-success mt-2" [disabled]="!form.valid"><i class="fa fa-edit"></i>  Request Changes</button>
 
     </form>
+
+    <div>
+      <h4 class="display-4">Messages</h4>
+      <div *ngFor="let note of notes;" class="card">
+        <div class="card-header">
+          {{ note.user }}
+        </div>
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>{{ note.note }}</p>
+            <footer class="blockquote-footer">{{ note.date | date:'medium' }}</footer>
+          </blockquote>
+        </div>
+      </div>
+      <br>
+      <form role="form" id="contact-form" class="contact-form" >
+          <div class="form-group">
+            <textarea [(ngModel)]="message" class="form-control textarea" rows="3" name="Message" id="Message" placeholder="Message"></textarea>
+          </div>
+          <button type="submit" class="btn main-btn pull-left" [disabled]="!message" (click)='submitMessage()'><i class="fa fa-send-o"></i>Send</button>
+    </form>
+    <button type="submit" class="btn main-btn" (click)='fetchNotes()'><i class="fa fa-refresh"></i> Load Messages</button>
+    </div>
+
   </div>

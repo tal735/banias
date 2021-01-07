@@ -7,5 +7,5 @@ import java.util.List;
 public interface BookingNoteDao {
     void saveOrUpdate(BookingNote bookingNote);
 
-    List<BookingNote> getNotes(Long bookingId, Integer offset);
+    List<BookingNote> getNotes(Long bookingId, Long offset);
 }

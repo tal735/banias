@@ -31,7 +31,7 @@ public class BookingNotesController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<BookingNoteDto>> getNotes(@RequestParam(required = false, defaultValue = "0") Integer offset) {
+    public ResponseEntity<List<BookingNoteDto>> getNotes(@RequestParam(required = false) Long offset) {
         Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
         List<BookingNote> bookingNotes = bookingService.getNotes(bookingId, offset);
         List<BookingNoteDto> bookingNoteDtos = bookingNotes.stream().map(BookingNoteDto::new).collect(Collectors.toList());

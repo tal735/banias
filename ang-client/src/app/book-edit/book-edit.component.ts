@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateRange } from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import { NetworkService } from '../network.service';
 
@@ -21,7 +20,8 @@ export class BookEditComponent implements OnInit {
   booking : any = null;
   notes: any = [];
   error: string;
-  
+  message: string;
+
   constructor(private router : Router, private networkService : NetworkService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -46,15 +46,6 @@ export class BookEditComponent implements OnInit {
     );
   }
 
-  fetchNotes() {
-    console.log('fetchNotes');
-    // let notesOffset = 0;//this.notes.length;
-    // this.networkService.getNotes(this.booking.id, notesOffset).subscribe(
-    //   data => {this.notes = data;},
-    //   error => console.log('error: ' + error)
-    // );
-  }
-
   onFormSubmit() {
     this.error = null;
     let bookingRequest = {
@@ -67,9 +58,29 @@ export class BookEditComponent implements OnInit {
     this.networkService.updateBooking2(bookingRequest).subscribe(
       data => {
         this.handleBookingResponse(data);
-        console.log('GUT!');
       },
       error => {this.error = error.error.error; console.log(error.error.error)}
+    );
+  }
+
+  submitMessage() {
+    this.networkService.postNote2(this.message).subscribe(
+      data => {
+        this.message = null; 
+        this.fetchNotes();
+      },
+      error => console.log('error:'+error)
+    );
+  }
+
+  fetchNotes() {
+    let maxId = null;
+    if (this.notes.length > 0) {
+      maxId = Math.max.apply(Math, this.notes.map(function(o) { return o.id; }));
+    }
+    this.networkService.getNotes2(maxId).subscribe(
+      data => {this.notes = this.notes.concat(data);},
+      error => console.log('error: ' + error)
     );
   }
 

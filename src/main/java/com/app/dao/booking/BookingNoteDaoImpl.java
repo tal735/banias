@@ -3,7 +3,6 @@ package com.app.dao.booking;
 import com.app.model.booking.BookingNote;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -25,11 +24,12 @@ public class BookingNoteDaoImpl implements BookingNoteDao {
     }
 
     @Override
-    public List<BookingNote> getNotes(Long bookingId, Integer offset) {
+    public List<BookingNote> getNotes(Long bookingId, Long offset) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(BookingNote.class);
         criteria.add(Restrictions.eq("booking.id", bookingId));
-//        criteria.addOrder(Order.asc("id"));
-        criteria.setFirstResult(offset);
+        if (offset != null) {
+            criteria.add(Restrictions.gt("id", offset));
+        }
         criteria.setMaxResults(10);
         return criteria.list();
     }
