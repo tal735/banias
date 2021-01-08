@@ -42,7 +42,7 @@ public class OTPController {
             userService.createUser(dbEmail);
         }
         String otp = otpService.generateOtp(dbEmail);
-        emailService.sendEmail(dbEmail, "Your OTP is: " + otp);
+        emailService.sendEmail(dbEmail, "Your OTP","Your OTP is: " + otp);
         LOGGER.debug("Email: " + email + ", OTP: " + otp);
         return ResponseEntity.ok().build();
     }
@@ -55,7 +55,7 @@ public class OTPController {
             return ResponseEntity.badRequest().body("Reference number not found.");
         }
         String otp = otpService.generateOtp(reference);
-        emailService.sendEmail(booking.getUser().getEmail(), "Your OTP is: " + otp);
+        emailService.sendEmail(booking.getUser().getEmail(), "Your OTP", "Your OTP is: " + otp);
         LOGGER.debug("Reference: " + reference + ", OTP: " + otp);
         return ResponseEntity.ok().build();
     }
