@@ -13,7 +13,6 @@ export class AdminBookingMessageModalComponent implements OnInit {
   message: string;
 
   @Input() id : any;
-  @Input() mode : any;
   @ViewChild('messagesModal') messagesModal: ElementRef;
 
   modalRef : NgbModalRef = null;
@@ -29,16 +28,19 @@ export class AdminBookingMessageModalComponent implements OnInit {
   }
 
   fetchNotes() {
-    let notesOffset = 0;//this.notes.length;
-    this.networkService.getNotes(this.message, notesOffset).subscribe(
-      data => {this.notes = data;},
+    let maxId = null;
+    if (this.notes.length > 0) {
+      maxId = Math.max.apply(Math, this.notes.map(function(o) { return o.id; }));
+    }
+    this.networkService.adminGetNotes(this.id, maxId).subscribe(
+      data => {this.notes = this.notes.concat(data);},
       error => console.log('error: ' + error)
     );
   }
 
   submitMessage() {
-    this.networkService.postNote(this.id, this.message).subscribe(
-      data => {this.message = null; this.modalRef.close();},
+    this.networkService.adminPostNote(this.id, this.message).subscribe(
+      data => {this.message = null; this.fetchNotes();},
       error => console.log('error:'+error)
     );
   }

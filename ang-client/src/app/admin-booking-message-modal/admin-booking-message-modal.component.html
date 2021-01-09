@@ -16,6 +16,7 @@
           <div class="form-group">
             <textarea [(ngModel)]="message" class="form-control textarea" rows="3" name="Message" id="Message" placeholder="Message"></textarea>
           </div>
-          <button type="submit" class="btn main-btn pull-right" [disabled]="!message" (click)='submitMessage()'>Send a message</button>
+          <button type="submit" class="btn main-btn pull-left" [disabled]="!message" (click)='submitMessage()'>Send a message</button>
     </form>
+    <button class="btn main-btn" (click)='fetchNotes()'><i class="fa fa-refresh"></i> Load Messages</button>
 </ng-template>

@@ -11,7 +11,6 @@ import { NetworkService } from '../network.service';
 })
 export class AdminBookingEditModalComponent implements OnInit {
   @Input() id : any;
-  @Input() mode : string;
   @Output() bookingUpdatedEvent = new EventEmitter<any>();
   @ViewChild('myModal') myModal: ElementRef;
 
@@ -34,8 +33,7 @@ export class AdminBookingEditModalComponent implements OnInit {
     this.form = this.formBuilder.group({
       dateFrom: new FormControl('', Validators.required),
       dateTo: new FormControl('', Validators.required),
-      guests: new FormControl('', Validators.required),
-      status: new FormControl({value: '', disabled: this.mode === 'USER'}, Validators.required)
+      guests: new FormControl('', Validators.required)
     });
     this.loadBooking();
 }

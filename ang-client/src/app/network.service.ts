@@ -66,6 +66,18 @@ export class NetworkService {
     return this.http.post('/admin/booking/find', searchRequest);
   }
 
+  public adminGetNotes(id, offset) {
+    let params = new HttpParams();
+    if (offset != null) {
+      params = params.append('offset', offset);
+    }
+    return this.http.get(`/admin/booking/${id}/notes`, { params : params, responseType: 'json'});
+  }
+
+  public adminPostNote(id, note) {
+    return this.http.post(`/admin/booking/${id}/notes`, note);
+  }
+
   public requestBookingOtp(email) {
     return this.http.post('/otp/book' ,email);
   }

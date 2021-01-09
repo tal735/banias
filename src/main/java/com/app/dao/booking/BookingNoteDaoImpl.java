@@ -2,6 +2,7 @@ package com.app.dao.booking;
 
 import com.app.model.booking.BookingNote;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class BookingNoteDaoImpl implements BookingNoteDao {
         if (offset != null) {
             criteria.add(Restrictions.gt("id", offset));
         }
+        criteria.setFetchMode("user", FetchMode.JOIN);
         criteria.setMaxResults(10);
         return criteria.list();
     }
