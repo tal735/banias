@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, Input, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -18,6 +19,7 @@ export class AdminBookingEditModalComponent implements OnInit {
 
   booking : any = null;
   statuses = ['APPROVED', 'PENDING', 'CANCELLED'];
+  dp = new DatePipe(navigator.language);
 
   error : string = null;
 
@@ -33,15 +35,21 @@ export class AdminBookingEditModalComponent implements OnInit {
     this.form = this.formBuilder.group({
       dateFrom: new FormControl('', Validators.required),
       dateTo: new FormControl('', Validators.required),
-      guests: new FormControl('', Validators.required)
+      guests: new FormControl('', Validators.required),
+      status: new FormControl('', Validators.required),
+      contactName: new FormControl('', Validators.required),
+      phone: new FormControl('', Validators.required)
     });
-    this.loadBooking();
+    this.getBooking();
 }
 
-loadBooking() {
-  this.networkService.getBooking(this.id).subscribe(
+getBooking() {
+  this.networkService.adminGetBooking(this.id).subscribe(
     data => this.handleBookingResponse(data),
-    error => {this.error = error.error.error; console.log(error.error.error)}
+    error => {
+      this.error = error.error.error;
+      console.log(error.error.error)
+    }
   );
 }
 
@@ -54,15 +62,21 @@ onFormSubmit() {
     dateFrom: new Date(this.form.value.dateFrom).getTime(),
     dateTo:new Date(this.form.value.dateTo).getTime(),
     guests: this.form.value.guests,
-    status: this.form.value.status
+    status: this.form.value.status,
+    contactName: this.form.value.contactName,
+    phone: this.form.value.phone,
+    userId: this.booking.userId
   }
-  this.networkService.updateBooking(this.booking.id, bookingRequest).subscribe(
+  this.networkService.adminUpdateBooking(this.booking.id, bookingRequest).subscribe(
     data => {
       this.handleBookingResponse(data);
       this.bookingUpdatedEvent.emit(this.booking);
       this.modalRef.close();
     },
-    error => {this.error = error.error.error; console.log(error.error.error)}
+    error => {
+      this.error = error.error.error; 
+      console.log(error.error.error)
+    }
     );
   }
 
@@ -70,10 +84,12 @@ onFormSubmit() {
     this.booking = data;
     this.form.patchValue(
       {
-        dateFrom: new Date(this.booking.dateFrom),
-        dateTo: new Date(this.booking.dateTo),
+        dateFrom: this.dp.transform(new Date(this.booking.dateFrom), 'y-MM-dd'),
+        dateTo: this.dp.transform(new Date(this.booking.dateTo), 'y-MM-dd'),
         guests: this.booking.guests,
-        status: this.booking.status
+        status: this.booking.status,
+        contactName: this.booking.contactName,
+        phone: this.booking.phone
       }
     );
   }

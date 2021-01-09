@@ -66,6 +66,15 @@ export class NetworkService {
     return this.http.post('/admin/booking/find', searchRequest);
   }
 
+  public adminGetBooking(id) {
+    return this.http.get(`/admin/booking/${id}`, { responseType: 'json'});
+  }
+
+  public adminUpdateBooking(id, bookingRequest) {
+    const headers = { 'content-type': 'application/json'}  
+    return this.http.post(`/admin/booking/${id}`, bookingRequest, {'headers':headers , responseType: 'json'});
+  }
+
   public adminGetNotes(id, offset) {
     let params = new HttpParams();
     if (offset != null) {

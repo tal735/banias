@@ -5,15 +5,17 @@ import com.app.model.booking.Booking;
 import java.util.Date;
 
 public class BookingDto {
-    private Long id;
     private Date dateFrom;
     private Date dateTo;
     private Booking.BookingStatus status;
     private Integer guests;
     private String contactName;
-    private String reference;
     private String phone;
+
+    private Long id;
+    private String reference;
     private String email;
+    private Long userId;
 
     public BookingDto(Booking booking, boolean userDetails) {
         this.id = booking.getId();
@@ -26,15 +28,8 @@ public class BookingDto {
         this.phone = booking.getPhone();
         if (userDetails) {
             this.email = booking.getUser().getEmail();
+            this.userId = booking.getUser().getId();
         }
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Date getDateFrom() {
@@ -77,14 +72,6 @@ public class BookingDto {
         this.contactName = contactName;
     }
 
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -93,11 +80,35 @@ public class BookingDto {
         this.phone = phone;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

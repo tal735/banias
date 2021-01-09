@@ -1,40 +1,49 @@
 <ng-template #myModal let-modal>
-    <h1>Edit Booking ({{ id }})</h1>
+    <h1>Review Booking ({{ id }})</h1>
     <form class="my-form" *ngIf="form && booking" [formGroup]="form" (ngSubmit)="onFormSubmit()">
-        <mat-form-field >
-          <mat-label>When</mat-label>
-      
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="From Date" required formControlName="dateFrom">
-            <input matEndDate placeholder="To Date" required formControlName="dateTo">
-          </mat-date-range-input>
-      
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-      
-          <mat-error *ngIf="form.controls.dateFrom.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-          <mat-error *ngIf="form.controls.dateTo.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-          <mat-error *ngIf="form.controls.dateFrom.errors?.required">From Date Required</mat-error>
-          <mat-error *ngIf="form.controls.dateTo.errors?.required">To Date Required</mat-error>
-        </mat-form-field>
-      
-        <mat-form-field>
-            <mat-label>Guests</mat-label>
-            <input matInput type="number" class="form-control" name="guests" formControlName="guests">
-          </mat-form-field>
-      
-          <mat-form-field appearance="fill">
-            <mat-label>Status</mat-label>
-            <select matNativeControl required formControlName="status">
-                <option *ngFor="let status of statuses" [value]="status" [selected]="booking.status === status">{{status}}</option>
-            </select>
-          </mat-form-field>
+     
+      <div class="form-group">
+        <label for="reference">Reference Number</label>
+        <input type="text" readonly class="form-control" id="reference" name="reference" [value]="booking.reference">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" readonly class="form-control" id="email" name="email" [value]="booking.email">
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" class="form-control" formControlName="status" required>
+            <option *ngFor="let status of statuses" [value]="status" [selected]="booking.status === status">{{status}}</option>
+        </select>
+      </div>
+
+        <div class="form-group">
+          <label for="dateFrom">Coming At</label>
+          <input type="date" class="form-control" name="dateFrom" id="dateFrom" required formControlName="dateFrom">
+      </div>
+
+      <div class="form-group">
+        <label for="dateTo">Leaving At</label>
+        <input type="date" class="form-control" name="dateTo" id="dateTo" required formControlName="dateTo">
+    </div>
+        
+      <div class="form-group">
+        <label for="contactName">Contant Name</label>
+        <input type="text" class="form-control" id="contactName" name="contactName" formControlName="contactName">
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="text" class="form-control" id="phone" name="phone" formControlName="phone">
+      </div>
 
           <div class="alert alert-danger my-3" role="alert" *ngIf="error">
             {{ error }}
           </div>
           
-        <button class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-success">Save</button>
       
       </form>
 </ng-template>

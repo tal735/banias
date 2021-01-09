@@ -49,7 +49,7 @@ public class BookingController {
     @ResponseBody
     public ResponseEntity book(@RequestBody BookingRequest bookingRequest, HttpServletRequest httpServletRequest) throws Exception {
         SessionUserDetails user = SecurityUtils.getLoggedInUser();
-        Map<String, String> errors = bookingValidator.validate(user, null, bookingRequest);
+        Map<String, String> errors = bookingValidator.validate(user.getUserId(), null, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
@@ -65,7 +65,7 @@ public class BookingController {
     @ResponseBody
     public ResponseEntity updateBooking(@PathVariable String reference, @RequestBody BookingRequest bookingRequest) {
         SessionUserDetails user = SecurityUtils.getLoggedInUser();
-        Map<String, String> errors = bookingValidator.validate(user, reference, bookingRequest);
+        Map<String, String> errors = bookingValidator.validate(user.getUserId(), reference, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }

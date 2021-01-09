@@ -1,4 +1,4 @@
-package com.app.controller.admin;
+package com.app.controller.admin.request;
 
 import java.util.Date;
 

@@ -1,23 +1,17 @@
-package com.app.controller.booking.dto;
+package com.app.controller.admin.request;
+
+import com.app.model.booking.Booking;
 
 import java.util.Date;
 
-public class BookingRequest {
-    private Long userId;
+public class BookingUpdateRequest {
     private Date dateFrom;
     private Date dateTo;
     private Integer guests;
-    private String note;
+    private Booking.BookingStatus status;
     private String contactName;
     private String phone;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    private Long userId;
 
     public Date getDateFrom() {
         return dateFrom;
@@ -43,12 +37,12 @@ public class BookingRequest {
         this.guests = guests;
     }
 
-    public String getNote() {
-        return note;
+    public Booking.BookingStatus getStatus() {
+        return status;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setStatus(Booking.BookingStatus status) {
+        this.status = status;
     }
 
     public String getContactName() {
@@ -65,5 +59,13 @@ public class BookingRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
