@@ -1,6 +1,6 @@
+import { DatePipe } from '@angular/common'
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NetworkService } from '../network.service';
 
 @Component({
@@ -19,13 +19,14 @@ export class BookEditComponent implements OnInit {
     contactName: new FormControl('', Validators.required),
     phone: new FormControl('', Validators.required)
   });
+  
   booking : any = null;
   notes: any = [];
   error: string;
   message: string;
   accessError : string = null;
 
-  constructor(private router : Router, private networkService : NetworkService, private formBuilder: FormBuilder) { }
+  constructor(private networkService : NetworkService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.networkService.getBooking(this.reference).subscribe(
@@ -42,9 +43,10 @@ export class BookEditComponent implements OnInit {
 
   handleBookingResponse(data) {
     this.booking = data;
+    let dp = new DatePipe(navigator.language);
     this.form.patchValue({
-        dateFrom: new Date(data.dateFrom).toISOString(),
-        dateTo: new Date(data.dateTo).toISOString(),
+        dateFrom: dp.transform(new Date(data.dateFrom), 'y-MM-dd'),
+        dateTo: dp.transform(new Date(data.dateTo), 'y-MM-dd'),
         guests: data.guests,
         contactName: data.contactName,
         phone: data.phone
