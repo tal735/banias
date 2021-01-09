@@ -3,21 +3,12 @@ package com.app.controller.booking.dto;
 import java.util.Date;
 
 public class BookingRequest {
-    private Long userId;
     private Date dateFrom;
     private Date dateTo;
     private Integer guests;
     private String note;
     private String contactName;
     private String phone;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public Date getDateFrom() {
         return dateFrom;
