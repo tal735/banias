@@ -36,11 +36,6 @@ public final class SecurityUtils {
         return null;
     }
 
-
-    public static Long getBookingIdFromAuthentication() {
-        return getLoggedInUser().getBookingId();
-    }
-
     private static String extractPrincipal(Authentication authentication) {
         if (authentication == null) {
             return null;

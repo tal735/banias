@@ -12,6 +12,6 @@ export class AppComponent {
   constructor(private authService : AuthenticationService) {}
 
   ngOnInit(): void {
-    // this.authService.checkAuthentication();
+    this.authService.checkAuthentication();
   }
 }

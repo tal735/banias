@@ -5,9 +5,6 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatInputModule } from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,7 +15,6 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BookViewComponent } from './book-view/book-view.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { AdminBookingComponent } from './admin-booking/admin-booking.component';
 import { AdminBookingEditModalComponent } from './admin-booking-edit-modal/admin-booking-edit-modal.component';
@@ -34,7 +30,6 @@ import { BookNewComponent } from './book-new/book-new.component';
     LoginComponent,
     HomeComponent,
     HeaderComponent,
-    BookViewComponent,
     AdminHomeComponent,
     AdminBookingComponent,
     AdminBookingEditModalComponent,
@@ -50,9 +45,6 @@ import { BookNewComponent } from './book-new/book-new.component';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
     ReactiveFormsModule,
     NgbModule
   ],

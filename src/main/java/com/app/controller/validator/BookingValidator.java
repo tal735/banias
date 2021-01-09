@@ -22,33 +22,41 @@ public class BookingValidator {
         this.bookingService = bookingService;
     }
 
-    public Map<String, String> validate(SessionUserDetails user, BookingRequest bookingRequest) {
+    public Map<String, String> validate(SessionUserDetails user, String bookingReference, BookingRequest bookingRequest) {
         Map<String, String> errors = Maps.newHashMap();
 
-        if (StringUtils.isBlank(bookingRequest.getPhone())) {
-            errors.put("error", "Please enter a valid phone number.");
-        } else if (StringUtils.length(bookingRequest.getContactName()) < 3) {
-            errors.put("error", "Please enter a valid name.");
-        } else if (bookingRequest.getDateFrom() == null || bookingRequest.getDateTo() == null) {
-            errors.put("error", "Please enter valid dates.");
-        } else if (bookingRequest.getDateFrom().after(bookingRequest.getDateTo())) {
-            errors.put("error", "Please enter valid dates range.");
-        } else if (bookingRequest.getGuests() == null || bookingRequest.getGuests() <= 0) {
-            errors.put("error", "Please check your number of guests.");
-        } else {
-            List<Booking> bookings = bookingService.getExistingBookings(user.getUserId(),
-                    bookingRequest.getDateFrom(), bookingRequest.getDateTo());
-            Long bookingId = user.getBookingId();
-            if (bookingId == null) {
-                if (!bookings.isEmpty()) {
-                    errors.put("error", "There is another booking during these dates.");
-                }
+        if (StringUtils.isNotBlank(bookingReference)) {
+            Booking booking = bookingService.getByReference(bookingReference);
+            if (booking == null || !booking.getUser().getId().equals(user.getUserId())) {
+                errors.put("error", "Booking does not belong to user.");
+            }
+        }
+
+        if (errors.isEmpty()) {
+            if (StringUtils.isBlank(bookingRequest.getPhone())) {
+                errors.put("error", "Please enter a valid phone number.");
+            } else if (StringUtils.length(bookingRequest.getContactName()) < 3) {
+                errors.put("error", "Please enter a valid name.");
+            } else if (bookingRequest.getDateFrom() == null || bookingRequest.getDateTo() == null) {
+                errors.put("error", "Please enter valid dates.");
+            } else if (bookingRequest.getDateFrom().after(bookingRequest.getDateTo())) {
+                errors.put("error", "Please enter valid dates range.");
+            } else if (bookingRequest.getGuests() == null || bookingRequest.getGuests() <= 0) {
+                errors.put("error", "Please check your number of guests.");
             } else {
-                if (bookings.size() > 1) {
-                    errors.put("error", "There is another booking during these dates.");
-                } else if (bookings.size() == 1) {
-                    if (!bookings.get(0).getId().equals(bookingId)) {
+                List<Booking> bookings = bookingService.getExistingBookings(user.getUserId(),
+                        bookingRequest.getDateFrom(), bookingRequest.getDateTo());
+                if (StringUtils.isBlank(bookingReference)) {
+                    if (!bookings.isEmpty()) {
                         errors.put("error", "There is another booking during these dates.");
+                    }
+                } else {
+                    if (bookings.size() > 1) {
+                        errors.put("error", "There is another booking during these dates.");
+                    } else if (bookings.size() == 1) {
+                        if (!bookings.get(0).getReference().equals(bookingReference)) {
+                            errors.put("error", "There is another booking during these dates.");
+                        }
                     }
                 }
             }

@@ -22,16 +22,12 @@ public class OTPStoreImpl implements OTPStore {
 
     @Override
     @Transactional
-    public String generateOtp(String key) {
+    public void storeOtp(String key, String code) {
         invalidate(key);
-
-        String code = RandomStringUtils.randomNumeric(6);
         OTP otp = new OTP();
         otp.setReference(key);
         otp.setOtp(code);
         otpDao.saveOrUpdate(otp);
-
-        return code;
     }
 
     @Override

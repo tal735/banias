@@ -2,7 +2,6 @@ package com.app.service.otp.store;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.TimeUnit;
@@ -13,11 +12,9 @@ public class CacheOTPStoreImpl implements OTPStore {
     private final Cache<String, String> otpStore = CacheBuilder.newBuilder().expireAfterWrite(5, TimeUnit.MINUTES).build();
 
     @Override
-    public String generateOtp(String key) {
+    public void storeOtp(String key, String otp) {
         invalidate(key);
-        String otp = RandomStringUtils.randomNumeric(6);
         otpStore.put(key, otp);
-        return otp;
     }
 
     @Override

@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Set;
-
 public class OTPUserDetailsServiceImpl implements UserDetailsService {
 
     private final UserService userService;
@@ -27,36 +25,27 @@ public class OTPUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if (username.contains("@")) {
+            username = username.toLowerCase().trim();
+        }
         String otp = otpService.getIfPresent(username);
         if (StringUtils.isBlank(otp)) {
-            throw new UsernameNotFoundException("OTP not found in DB for " + username);
+            throw new UsernameNotFoundException("OTP not found/expired " + username);
         }
 
-        Set<SimpleGrantedAuthority> authorities = Sets.newHashSet(new SimpleGrantedAuthority("ROLE_OTP"));
+        User user;
+        if (username.contains("@")) {
+            user = userService.getByEmail(username);
+        } else {
+            Booking booking = bookingService.getByReference(username);
+            user = booking.getUser();
+        }
+
         SessionUserDetails u = new SessionUserDetails();
         u.setPassword(otp);
-        u.setAuthorities(authorities);
-
-        if (username.contains("@")) {
-            String email = username.toLowerCase().trim();
-            User user = userService.getByEmail(email);
-            if (user == null) {
-                throw new UsernameNotFoundException("Booker email [" + username + "] was not found.");
-            }
-            authorities.add(new SimpleGrantedAuthority("ROLE_OTP_BOOK"));
-            u.setUsername(user.getEmail());
-            u.setUserId(user.getId());
-        }
-        else {
-            Booking booking = bookingService.getByReference(username);
-            if (booking == null) {
-                throw new UsernameNotFoundException("Booker reference [" + username + "] was not found.");
-            }
-            authorities.add(new SimpleGrantedAuthority("ROLE_OTP_VIEW"));
-            u.setUsername(booking.getReference());
-            u.setBookingId(booking.getId());
-            u.setUserId(booking.getUser().getId());
-        }
+        u.setAuthorities(Sets.newHashSet(new SimpleGrantedAuthority("ROLE_USER")));
+        u.setUsername(user.getEmail());
+        u.setUserId(user.getId());
 
         return u;
     }

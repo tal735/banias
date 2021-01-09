@@ -9,9 +9,8 @@ import java.util.Collection;
 public class SessionUserDetails implements UserDetails {
 
     private String username;
-    private Long bookingId;
-    private Long userId;
     private String password;
+    private Long userId;
     private Collection<SimpleGrantedAuthority> authorities;
 
     @Override
@@ -51,14 +50,6 @@ public class SessionUserDetails implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Long getBookingId() {
-        return bookingId;
-    }
-
-    public void setBookingId(Long bookingId) {
-        this.bookingId = bookingId;
     }
 
     public Long getUserId() {

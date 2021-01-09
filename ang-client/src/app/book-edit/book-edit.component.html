@@ -1,3 +1,10 @@
+<div class="container" *ngIf="accessError">
+  <div class="alert alert-danger" role="alert">
+    {{ accessError }}
+  </div>
+  <button class="btn btn-light" [routerLink] = "['/home']">Go Back</button>
+</div>
+
 <div class="container wrapper" *ngIf="booking">
     
     <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">

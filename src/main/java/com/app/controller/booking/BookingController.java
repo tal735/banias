@@ -33,20 +33,23 @@ public class BookingController {
         this.bookingValidator = bookingValidator;
     }
 
-    @GetMapping
+    @GetMapping("/{reference}")
     @ResponseBody
-    public ResponseEntity<BookingDto> getBooking() {
-        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
-        Booking booking = bookingService.getById(bookingId);
+    public ResponseEntity getBooking(@PathVariable String reference) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        Booking booking = bookingService.getByReference(reference);
+        if (booking == null || !booking.getUser().getId().equals(userId)) {
+            return ResponseEntity.badRequest().body("Booking does not belong to user.");
+        }
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok().body(bookingDto);
     }
 
-    @PostMapping("/new")
+    @PostMapping
     @ResponseBody
     public ResponseEntity book(@RequestBody BookingRequest bookingRequest, HttpServletRequest httpServletRequest) throws Exception {
         SessionUserDetails user = SecurityUtils.getLoggedInUser();
-        Map<String, String> errors = bookingValidator.validate(user, bookingRequest);
+        Map<String, String> errors = bookingValidator.validate(user, null, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
@@ -58,17 +61,16 @@ public class BookingController {
         return ResponseEntity.ok().body(bookingDto);
     }
 
-    @PostMapping
+    @PostMapping("/{reference}")
     @ResponseBody
-    public ResponseEntity updateBooking(@RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity updateBooking(@PathVariable String reference, @RequestBody BookingRequest bookingRequest) {
         SessionUserDetails user = SecurityUtils.getLoggedInUser();
-        Map<String, String> errors = bookingValidator.validate(user, bookingRequest);
+        Map<String, String> errors = bookingValidator.validate(user, reference, bookingRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
-        Booking booking = bookingService.getById(bookingId);
+        Booking booking = bookingService.getByReference(reference);
         booking.setDateFrom(bookingRequest.getDateFrom());
         booking.setDateTo(bookingRequest.getDateTo());
         booking.setGuests(bookingRequest.getGuests());

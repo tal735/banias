@@ -1,6 +1,7 @@
 package com.app.controller.booking;
 
 import com.app.controller.booking.dto.BookingNoteDto;
+import com.app.model.booking.Booking;
 import com.app.model.booking.BookingNote;
 import com.app.service.booking.BookingService;
 import com.app.service.security.SecurityUtils;
@@ -29,24 +30,31 @@ public class BookingNotesController {
         this.bookingService = bookingService;
     }
 
-    @GetMapping
+    @GetMapping("/{reference}")
     @ResponseBody
-    public ResponseEntity<List<BookingNoteDto>> getNotes(@RequestParam(required = false) Long offset) {
-        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
-        List<BookingNote> bookingNotes = bookingService.getNotes(bookingId, offset);
+    public ResponseEntity getNotes(@PathVariable String reference, @RequestParam(required = false) Long offset) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        Booking booking = bookingService.getByReference(reference);
+        if (booking == null || !booking.getUser().getId().equals(userId)) {
+            return ResponseEntity.badRequest().body("Booking does not belong to user.");
+        }
+        List<BookingNote> bookingNotes = bookingService.getNotes(booking.getId(), offset);
         List<BookingNoteDto> bookingNoteDtos = bookingNotes.stream().map(BookingNoteDto::new).collect(Collectors.toList());
         return ResponseEntity.ok(bookingNoteDtos);
     }
 
-    @PostMapping
+    @PostMapping("/{reference}")
     @ResponseBody
-    public ResponseEntity<BookingNoteDto> addNote(@RequestBody String note) {
+    public ResponseEntity addNote(@PathVariable String reference, @RequestBody String note) {
         if (StringUtils.isBlank(note)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Long bookingId = SecurityUtils.getBookingIdFromAuthentication();
         Long userId = SecurityUtils.getLoggedInUser().getUserId();
-        BookingNote bookingNote = bookingService.addNote(userId, bookingId, note);
+        Booking booking = bookingService.getByReference(reference);
+        if (booking == null || !booking.getUser().getId().equals(userId)) {
+            return ResponseEntity.badRequest().body("Booking does not belong to user.");
+        }
+        BookingNote bookingNote = bookingService.addNote(userId, booking.getId(), note);
         BookingNoteDto bookingNoteDto = new BookingNoteDto(bookingNote);
         return ResponseEntity.ok(bookingNoteDto);
     }

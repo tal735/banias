@@ -37,6 +37,7 @@ public class BookingDaoImpl implements BookingDao {
     public Booking getById(Long id) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
         criteria.add(Restrictions.idEq(id));
+        criteria.setFetchMode("user", FetchMode.JOIN);
         return (Booking) criteria.uniqueResult();
     }
 
@@ -64,6 +65,7 @@ public class BookingDaoImpl implements BookingDao {
     public Booking getByReference(String reference) {
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
         criteria.add(Restrictions.eq("reference", reference));
+        criteria.setFetchMode("user", FetchMode.JOIN);
         return (Booking) criteria.uniqueResult();
     }
 

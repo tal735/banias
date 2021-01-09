@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class UserDTO {
     private List<String> roles;
+    private String email;
 
     public UserDTO(SessionUserDetails user) {
         if (user != null) {
@@ -15,6 +16,7 @@ public class UserDTO {
                     .map(GrantedAuthority::getAuthority)
                     .map(role -> role.replace("ROLE_", ""))
                     .collect(Collectors.toList());
+            this.email = user.getUsername();
         }
     }
 
@@ -24,5 +26,13 @@ public class UserDTO {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

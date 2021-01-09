@@ -56,17 +56,17 @@ public class SecurityConfig  {
     }
 
     @Bean
+    public PasswordEncoder BCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
         return new AjaxLogoutSuccessHandler();
     }
 
     @Configuration
     public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Bean
-        public PasswordEncoder BCryptPasswordEncoder() {
-            return new BCryptPasswordEncoder();
-        }
 
         @Bean
         public UserDetailsService UserDetailsService() {
@@ -135,11 +135,6 @@ public class SecurityConfig  {
         BookingService bookingService;
 
         @Bean
-        public PasswordEncoder noOpPasswordEncoder() {
-            return NoOpPasswordEncoder.getInstance();
-        }
-
-        @Bean
         public UserDetailsService otpUserDetailsService() {
             return new OTPUserDetailsServiceImpl(userService, bookingService, otpService);
         }
@@ -148,7 +143,7 @@ public class SecurityConfig  {
         public AuthenticationProvider otpAuthenticationProvider() {
             DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
             provider.setUserDetailsService(otpUserDetailsService());
-            provider.setPasswordEncoder(noOpPasswordEncoder());
+            provider.setPasswordEncoder(BCryptPasswordEncoder());
             return provider;
         }
 
@@ -189,9 +184,7 @@ public class SecurityConfig  {
                     .permitAll()
                     .and()
                     .authorizeRequests()
-                    .antMatchers("/api/booking/new").hasAuthority("ROLE_OTP_BOOK")
-                    .antMatchers("/api/booking/**").hasAuthority("ROLE_OTP_VIEW")
-                    .anyRequest().hasRole("OTP");
+                    .anyRequest().hasAuthority("ROLE_USER"); // .authenticated();
         }
     }
 

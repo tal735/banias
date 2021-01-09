@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NetworkService } from '../network.service';
@@ -9,6 +9,8 @@ import { NetworkService } from '../network.service';
   styleUrls: ['./book-edit.component.css']
 })
 export class BookEditComponent implements OnInit {
+
+  @Input() reference : string;
 
   form: FormGroup = this.formBuilder.group({
     dateFrom: new FormControl('', Validators.required),
@@ -21,16 +23,20 @@ export class BookEditComponent implements OnInit {
   notes: any = [];
   error: string;
   message: string;
+  accessError : string = null;
 
   constructor(private router : Router, private networkService : NetworkService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.networkService.getBooking2().subscribe(
+    this.networkService.getBooking(this.reference).subscribe(
       data => {
         this.handleBookingResponse(data);
         this.fetchNotes();
       },
-      error => console.log('error: ' + error)
+      error => {
+        console.log('error: ' + error);
+        this.accessError = error.error;
+    }
     );
   }
 
@@ -55,7 +61,7 @@ export class BookEditComponent implements OnInit {
       contactName: this.form.value.contactName,
       phone: this.form.value.phone,
     }
-    this.networkService.updateBooking2(bookingRequest).subscribe(
+    this.networkService.updateBooking(this.reference, bookingRequest).subscribe(
       data => {
         this.handleBookingResponse(data);
       },
@@ -64,7 +70,7 @@ export class BookEditComponent implements OnInit {
   }
 
   submitMessage() {
-    this.networkService.postNote2(this.message).subscribe(
+    this.networkService.postNote(this.reference, this.message).subscribe(
       data => {
         this.message = null; 
         this.fetchNotes();
@@ -78,7 +84,7 @@ export class BookEditComponent implements OnInit {
     if (this.notes.length > 0) {
       maxId = Math.max.apply(Math, this.notes.map(function(o) { return o.id; }));
     }
-    this.networkService.getNotes2(maxId).subscribe(
+    this.networkService.getNotes(this.reference, maxId).subscribe(
       data => {this.notes = this.notes.concat(data);},
       error => console.log('error: ' + error)
     );

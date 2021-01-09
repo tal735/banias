@@ -41,12 +41,13 @@ create table booking(
                         status character varying(32),
                         guests integer,
                         contact_name character varying (128),
---                         reference character varying (32) not null UNIQUE DEFAULT generate_uid(10),
+                        reference character varying (32) not null UNIQUE, --DEFAULT generate_uid(10),
                         phone character varying(64),
                         date_created timestamp default now(),
                         date_modified timestamp,
                         constraint user_id_fk FOREIGN KEY (user_id) references usr(id)
 );
+create index booking_reference_idx on booking(reference);
 create index booking_user_id_idx on booking(user_id);
 create index booking_date_idx on booking(date_from, date_to);
 CREATE SEQUENCE booking_id_sequence START 1;
@@ -68,7 +69,7 @@ CREATE SEQUENCE booking_notes_id_sequence START 1;
 
 create table otp(
                     reference character varying (32) primary key,
-                    otp character varying (32),
+                    otp character varying (120),
                     date_created timestamp default now()
 );
 create index otp_reference on otp(reference);

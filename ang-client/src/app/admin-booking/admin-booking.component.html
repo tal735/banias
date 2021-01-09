@@ -1,6 +1,6 @@
 <div class="container">
   <form [formGroup]="searchForm" (ngSubmit)="onFormSubmit()">
-    <mat-form-field>
+    <!-- <mat-form-field>
       <mat-label>Date From Min</mat-label>
       <input matInput type="date" formControlName="dateFromMin">
     </mat-form-field>
@@ -18,7 +18,7 @@
     <mat-form-field>
       <mat-label>Date To Max</mat-label>
       <input matInput type="date" formControlName="dateToMax">
-  </mat-form-field>
+  </mat-form-field> -->
 
     <button class="btn btn-primary mt-2" [disabled]="!searchForm.valid">Search</button>
 </form>

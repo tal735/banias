@@ -3,7 +3,7 @@
         <h1 class="form-title display-3">View Details</h1>    
         <i class="top-icon fa fa-barcode"></i>        
         <input #ref class="email-input" type="text" placeholder="Reference Number">
-        <button type="submit" class="submit-btn btn btn-primary" (click)="requestOtp(ref)">Request Code</button>
+        <button type="submit" class="submit-btn btn btn-primary" (click)="requestOtp(ref)">Proceed</button>
     </div>
 
     <div class="form" *ngIf="step==1">
@@ -20,4 +20,4 @@
     <button type="submit" class="back-submit-btn btn btn-light" (click)="backClicked()">Back</button>
 </div>
 
-<app-book-edit *ngIf="step==2"></app-book-edit>
+<app-book-edit *ngIf="step==2" [reference]="reference"></app-book-edit>

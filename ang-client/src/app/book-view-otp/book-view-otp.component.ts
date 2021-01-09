@@ -28,10 +28,14 @@ export class BookViewOtpComponent implements OnInit {
       this.error = "Please provide a reference number.";
       return;
     }
-    this.networkService.requestViewOtp(this.reference).subscribe(
-      data => {this.step++},
-      error => {this.error = error.error}
-    );
+    if (this.authenticationService.isAuthenticated()) {
+      this.step = 2;
+    } else {
+      this.networkService.requestViewOtp(this.reference).subscribe(
+        data => {this.step++},
+        error => {this.error = error.error}
+      );
+    }
   }
 
   verifyOtp(otp) {

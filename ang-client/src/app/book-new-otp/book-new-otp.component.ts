@@ -18,6 +18,9 @@ export class BookNewOtpComponent implements OnInit {
   constructor(private authenticationService : AuthenticationService, private networkService : NetworkService, private router : Router, private _location: Location) { }
 
   ngOnInit(): void {
+    if (this.authenticationService.isAuthenticated()) {
+      this.step = 2;
+    }
   }
 
   requestOtp(element) {

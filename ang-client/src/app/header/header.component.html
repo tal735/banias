@@ -7,9 +7,6 @@
         <li class="nav-item active">
           <a class="nav-link" [routerLink] = "['home']">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item" >
-          <a class="nav-link" [routerLink] = "['book-new']">Book</a>
-        </li>
         <li class="nav-item" *ngIf="authService.isAdmin()">
           <a class="nav-link" [routerLink] = "['admin']">Admin</a>
         </li>
@@ -18,5 +15,7 @@
         </li>
       </ul>
     </div>
+
+    <span *ngIf="authService.isAuthenticated()" style="color: white;"> Logged In As {{ authService.user.email }}</span>
 </nav>
   

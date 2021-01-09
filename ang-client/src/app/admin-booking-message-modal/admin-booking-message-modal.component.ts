@@ -30,7 +30,7 @@ export class AdminBookingMessageModalComponent implements OnInit {
 
   fetchNotes() {
     let notesOffset = 0;//this.notes.length;
-    this.networkService.getNotes(this.id, notesOffset).subscribe(
+    this.networkService.getNotes(this.message, notesOffset).subscribe(
       data => {this.notes = data;},
       error => console.log('error: ' + error)
     );

@@ -50,16 +50,12 @@ export class AuthenticationService {
     this.networkService.logout().subscribe(
       () => {
         this.setUser(null);
-        console.log('here?');
         this.router.navigate(["/home"]);
       }
     )
   }
 
   isAuthenticated() {
-    // console.log('this.user');
-    // console.log(this.user);
-    // console.log(this.user && this.user.roles &&  this.user.roles.length > 0);
     return this.user && this.user.roles &&  this.user.roles.length > 0;
   }
   
@@ -67,7 +63,4 @@ export class AuthenticationService {
     return this.isAuthenticated() && this.user.roles.includes('ADMIN');
   }
 
-  isVerified() {
-    return this.isAuthenticated() && this.user.verified;
-  }
 }
