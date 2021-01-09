@@ -19,12 +19,17 @@
             <input type="text" readonly class="form-control" id="status" name="status" [value]="booking.status">
           </div>
 
-        <div class="form-group">
-            <label style="display: block;">Dates</label>
-            <input type="date" name="dateFrom" required formControlName="dateFrom">
-            <input type="date" name="dateTo" required formControlName="dateTo">
+
+            <div class="form-group">
+              <label for="dateFrom">Coming At</label>
+              <input type="date" class="form-control" name="dateFrom" id="dateFrom" required formControlName="dateFrom">
+          </div>
+      
+          <div class="form-group">
+            <label for="dateTo">Leaving At</label>
+            <input type="date" class="form-control" name="dateTo" id="dateTo" required formControlName="dateTo">
         </div>
-    
+
         <div class="form-group">
             <label for="guests">Guests</label>
             <input type="number" class="form-control" id="guests" min="1" name="guests" formControlName="guests">
