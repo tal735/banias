@@ -31,7 +31,7 @@ export class AdminBookingEditModalComponent implements OnInit {
   }
 
   openModal() {
-    this.modalRef = this.modalService.open(this.myModal, { size: 'sm', backdrop: 'static'});
+    this.modalRef = this.modalService.open(this.myModal, { backdrop: 'static'});
     this.form = this.formBuilder.group({
       dateFrom: new FormControl('', Validators.required),
       dateTo: new FormControl('', Validators.required),

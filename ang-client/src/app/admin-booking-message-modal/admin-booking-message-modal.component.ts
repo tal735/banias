@@ -23,7 +23,7 @@ export class AdminBookingMessageModalComponent implements OnInit {
   }
 
   openModal() {
-    this.modalRef = this.modalService.open(this.messagesModal, { size: 'sm', backdrop: 'static'});
+    this.modalRef = this.modalService.open(this.messagesModal, { backdrop: 'static'});
     this.fetchNotes();
   }
 
