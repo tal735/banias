@@ -2,7 +2,7 @@
   <div class="modal-parent">
     <button class="btn-close" (click)="modalRef.close()"><i class="fa fa-times" aria-hidden="true"></i></button>
     <h2 style="text-align: center; margin-top: 1rem;">Messages</h2>
-    <div *ngFor="let note of notes;" class="card">
+    <div *ngFor="let note of notes;" class="card mb-4">
         <div class="card-header">
           {{ note.user }}
         </div>

@@ -9,6 +9,7 @@ import { BookNewOtpComponent } from './book-new-otp/book-new-otp.component';
 import { BookViewOtpComponent } from './book-view-otp/book-view-otp.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MustReadComponent } from './must-read/must-read.component';
+import { AdminBookingAddComponent } from './admin-booking-add/admin-booking-add.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path: 'book-new-otp', component : BookNewOtpComponent},
   {path: 'book-view-otp', component : BookViewOtpComponent},
   {path: 'admin', component : AdminHomeComponent, canActivate: [AuthGuardService]},
-  {path: 'admin/admin-booking', component : AdminBookingComponent, canActivate: [AuthGuardService]}
+  {path: 'admin/manage-booking', component : AdminBookingComponent, canActivate: [AuthGuardService]},
+  {path: 'admin/add-booking', component : AdminBookingAddComponent, canActivate: [AuthGuardService]}
 ];
 
 @NgModule({

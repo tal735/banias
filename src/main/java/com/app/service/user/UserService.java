@@ -6,5 +6,5 @@ import com.app.model.user.User;
 public interface UserService {
     User getByEmail(String email);
     User getById(Long id);
-    User createUser(String email);
+    User getOrCreateUser(String email);
 }

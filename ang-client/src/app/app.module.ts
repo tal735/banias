@@ -25,6 +25,7 @@ import { BookEditComponent } from './book-edit/book-edit.component';
 import { BookNewComponent } from './book-new/book-new.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MustReadComponent } from './must-read/must-read.component';
+import { AdminBookingAddComponent } from './admin-booking-add/admin-booking-add.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { MustReadComponent } from './must-read/must-read.component';
     BookEditComponent,
     BookNewComponent,
     ContactUsComponent,
-    MustReadComponent
+    MustReadComponent,
+    AdminBookingAddComponent
   ],
   imports: [
     BrowserModule,

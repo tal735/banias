@@ -2,13 +2,15 @@ package com.app.controller.admin;
 
 import com.app.controller.admin.dto.BookingDto;
 import com.app.controller.admin.request.BookingFindRequest;
-import com.app.controller.admin.request.BookingUpdateRequest;
 import com.app.controller.booking.dto.BookingNoteDto;
+import com.app.controller.booking.dto.BookingRequest;
 import com.app.controller.validator.BookingValidator;
 import com.app.model.booking.Booking;
 import com.app.model.booking.BookingNote;
+import com.app.model.user.User;
 import com.app.service.booking.BookingService;
 import com.app.service.security.SecurityUtils;
+import com.app.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +31,27 @@ public class AdminBookingController {
 
     private final BookingService bookingService;
     private final BookingValidator bookingValidator;
+    private final UserService userService;
 
     @Autowired
-    public AdminBookingController(BookingService bookingService, BookingValidator bookingValidator) {
+    public AdminBookingController(BookingService bookingService, BookingValidator bookingValidator, UserService userService) {
         this.bookingService = bookingService;
         this.bookingValidator = bookingValidator;
+        this.userService = userService;
+    }
+
+    @PostMapping
+    @ResponseBody
+    public synchronized ResponseEntity addBooking(@RequestBody BookingRequest bookingAddRequest) {
+        Map<String, String> errors = bookingValidator.validateForAdminAdd(bookingAddRequest);
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+        String email = bookingAddRequest.getEmail().toLowerCase().trim();
+        User user = userService.getOrCreateUser(email);
+        Booking booking = bookingService.book(user.getId(), bookingAddRequest);
+        booking = bookingService.getById(booking.getId());
+        return ResponseEntity.ok(new BookingDto(booking, true));
     }
 
     @PostMapping(value = "/find")
@@ -56,7 +74,7 @@ public class AdminBookingController {
 
     @PostMapping("/{id}")
     @ResponseBody
-    public ResponseEntity updateBooking(@PathVariable Long id, @RequestBody BookingUpdateRequest updateRequest) {
+    public synchronized ResponseEntity updateBooking(@PathVariable Long id, @RequestBody BookingRequest updateRequest) {
         Map<String, String> errors = bookingValidator.validateForAdminUpdate(id, updateRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);

@@ -38,9 +38,7 @@ public class OTPController {
             return ResponseEntity.badRequest().body("Email is invalid");
         }
         String dbEmail = email.toLowerCase().trim();
-        if (userService.getByEmail(dbEmail) == null) {
-            userService.createUser(dbEmail);
-        }
+        userService.getOrCreateUser(dbEmail);
         String otp = otpService.generateOtp(dbEmail);
         emailService.sendEmail(dbEmail, "Your OTP","Your OTP is: " + otp);
         LOGGER.debug("Email: " + email + ", OTP: " + otp);

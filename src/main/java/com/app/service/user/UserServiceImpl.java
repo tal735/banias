@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public synchronized User createUser(String email) {
+    public synchronized User getOrCreateUser(String email) {
         User user = getByEmail(email);
         if (user == null) {
             user = new User();

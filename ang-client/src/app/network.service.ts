@@ -70,6 +70,11 @@ export class NetworkService {
     return this.http.get(`/admin/booking/${id}`, { responseType: 'json'});
   }
 
+  public adminAddBooking(bookingRequest) {
+    const headers = { 'content-type': 'application/json'}  
+    return this.http.post('/admin/booking', bookingRequest, {'headers': headers , responseType: 'json'});
+  }
+
   public adminUpdateBooking(id, bookingRequest) {
     const headers = { 'content-type': 'application/json'}  
     return this.http.post(`/admin/booking/${id}`, bookingRequest, {'headers':headers , responseType: 'json'});

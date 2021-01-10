@@ -53,6 +53,7 @@ public class BookingController {
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
+        bookingRequest.setStatus(Booking.BookingStatus.PENDING);
         Booking booking = bookingService.book(user.getUserId(), bookingRequest);
         Long bookingId = booking.getId();
         booking = bookingService.getById(bookingId);
