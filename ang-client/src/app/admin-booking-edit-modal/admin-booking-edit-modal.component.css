@@ -1,7 +1,19 @@
-.padding {
+.modal-parent {
     padding: 2rem;
+    position: relative;
 }
-  
+
+.btn-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-size: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
 .btn-submit {
     width: 100%;
 }

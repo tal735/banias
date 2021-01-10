@@ -1,6 +1,7 @@
 <ng-template #myModal let-modal>
-  <div class="padding">
-    <h1>Review Booking ({{ id }})</h1>
+  <div class="modal-parent">
+    <button class="btn-close" (click)="modalRef.close()"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <h2 style="text-align: center; margin-top: 1rem;">Review Booking</h2>
     <form class="my-form" *ngIf="form && booking" [formGroup]="form" (ngSubmit)="onFormSubmit()">
      
       <div class="form-group">
