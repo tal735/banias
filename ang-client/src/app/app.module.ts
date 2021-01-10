@@ -23,6 +23,8 @@ import { BookNewOtpComponent } from './book-new-otp/book-new-otp.component';
 import { BookViewOtpComponent } from './book-view-otp/book-view-otp.component';
 import { BookEditComponent } from './book-edit/book-edit.component';
 import { BookNewComponent } from './book-new/book-new.component';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { MustReadComponent } from './must-read/must-read.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { BookNewComponent } from './book-new/book-new.component';
     BookNewOtpComponent,
     BookViewOtpComponent,
     BookEditComponent,
-    BookNewComponent
+    BookNewComponent,
+    ContactUsComponent,
+    MustReadComponent
   ],
   imports: [
     BrowserModule,
