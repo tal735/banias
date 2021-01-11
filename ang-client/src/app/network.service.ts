@@ -99,4 +99,14 @@ export class NetworkService {
   public requestViewOtp(reference) {
     return this.http.post('/otp/view' ,reference);
   }
+
+  public adminUserExists(email) {
+    let params = new HttpParams().append('email', email);
+    return this.http.get(`/admin/user/exists`, { params : params, responseType: 'json'});
+  }
+
+  public adminUserCreate(email) {
+    let params = new HttpParams().append('email', email);
+    return this.http.post(`/admin/user/create`, { params : params, responseType: 'json'});
+  }
 }
