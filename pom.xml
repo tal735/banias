@@ -148,6 +148,13 @@
       <version>1.4.7</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.mailjet/mailjet-client -->
+    <dependency>
+      <groupId>com.mailjet</groupId>
+      <artifactId>mailjet-client</artifactId>
+      <version>4.2.0</version>
+    </dependency>
+
 
   </dependencies>
 

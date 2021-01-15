@@ -7,7 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("GmailEmailServiceImpl")
 public class EmailServiceImpl implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
@@ -20,7 +20,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendEmail(String to, String subject, String text) {
+    public boolean sendEmail(String to, String subject, String text) {
         LOGGER.debug("Sending Email to: " + to + ", subject: " + subject + ", text: " + text);
 //        SimpleMailMessage message = new SimpleMailMessage();
 //        message.setFrom("noreply@baniascamping.com");
@@ -28,5 +28,6 @@ public class EmailServiceImpl implements EmailService {
 //        message.setSubject(subject);
 //        message.setText(text);
 //        emailSender.send(message);
+        return true;
     }
 }

@@ -9,3 +9,10 @@ https://stackoverflow.com/questions/27100231/how-to-use-session-in-spring-for-sa
 
 npm i jquery -- not useful ?
 npm i --save-dev @types/jquery
+
+
+
+https://www.mailjet.com/
+------------------------
+jbytttzvrq@effobe.com
+Abcd1234!!

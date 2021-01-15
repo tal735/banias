@@ -9,6 +9,7 @@ import com.app.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class OTPController {
     private final EmailService emailService;
 
     @Autowired
-    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, EmailService emailService) {
+    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, @Qualifier("GmailEmailServiceImpl") EmailService emailService) {
         this.userService = userService;
         this.bookingService = bookingService;
         this.otpService = otpService;
