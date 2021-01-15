@@ -31,11 +31,19 @@ export class BookViewOtpComponent implements OnInit {
     if (this.authenticationService.isAuthenticated()) {
       this.step = 2;
     } else {
-      this.networkService.requestViewOtp(this.reference).subscribe(
-        data => {this.step++},
-        error => {this.error = error.error}
-      );
+      this.sendOtpEmail(false);
     }
+  }
+
+  sendOtpEmail(resend) {
+    this.networkService.requestViewOtp(this.reference).subscribe(
+      data => {
+        if (!resend) {
+          this.step++
+        }
+      },
+      error => {this.error = error.error}
+    );
   }
 
   verifyOtp(otp) {

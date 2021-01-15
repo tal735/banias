@@ -11,6 +11,7 @@
       <i class="top-icon fa fa-asterisk"></i>        
       <input #otp class="email-input" type="text"  id="inputOtp" placeholder="Code">
       <button type="submit" class="submit-btn btn btn-primary" (click)="verifyOtp(otp)">Proceed</button>
+      <button type="submit" class="submit-btn btn btn-secondary mt-3" (click)="sendOtpEmail(true)">Resend Code</button>
   </div>
   
   <div class="alert alert-danger my-3" role="alert" *ngIf="error">
