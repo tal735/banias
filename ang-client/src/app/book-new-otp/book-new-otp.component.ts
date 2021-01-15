@@ -30,8 +30,16 @@ export class BookNewOtpComponent implements OnInit {
       this.error = "Please provide an Email.";
       return;
     }
+    this.sendOtpEmail(false);
+  }
+
+  sendOtpEmail(resend) {
     this.networkService.requestBookingOtp(this.email).subscribe(
-      data => {this.step++},
+      data => {
+        if (!resend) {
+          this.step++
+        }
+      },
       error => {this.error = error.error}
     );
   }
