@@ -92,4 +92,18 @@ export class BookEditComponent implements OnInit {
     );
   }
 
+  cancelBooking() {
+    this.networkService.cancelBooking(this.reference).subscribe(
+      data => {this.handleBookingResponse(data);},
+      error => {
+        console.log('error: ' + error);
+        this.error = error.error;
+      }
+    );
+  }
+
+  isCancelled() {
+    return this.booking.status === 'CANCELLED';
+  }
+
 }

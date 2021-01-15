@@ -84,4 +84,18 @@ public class BookingController {
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok(bookingDto);
     }
+
+    @PostMapping("/{reference}/cancel")
+    @ResponseBody
+    public ResponseEntity cancelBooking(@PathVariable String reference) {
+        Long userId = SecurityUtils.getLoggedInUser().getUserId();
+        Booking booking = bookingService.getByReference(reference);
+        if (booking == null || !booking.getUser().getId().equals(userId)) {
+            return ResponseEntity.badRequest().body("Booking does not belong to user.");
+        }
+        booking.setStatus(Booking.BookingStatus.CANCELLED);
+        bookingService.saveOrUpdate(booking);
+        BookingDto bookingDto = new BookingDto(booking);
+        return ResponseEntity.ok(bookingDto);
+    }
 }

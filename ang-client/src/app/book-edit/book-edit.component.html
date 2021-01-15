@@ -9,7 +9,8 @@
     
     <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
       <h4 class="display-4">Booking Details</h4>  
-        <div class="form-group">
+        <fieldset [disabled]="isCancelled()">
+          <div class="form-group">
             <label for="reference">Reference Number</label>
             <input type="text" readonly class="form-control" id="reference" name="reference" [value]="booking.reference">
           </div>
@@ -49,8 +50,9 @@
             {{ error }}
           </div>
 
-      <button class="btn btn-success mt-2" [disabled]="!form.valid"><i class="fa fa-edit"></i>  Request Changes</button>
-
+        <button class="btn btn-success mt-2" [disabled]="!form.valid"><i class="fa fa-edit"></i>  Request Changes</button>
+        <button type="submit" class="btn btn-danger" (click)='cancelBooking()'><i class="fa fa-trash-o"></i> Cancel Booking</button>
+      </fieldset>
     </form>
 
     <div>
@@ -68,12 +70,14 @@
       </div>
       <br>
       <form role="form" id="contact-form" class="contact-form" >
+        <fieldset [disabled]="isCancelled()">
           <div class="form-group">
             <textarea [(ngModel)]="message" class="form-control textarea" rows="3" name="Message" id="Message" placeholder="Message"></textarea>
           </div>
-          <button type="submit" class="btn main-btn pull-left" [disabled]="!message" (click)='submitMessage()'><i class="fa fa-send-o"></i>Send</button>
+          <button type="submit" class="btn btn-primary pull-left" [disabled]="!message" (click)='submitMessage()'><i class="fa fa-send-o"></i>Send</button>
+        </fieldset>
       </form>
-      <button type="submit" class="btn main-btn" (click)='fetchNotes()'><i class="fa fa-refresh"></i> Load Messages</button>
+      <button type="submit" class="btn btn-secondary" (click)='fetchNotes()'><i class="fa fa-refresh"></i> Load Messages</button>
     </div>
 
   </div>

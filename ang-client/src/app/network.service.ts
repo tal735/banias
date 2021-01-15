@@ -62,6 +62,10 @@ export class NetworkService {
     return this.http.post(`/api/booking/notes/${reference}`, note);
   }
 
+  public cancelBooking(reference) {
+    return this.http.post(`/api/booking/${reference}/cancel`, null);
+  }
+
   public adminBookingSearch(searchRequest) {
     return this.http.post('/admin/booking/find', searchRequest);
   }
