@@ -4,6 +4,7 @@ import com.app.model.user.User;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,5 +38,13 @@ public class UserDaoImpl implements UserDao {
         criteria.add(Restrictions.idEq(id));
         criteria.setFetchMode("roles", FetchMode.JOIN);
         return (User) criteria.uniqueResult();
+    }
+
+    @Override
+    public int getCount() {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(User.class);
+        criteria.setProjection(Projections.rowCount());
+        Long count = (Long) criteria.uniqueResult();
+        return count.intValue();
     }
 }

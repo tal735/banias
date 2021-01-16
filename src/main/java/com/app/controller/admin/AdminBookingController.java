@@ -11,6 +11,7 @@ import com.app.model.user.User;
 import com.app.service.booking.BookingService;
 import com.app.service.security.SecurityUtils;
 import com.app.service.user.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +43,20 @@ public class AdminBookingController {
 
     @PostMapping
     @ResponseBody
-    public synchronized ResponseEntity addBooking(@RequestBody BookingRequest bookingAddRequest) {
+    public ResponseEntity addBooking(@RequestBody BookingRequest bookingAddRequest) {
         Map<String, String> errors = bookingValidator.validateForAdminAdd(bookingAddRequest);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
-        String email = bookingAddRequest.getEmail().toLowerCase().trim();
-        User user = userService.getOrCreateUser(email);
+
+        User user;
+        if (StringUtils.isNotBlank(bookingAddRequest.getEmail())) {
+            String email = bookingAddRequest.getEmail().toLowerCase().trim();
+            user = userService.getOrCreateUser(email);
+        } else {
+            user = userService.createInternalUser();
+        }
+
         Booking booking = bookingService.book(user.getId(), bookingAddRequest);
         booking = bookingService.getById(booking.getId());
         return ResponseEntity.ok(new BookingDto(booking, true));

@@ -33,12 +33,23 @@ public class UserServiceImpl implements UserService {
     public synchronized User getOrCreateUser(String email) {
         User user = getByEmail(email);
         if (user == null) {
-            user = new User();
-            user.setEmail(email);
-            userDao.save(user);
+            user = createUser(email);
         }
         return user;
     }
 
+    @Override
+    @Transactional
+    public synchronized User createInternalUser() {
+        int count = userDao.getCount();
+        String newEmail = String.format("user_%d@baniascamping.com", count);
+        return createUser(newEmail);
+    }
 
+    private User createUser(String email) {
+        User user = new User();
+        user.setEmail(email);
+        userDao.save(user);
+        return user;
+    }
 }

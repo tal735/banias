@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';;
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { NetworkService } from '../network.service';
@@ -9,13 +10,14 @@ import { NetworkService } from '../network.service';
 })
 export class AdminBookingAddComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private networkService : NetworkService) { }
+  constructor(private formBuilder: FormBuilder, private networkService : NetworkService, private _location: Location) { }
 
   form: FormGroup;
   statuses = ['APPROVED', 'PENDING', 'CANCELLED'];
   error : string = null;
   
   responseBooking : any = null;
+  manualEmail : string = '';
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -25,15 +27,21 @@ export class AdminBookingAddComponent implements OnInit {
       status: new FormControl('', Validators.required),
       contactName: new FormControl('', Validators.required),
       phone: new FormControl('', Validators.required),
-      email: new FormControl('', Validators.required)
+      email: new FormControl('', Validators.nullValidator)
     });
   }
 
   onFormSubmit() {
+    const input = document.getElementById('manualEmailRadio') as HTMLInputElement;
+    if (input.checked) {
+      this.setEmailValue(this.manualEmail);
+    }
+
     if (this.form.invalid) {
       alert('Please make sure all fields are filled.');
       return;
     }
+
     let bookingRequest = {
       dateFrom: new Date(this.form.value.dateFrom).getTime(),
       dateTo:new Date(this.form.value.dateTo).getTime(),
@@ -43,6 +51,7 @@ export class AdminBookingAddComponent implements OnInit {
       phone: this.form.value.phone,
       email: this.form.value.email
     }
+
     this.networkService.adminAddBooking(bookingRequest).subscribe(
       data => {
         this.responseBooking = data;
@@ -51,6 +60,16 @@ export class AdminBookingAddComponent implements OnInit {
         this.error = error.error.error; 
       }
       );
+    }
+
+    setEmailValue(email) {
+      this.form.patchValue({
+        email : email
+      });
+    }
+
+    backClicked() {
+      this._location.back();
     }
 
 }

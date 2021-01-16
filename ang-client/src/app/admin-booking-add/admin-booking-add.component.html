@@ -4,9 +4,20 @@
          
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" name="email" formControlName="email">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="emailRadios" id="autoEmailRadio" (click)="setEmailValue('')" checked>
+          <label class="form-check-label" for="autoEmailRadio">
+            Automatically Assign
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="emailRadios" id="manualEmailRadio">
+          <label class="form-check-label" for="manualEmailRadio"> Manually
+            <input type="email" class="form-control" id="email" name="email" [(ngModel)]="manualEmail" [ngModelOptions]="{standalone: true}">
+          </label>
+        </div>
       </div>
-      
+
         <div class="form-group">
           <label for="dateFrom">Coming At</label>
           <input type="date" class="form-control" name="dateFrom" id="dateFrom" required formControlName="dateFrom">
@@ -43,7 +54,13 @@
             {{ error }}
           </div>
           
-          <button type="submit" class="btn-submit btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success">Save</button>
       
       </form>
+
+      <div class="alert alert-success my-3" role="alert" *ngIf="responseBooking">
+        Booking Added Successfully. <br> Reference Number: {{ responseBooking.reference }}
+      </div>
+
+      <button type="submit" class="btn btn-light mt-3" (click)="backClicked()">Back</button>
 </div>

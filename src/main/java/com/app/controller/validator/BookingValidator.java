@@ -84,18 +84,20 @@ public class BookingValidator {
         validateCommon(addRequest, errors);
 
         if (errors.isEmpty()) {
-            if (!EmailValidator.isValid(addRequest.getEmail())) {
+            if (StringUtils.isNotBlank(addRequest.getEmail()) && !EmailValidator.isValid(addRequest.getEmail())) {
                 errors.put("error", "Please enter a valid email.");
-            } else {
-                // if user exists, check if there is a booking already
-                String email = addRequest.getEmail().toLowerCase().trim();
-                User user = userService.getByEmail(email);
-                if (user != null) {
-                    List<Booking> bookings = bookingService.getExistingBookings(user.getId(),
-                            addRequest.getDateFrom(), addRequest.getDateTo());
-                    if (!bookings.isEmpty()) {
-                        errors.put("error", "There is another booking during these dates.");
-                    }
+            }
+        }
+
+        if (errors.isEmpty()) {
+            // if user exists, check if there is a booking already
+            String email = addRequest.getEmail().toLowerCase().trim();
+            User user = userService.getByEmail(email);
+            if (user != null) {
+                List<Booking> bookings = bookingService.getExistingBookings(user.getId(),
+                        addRequest.getDateFrom(), addRequest.getDateTo());
+                if (!bookings.isEmpty()) {
+                    errors.put("error", "There is another booking during these dates.");
                 }
             }
         }

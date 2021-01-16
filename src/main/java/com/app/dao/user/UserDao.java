@@ -8,4 +8,6 @@ public interface UserDao {
     User getByEmail(String email);
 
     User getById(Long id);
+
+    int getCount();
 }
