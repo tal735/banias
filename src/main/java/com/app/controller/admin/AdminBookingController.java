@@ -69,7 +69,8 @@ public class AdminBookingController {
                 bookingFindRequest.getDateFromMin(),
                 bookingFindRequest.getDateFromMax(),
                 bookingFindRequest.getDateToMin(),
-                bookingFindRequest.getDateToMax());
+                bookingFindRequest.getDateToMax(),
+                bookingFindRequest.getOffset());
         return bookings.stream().map(b -> new BookingDto(b, false)).collect(Collectors.toList());
     }
 

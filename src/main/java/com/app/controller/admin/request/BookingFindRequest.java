@@ -7,6 +7,7 @@ public class BookingFindRequest {
     private Date dateFromMax;
     private Date dateToMin;
     private Date dateToMax;
+    private Integer offset;
 
     public Date getDateFromMin() {
         return dateFromMin;
@@ -38,5 +39,13 @@ public class BookingFindRequest {
 
     public void setDateToMax(Date dateToMax) {
         this.dateToMax = dateToMax;
+    }
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
     }
 }

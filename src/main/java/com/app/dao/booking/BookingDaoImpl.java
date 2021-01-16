@@ -42,7 +42,7 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax,Date dateToMin, Date dateToMax) {
+    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax, Date dateToMin, Date dateToMax, Integer offset) {
 //        CriteriaQuery<Booking> query = sessionFactory.getCurrentSession().getCriteriaBuilder().createQuery(Booking.class);
         Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
         if (dateFromMin != null) {
@@ -57,6 +57,10 @@ public class BookingDaoImpl implements BookingDao {
         if (dateToMax != null) {
             criteria.add(Restrictions.le("dateTo", dateToMax));
         }
+        if (offset != null) {
+            criteria.setFirstResult(offset);
+        }
+        criteria.setMaxResults(5);
         criteria.addOrder(Order.desc("dateFrom"));
         return criteria.list();
     }

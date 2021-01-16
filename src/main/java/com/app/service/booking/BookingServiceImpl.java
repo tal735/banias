@@ -78,8 +78,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax,Date dateToMin, Date dateToMax) {
-        return bookingDao.getForDates(dateFromMin, dateFromMax, dateToMin, dateToMax);
+    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax, Date dateToMin, Date dateToMax, Integer offset) {
+        return bookingDao.getForDates(dateFromMin, dateFromMax, dateToMin, dateToMax, offset);
     }
 
     @Override

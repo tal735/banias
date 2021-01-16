@@ -16,6 +16,8 @@ export class AdminBookingComponent implements OnInit {
     dateToMax: new FormControl(NaN)
   });
 
+  searchRequest : any = null;
+
   bookings : any = [];
 
   constructor(private networkService : NetworkService, private formBuilder: FormBuilder) { }
@@ -24,16 +26,14 @@ export class AdminBookingComponent implements OnInit {
   }
 
   onFormSubmit() {
-    let searchRequest = {
+    this.bookings = [];
+    this.searchRequest = {
       dateFromMin: new Date(this.searchForm.value.dateFromMin).getTime(),
       dateFromMax:new Date(this.searchForm.value.dateFromMax).getTime(),
       dateToMin:new Date(this.searchForm.value.dateToMin).getTime(),
       dateToMax:new Date(this.searchForm.value.dateToMax).getTime(),
     };
-    this.networkService.adminBookingSearch(searchRequest).subscribe(
-      data => this.bookings = data,
-      error => console.log(error)
-    );
+    this.loadMoreBookings();
   }
 
   getStatusClass(status) {
@@ -51,5 +51,14 @@ export class AdminBookingComponent implements OnInit {
   bookingUpdatedEvent(booking) {
     let index = this.bookings.findIndex(x => x.id == booking.id);
     this.bookings[index] = booking;
+ }
+
+ loadMoreBookings() {
+  this.searchRequest.offset = this.bookings.length;
+  console.log(this.searchRequest);
+  this.networkService.adminBookingSearch(this.searchRequest).subscribe(
+    data => this.bookings = this.bookings.concat(data),
+    error => console.log(error)
+  );
  }
 }

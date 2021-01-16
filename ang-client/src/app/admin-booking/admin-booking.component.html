@@ -59,6 +59,7 @@
             </tr>
         </tbody>
       </table>
+      <button *ngIf="bookings.length > 0" style="width: 100%;" class="btn main-btn" (click)='loadMoreBookings()'><i class="fa fa-refresh"></i> Load More</button>
 </div>
 
   
