@@ -4,7 +4,6 @@ import com.app.dao.otp.OTPDao;
 import com.app.model.otp.OTP;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,12 +13,10 @@ public class OTPStoreImpl implements OTPStore {
     private static final int TOKEN_VALIDITY_LENGTH_MINUTES = 5;
 
     private final OTPDao otpDao;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public OTPStoreImpl(OTPDao otpDao, PasswordEncoder passwordEncoder) {
+    public OTPStoreImpl(OTPDao otpDao) {
         this.otpDao = otpDao;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -28,7 +25,7 @@ public class OTPStoreImpl implements OTPStore {
         invalidate(key);
         OTP otp = new OTP();
         otp.setReference(key);
-        otp.setOtp(passwordEncoder.encode(code));
+        otp.setOtp(code);
         otpDao.saveOrUpdate(otp);
     }
 
