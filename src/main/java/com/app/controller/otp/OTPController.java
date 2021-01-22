@@ -38,10 +38,10 @@ public class OTPController {
         if (!EmailValidator.isValid(email)) {
             return ResponseEntity.badRequest().body("Email is invalid");
         }
-        String dbEmail = email.toLowerCase().trim();
-        userService.getOrCreateUser(dbEmail);
-        String otp = otpService.generateOtp(dbEmail);
-        emailService.sendEmail(dbEmail, "Your OTP","Your OTP is: " + otp);
+        String userEmail = email.toLowerCase().trim();
+        userService.getOrCreateUser(userEmail);
+        String otp = otpService.generateOtp(userEmail);
+        emailService.sendEmail(userEmail, "Your OTP","Your OTP is: " + otp);
         LOGGER.debug("Email: " + email + ", OTP: " + otp);
         return ResponseEntity.ok().build();
     }
@@ -53,8 +53,9 @@ public class OTPController {
         if (booking == null) {
             return ResponseEntity.badRequest().body("Reference number not found.");
         }
-        String otp = otpService.generateOtp(reference);
-        emailService.sendEmail(booking.getUser().getEmail(), "Your OTP", "Your OTP is: " + otp);
+        String userEmail = booking.getUser().getEmail();
+        String otp = otpService.generateOtp(userEmail);
+        emailService.sendEmail(userEmail, "Your OTP", "Your OTP is: " + otp);
         LOGGER.debug("Reference: " + reference + ", OTP: " + otp);
         return ResponseEntity.ok().build();
     }

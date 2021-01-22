@@ -25,20 +25,23 @@ public class OTPUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = null;
         if (username.contains("@")) {
-            username = username.toLowerCase().trim();
-        }
-        String otp = otpService.getIfPresent(username);
-        if (StringUtils.isBlank(otp)) {
-            throw new UsernameNotFoundException("OTP not found/expired " + username);
-        }
-
-        User user;
-        if (username.contains("@")) {
-            user = userService.getByEmail(username);
+            user = userService.getByEmail(username.toLowerCase().trim());
         } else {
             Booking booking = bookingService.getByReference(username);
-            user = booking.getUser();
+            if (booking != null) {
+                user = booking.getUser();
+            }
+        }
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found for " + username);
+        }
+
+        String otp = otpService.getIfPresent(user.getEmail());
+        if (StringUtils.isBlank(otp)) {
+            throw new UsernameNotFoundException("OTP not found/expired " + username);
         }
 
         SessionUserDetails u = new SessionUserDetails();
