@@ -1,6 +1,8 @@
 package com.app.dao.booking;
 
+import com.app.controller.admin.request.BookingFindRequest;
 import com.app.model.booking.Booking;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
@@ -42,25 +44,30 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax, Date dateToMin, Date dateToMax, Integer offset) {
-//        CriteriaQuery<Booking> query = sessionFactory.getCurrentSession().getCriteriaBuilder().createQuery(Booking.class);
-        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
-        if (dateFromMin != null) {
-            criteria.add(Restrictions.ge("dateFrom", dateFromMin));
+    public List<Booking> getForDates(BookingFindRequest bookingFindRequest) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class).createAlias("user","user");
+        if (bookingFindRequest.getDateFromMin() != null) {
+            criteria.add(Restrictions.ge("dateFrom", bookingFindRequest.getDateFromMin()));
         }
-        if (dateFromMax != null) {
-            criteria.add(Restrictions.le("dateFrom", dateFromMax));
+        if (bookingFindRequest.getDateFromMax() != null) {
+            criteria.add(Restrictions.le("dateFrom", bookingFindRequest.getDateFromMax()));
         }
-        if (dateToMin != null) {
-            criteria.add(Restrictions.ge("dateTo", dateToMin));
+        if (bookingFindRequest.getDateToMin() != null) {
+            criteria.add(Restrictions.ge("dateTo", bookingFindRequest.getDateToMin()));
         }
-        if (dateToMax != null) {
-            criteria.add(Restrictions.le("dateTo", dateToMax));
+        if (bookingFindRequest.getDateToMax() != null) {
+            criteria.add(Restrictions.le("dateTo", bookingFindRequest.getDateToMax()));
         }
-        if (offset != null) {
-            criteria.setFirstResult(offset);
+        if (StringUtils.isNotBlank(bookingFindRequest.getEmail())) {
+            criteria.add(Restrictions.eq("user.email", bookingFindRequest.getEmail()));
         }
-        criteria.setMaxResults(5);
+        if (StringUtils.isNoneBlank(bookingFindRequest.getReference())) {
+            criteria.add(Restrictions.eq("reference", bookingFindRequest.getReference()));
+        }
+        if (bookingFindRequest.getOffset() != null) {
+            criteria.setFirstResult(bookingFindRequest.getOffset());
+        }
+        criteria.setMaxResults(bookingFindRequest.getPageSize());
         criteria.addOrder(Order.desc("dateFrom"));
         return criteria.list();
     }

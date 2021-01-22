@@ -2,25 +2,34 @@
   <form [formGroup]="searchForm" (ngSubmit)="onFormSubmit()">
 
     <div class="form-group">
+      <label for="email">Email</label>
+      <input type="text" class="form-control" name="email" id="email" formControlName="email">
+    </div>
+  
+    <div class="form-group">
+      <label for="reference">Reference Number</label>
+      <input type="text" class="form-control" name="reference" id="reference" formControlName="reference">
+    </div>
+    
+    <div class="form-group">
       <label for="dateFromMin">Arrival (Min)</label>
-      <input type="date" class="form-control" name="dateFrom" id="dateFromMin" required formControlName="dateFromMin">
+      <input type="date" class="form-control" name="dateFrom" id="dateFromMin" formControlName="dateFromMin">
   </div>
 
     <div class="form-group">
       <label for="dateFromMax">Arrival (Max)</label>
-      <input type="date" class="form-control" name="dateTo" id="dateFromMax" required formControlName="dateFromMax">
+      <input type="date" class="form-control" name="dateTo" id="dateFromMax" formControlName="dateFromMax">
   </div>
       
   <div class="form-group">
     <label for="dateToMin">Departure (Min)</label>
-    <input type="date" class="form-control" name="dateFrom" id="dateToMin" required formControlName="dateToMin">
+    <input type="date" class="form-control" name="dateFrom" id="dateToMin" formControlName="dateToMin">
   </div>
 
   <div class="form-group">
     <label for="dateToMax">Departure (Max)</label>
-    <input type="date" class="form-control" name="dateTo" id="dateToMax" required formControlName="dateToMax">
+    <input type="date" class="form-control" name="dateTo" id="dateToMax" formControlName="dateToMax">
   </div>
-
 
     <button class="btn btn-primary mt-2" [disabled]="!searchForm.valid">Search</button>
 </form>

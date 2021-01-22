@@ -65,12 +65,7 @@ public class AdminBookingController {
     @PostMapping(value = "/find")
     @ResponseBody
     public List<BookingDto> findBookings(@RequestBody BookingFindRequest bookingFindRequest) {
-        List<Booking> bookings = bookingService.getForDates(
-                bookingFindRequest.getDateFromMin(),
-                bookingFindRequest.getDateFromMax(),
-                bookingFindRequest.getDateToMin(),
-                bookingFindRequest.getDateToMax(),
-                bookingFindRequest.getOffset());
+        List<Booking> bookings = bookingService.getForDates(bookingFindRequest);
         return bookings.stream().map(b -> new BookingDto(b, false)).collect(Collectors.toList());
     }
 

@@ -1,5 +1,6 @@
 package com.app.service.booking;
 
+import com.app.controller.admin.request.BookingFindRequest;
 import com.app.controller.booking.dto.BookingRequest;
 import com.app.dao.booking.BookingDao;
 import com.app.dao.booking.BookingNoteDao;
@@ -78,8 +79,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional
-    public List<Booking> getForDates(Date dateFromMin, Date dateFromMax, Date dateToMin, Date dateToMax, Integer offset) {
-        return bookingDao.getForDates(dateFromMin, dateFromMax, dateToMin, dateToMax, offset);
+    public List<Booking> getForDates(BookingFindRequest bookingFindRequest) {
+        return bookingDao.getForDates(bookingFindRequest);
     }
 
     @Override
