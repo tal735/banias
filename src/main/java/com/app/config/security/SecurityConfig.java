@@ -1,5 +1,9 @@
 package com.app.config.security;
 
+import com.app.config.security.dao.DAOAuthenticationProvider;
+import com.app.config.security.dao.DaoAuthenticationFilter;
+import com.app.config.security.otp.OTPAuthenticationFilter;
+import com.app.config.security.otp.OTPAuthenticationProvider;
 import com.app.service.booking.BookingService;
 import com.app.service.otp.OTPService;
 import com.app.service.user.UserDetailsServiceImpl;
@@ -8,10 +12,7 @@ import com.app.service.user.OTPUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,38 +21,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfig  {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    UserService userService;
-
-    @Bean
-    public AccessDeniedHandler restAccessDeniedHandler() {
-        return new RestAccessDeniedHandler();
-    }
-
-    @Bean
-    public AuthenticationEntryPoint restAuthenticationEntryPoint() {
-        return new RestUnauthorizedEntryPoint();
-    }
-
-    @Bean
-    public AjaxAuthenticationSuccessHandler ajaxAuthenticationSuccessHandler() {
-        return new AjaxAuthenticationSuccessHandler();
-    }
-
-    @Bean
-    public AjaxAuthenticationFailureHandler ajaxAuthenticationFailureHandler() {
-        return new AjaxAuthenticationFailureHandler();
-    }
+    @Autowired UserService userService;
+    @Autowired OTPService otpService;
+    @Autowired BookingService bookingService;
+    @Autowired AuthenticationEntryPoint authenticationEntryPoint;
+    @Autowired AccessDeniedHandler accessDeniedHandler;
+    @Autowired LogoutSuccessHandler logoutSuccessHandler;
+    @Autowired AuthenticationSuccessHandler successHandler;
+    @Autowired AuthenticationFailureHandler failureHandler;
 
     @Bean
     public PasswordEncoder BCryptPasswordEncoder() {
@@ -59,131 +49,65 @@ public class SecurityConfig  {
     }
 
     @Bean
-    public AjaxLogoutSuccessHandler ajaxLogoutSuccessHandler() {
-        return new AjaxLogoutSuccessHandler();
+    public UserDetailsService UserDetailsService() {
+        return new UserDetailsServiceImpl(userService);
     }
 
-    @Configuration
-    public class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-
-        @Bean
-        public UserDetailsService UserDetailsService() {
-            return new UserDetailsServiceImpl(userService);
-        }
-
-        @Bean
-        public AuthenticationProvider authenticationProvider() {
-            DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-            provider.setUserDetailsService(UserDetailsService());
-            provider.setPasswordEncoder(BCryptPasswordEncoder());
-            return provider;
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) {
-            auth.authenticationProvider(authenticationProvider());
-        }
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http
-                    .cors().configurationSource(new CorsConfigurationSource() {
-                @Override
-                public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                    CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedHeaders(Collections.singletonList("*"));
-                    config.setAllowedMethods(Collections.singletonList("*"));
-                    config.addAllowedOrigin("http://localhost:4200");
-                    config.setAllowCredentials(true);
-                    return config;
-                }
-            }).and()
-                    .csrf()
-                    .disable()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(restAuthenticationEntryPoint())
-                    .accessDeniedHandler(restAccessDeniedHandler())
-                    .and()
-                    .formLogin()
-                    .loginProcessingUrl("/authentication")
-                    .successHandler(ajaxAuthenticationSuccessHandler())
-                    .failureHandler(ajaxAuthenticationFailureHandler())
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessHandler(ajaxLogoutSuccessHandler())
-                    .permitAll()
-                    .and()
-                    .authorizeRequests()
-                    .antMatchers("/otp/**").permitAll()
-                    .antMatchers("/user").permitAll()
-                    .antMatchers("/admin/**").hasAuthority(AuthoritiesConstants.ADMIN);
-        }
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DAOAuthenticationProvider provider = new DAOAuthenticationProvider();
+        provider.setUserDetailsService(UserDetailsService());
+        provider.setPasswordEncoder(BCryptPasswordEncoder());
+        return provider;
     }
 
-    @Configuration
-    @Order(1)
-    public class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Bean
+    public UserDetailsService otpUserDetailsService() {
+        return new OTPUserDetailsServiceImpl(userService, bookingService, otpService);
+    }
 
-        @Autowired
-        OTPService otpService;
+    @Bean
+    public AuthenticationProvider otpAuthenticationProvider() {
+        OTPAuthenticationProvider provider = new OTPAuthenticationProvider();
+        provider.setUserDetailsService(otpUserDetailsService());
+        provider.setPasswordEncoder(BCryptPasswordEncoder());
+        return provider;
+    }
 
-        @Autowired
-        BookingService bookingService;
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        // configure filters
+        http.addFilterBefore( new DaoAuthenticationFilter("/authentication", successHandler, failureHandler, authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class );
+        http.addFilterBefore( new OTPAuthenticationFilter("/api/authentication", successHandler, failureHandler, authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class );
 
-        @Bean
-        public UserDetailsService otpUserDetailsService() {
-            return new OTPUserDetailsServiceImpl(userService, bookingService, otpService);
-        }
+        // configure authentication providers
+        http.authenticationProvider( authenticationProvider() );
+        http.authenticationProvider( otpAuthenticationProvider() );
 
-        @Bean
-        public AuthenticationProvider otpAuthenticationProvider() {
-            DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-            provider.setUserDetailsService(otpUserDetailsService());
-            provider.setPasswordEncoder(BCryptPasswordEncoder());
-            return provider;
-        }
+        http.authorizeRequests()
+                .antMatchers("/user").permitAll()
+                .antMatchers("/otp/**").permitAll()
+                .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.USER)
+                .antMatchers("/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
+                .and()
+                .cors().configurationSource(SecurityConfig::getCorsConfiguration).and()
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(logoutSuccessHandler);
+    }
 
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) {
-            auth.authenticationProvider(otpAuthenticationProvider());
-        }
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/api/**")
-                    .cors().configurationSource(new CorsConfigurationSource() {
-                @Override
-                public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                    CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedHeaders(Collections.singletonList("*"));
-                    config.setAllowedMethods(Collections.singletonList("*"));
-                    config.addAllowedOrigin("http://localhost:4200");
-                    config.setAllowCredentials(true);
-                    return config;
-                }
-            }).and()
-                    .csrf()
-                    .disable()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(restAuthenticationEntryPoint())
-                    .accessDeniedHandler(restAccessDeniedHandler())
-                    .and()
-                    .formLogin()
-                    .loginProcessingUrl("/api/authentication")
-                    .successHandler(ajaxAuthenticationSuccessHandler())
-                    .failureHandler(ajaxAuthenticationFailureHandler())
-                    .permitAll()
-                    .and()
-                    .logout()
-                    .logoutUrl("/api/logout")
-                    .logoutSuccessHandler(ajaxLogoutSuccessHandler())
-                    .permitAll()
-                    .and()
-                    .authorizeRequests()
-                    .anyRequest().hasAuthority("ROLE_USER"); // .authenticated();
-        }
+    private static CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedHeaders(Collections.singletonList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        config.addAllowedOrigin("http://localhost:4200");
+        config.setAllowCredentials(true);
+        return config;
     }
 
 }
