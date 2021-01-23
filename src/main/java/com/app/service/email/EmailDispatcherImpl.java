@@ -1,6 +1,6 @@
 package com.app.service.email;
 
-import com.app.service.jms.JmsMessage;
+import com.app.service.jms.EmailMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,11 +21,11 @@ public class EmailDispatcherImpl implements EmailDispatcher {
     }
 
     @Override
-    public void dispatch(JmsMessage jmsMessage) {
+    public void dispatch(EmailMessage emailMessage) {
         threadPoolTaskExecutor.execute(new Runnable() {
             public void run() {
                 try {
-                    emailService.sendEmail(jmsMessage.getTo(), jmsMessage.getSubject(), jmsMessage.getText());
+                    emailService.sendEmail(emailMessage.getTo(), emailMessage.getSubject(), emailMessage.getText());
                 } catch (Exception e) {
                     LOGGER.error("Exception while sending mail async", e);
                 }

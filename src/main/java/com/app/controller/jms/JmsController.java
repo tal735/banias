@@ -1,6 +1,6 @@
 package com.app.controller.jms;
 
-import com.app.service.jms.JmsMessage;
+import com.app.service.jms.EmailMessage;
 import com.app.service.jms.MessageProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +24,10 @@ public class JmsController {
     @GetMapping("/jms/send")
     @ResponseBody
     private void sendJms2() {
-        JmsMessage jmsMessage = new JmsMessage();
-        jmsMessage.setTo("test@email.com");
-        jmsMessage.setSubject("subject");
-        jmsMessage.setText("text");
-        messageProducer.sendMessage(MessageProducer.OTP_EMAIL_QUEUE_NAME, jmsMessage);
+        EmailMessage emailMessage = new EmailMessage();
+        emailMessage.setTo("test@email.com");
+        emailMessage.setSubject("subject");
+        emailMessage.setText("text");
+        messageProducer.sendMessage(MessageProducer.OTP_EMAIL_QUEUE_NAME, emailMessage);
     }
 }

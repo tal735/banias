@@ -3,7 +3,7 @@ package com.app.controller.otp;
 import com.app.controller.validator.EmailValidator;
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
-import com.app.service.jms.JmsMessage;
+import com.app.service.jms.EmailMessage;
 import com.app.service.jms.MessageProducer;
 import com.app.service.otp.OTPService;
 import com.app.service.user.UserService;
@@ -61,7 +61,7 @@ public class OTPController {
     }
 
     private void dispatchEmail(String email, String otp) {
-        JmsMessage message = new JmsMessage(email, "Your OTP", "Your OTP is: " + otp);
+        EmailMessage message = new EmailMessage(email, "Your OTP", "Your OTP is: " + otp);
         messageProducer.sendMessage(MessageProducer.OTP_EMAIL_QUEUE_NAME, message);
     }
 }

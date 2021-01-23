@@ -20,7 +20,7 @@ public class MessageReceiver {
 	}
 
 	@JmsListener(destination = MessageProducer.OTP_EMAIL_QUEUE_NAME)
-	public void receiveMessage(final Message<JmsMessage> message) throws JMSException {
+	public void receiveMessage(final Message<EmailMessage> message) throws JMSException {
 		emailDispatcher.dispatch(message.getPayload());
 	}
 

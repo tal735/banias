@@ -1,7 +1,7 @@
 package com.app.service.email;
 
-import com.app.service.jms.JmsMessage;
+import com.app.service.jms.EmailMessage;
 
 public interface EmailDispatcher {
-    void dispatch(JmsMessage jmsMessage);
+    void dispatch(EmailMessage emailMessage);
 }

@@ -2,15 +2,15 @@ package com.app.service.jms;
 
 import java.io.Serializable;
 
-public class JmsMessage implements Serializable {
+public class EmailMessage implements Serializable {
     private String to;
     private String subject;
     private String text;
 
-    public JmsMessage() {
+    public EmailMessage() {
     }
 
-    public JmsMessage(String to, String subject, String text) {
+    public EmailMessage(String to, String subject, String text) {
         this.to = to;
         this.subject = subject;
         this.text = text;

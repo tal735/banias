@@ -19,10 +19,10 @@ public class MessageProducer {
 		this.jmsTemplate = jmsTemplate;
 	}
 
-	public void sendMessage(final String queueName, final JmsMessage jmsMessage) {
+	public void sendMessage(final String queueName, final EmailMessage emailMessage) {
 		jmsTemplate.send(queueName, new MessageCreator() {
 			public Message createMessage(Session session) throws JMSException {
-				ObjectMessage objectMessage = session.createObjectMessage(jmsMessage);
+				ObjectMessage objectMessage = session.createObjectMessage(emailMessage);
 				return objectMessage;
 			}
 		});
