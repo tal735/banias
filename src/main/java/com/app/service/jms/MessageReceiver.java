@@ -4,7 +4,6 @@ import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
-import javax.jms.TextMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -20,13 +19,9 @@ public class MessageReceiver {
 	}
 
 	@JmsListener(destination = "inbound.queue")
-	public void receiveMessage(final Message message) throws JMSException {
-		String messageData = null;
-		if (message instanceof TextMessage) {
-			TextMessage textMessage = (TextMessage) message;
-			messageData = textMessage.getText();
-		}
-		messageProducer.sendMessage("outbound.queue", null);
+	public void receiveMessage(final Message<JmsMessage> message) throws JMSException {
+		JmsMessage payload = message.getPayload();
+		messageProducer.sendMessage("outbound.queue", payload);
 	}
 
 }

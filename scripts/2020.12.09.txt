@@ -12,7 +12,12 @@ npm i --save-dev @types/jquery
 
 
 
-https://www.mailjet.com/
-------------------------
-jbytttzvrq@effobe.com
-Abcd1234!!
+
+ActiveMQ:
+---------
+https://www.devglan.com/spring-mvc/spring-jms-activemq-integration-example
+https://medium.com/@hasnat.saeed/setup-activemq-artemis-on-ubuntu-18-04-76bb4975308b
+http://websystique.com/springmvc/spring-4-mvc-jms-activemq-annotation-based-example/
+
+sudo /var/lib/test-broker/bin/artemis run
+sudo tail -f /var/lib/test-broker/log/artemis.log

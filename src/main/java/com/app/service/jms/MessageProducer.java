@@ -17,12 +17,11 @@ public class MessageProducer {
 		this.jmsTemplate = jmsTemplate;
 	}
 
-	public void sendMessage(final String queueName, final String jmsMessage) {
+	public void sendMessage(final String queueName, final JmsMessage jmsMessage) {
 		jmsTemplate.send(queueName, new MessageCreator() {
 			public Message createMessage(Session session) throws JMSException {
-				TextMessage message = session.createTextMessage();
-				message.setText(jmsMessage);
-				return message;
+				ObjectMessage objectMessage = session.createObjectMessage(jmsMessage);
+				return objectMessage;
 			}
 		});
 	}

@@ -1,5 +1,6 @@
 package com.app.config.jms;
 
+import com.google.common.collect.Lists;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +12,7 @@ import org.springframework.jms.core.JmsTemplate;
 @Configuration
 @EnableJms
 public class JmsConfig {
-    private static final String BROKER_URL = ActiveMQConnection.DEFAULT_BROKER_URL;//"tcp://localhost:61616";
+    private static final String BROKER_URL = ActiveMQConnection.DEFAULT_BROKER_URL;
     private static final String BROKER_USERNAME = "test";
     private static final String BROKER_PASSWORD = "test";
 
@@ -21,6 +22,7 @@ public class JmsConfig {
         connectionFactory.setBrokerURL(BROKER_URL);
         connectionFactory.setPassword(BROKER_USERNAME);
         connectionFactory.setUserName(BROKER_PASSWORD);
+        connectionFactory.setTrustedPackages(Lists.newArrayList("com.app.service.jms"));
         return connectionFactory;
     }
 

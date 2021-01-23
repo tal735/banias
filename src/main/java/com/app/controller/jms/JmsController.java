@@ -1,5 +1,6 @@
 package com.app.controller.jms;
 
+import com.app.service.jms.JmsMessage;
 import com.app.service.jms.MessageProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class JmsController {
     @GetMapping("/jms/send")
     @ResponseBody
     private void sendJms2() {
-        messageProducer.sendMessage("inbound.queue", "test");
+        JmsMessage jmsMessage = new JmsMessage();
+        jmsMessage.setEmail("test@email.com");
+        messageProducer.sendMessage("inbound.queue", jmsMessage);
     }
 }
