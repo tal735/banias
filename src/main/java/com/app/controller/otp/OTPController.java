@@ -3,13 +3,13 @@ package com.app.controller.otp;
 import com.app.controller.validator.EmailValidator;
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
-import com.app.service.email.EmailService;
+import com.app.service.jms.JmsMessage;
+import com.app.service.jms.MessageProducer;
 import com.app.service.otp.OTPService;
 import com.app.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +22,14 @@ public class OTPController {
     private final UserService userService;
     private final BookingService bookingService;
     private final OTPService otpService;
-    private final EmailService emailService;
+    private final MessageProducer messageProducer;
 
     @Autowired
-    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, @Qualifier("GmailEmailServiceImpl") EmailService emailService) {
+    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, MessageProducer messageProducer) {
         this.userService = userService;
         this.bookingService = bookingService;
         this.otpService = otpService;
-        this.emailService = emailService;
+        this.messageProducer = messageProducer;
     }
 
     @PostMapping(value = "/otp/book")
@@ -41,7 +41,7 @@ public class OTPController {
         String userEmail = email.toLowerCase().trim();
         userService.getOrCreateUser(userEmail);
         String otp = otpService.generateOtp(userEmail);
-        emailService.sendEmail(userEmail, "Your OTP","Your OTP is: " + otp);
+        dispatchEmail(userEmail, otp);
         LOGGER.debug("Email: " + email + ", OTP: " + otp);
         return ResponseEntity.ok().build();
     }
@@ -55,8 +55,13 @@ public class OTPController {
         }
         String userEmail = booking.getUser().getEmail();
         String otp = otpService.generateOtp(userEmail);
-        emailService.sendEmail(userEmail, "Your OTP", "Your OTP is: " + otp);
+        dispatchEmail(userEmail, otp);
         LOGGER.debug("Reference: " + reference + ", OTP: " + otp);
         return ResponseEntity.ok().build();
+    }
+
+    private void dispatchEmail(String email, String otp) {
+        JmsMessage message = new JmsMessage(email, "Your OTP", "Your OTP is: " + otp);
+        messageProducer.sendMessage(MessageProducer.OTP_EMAIL_QUEUE_NAME, message);
     }
 }

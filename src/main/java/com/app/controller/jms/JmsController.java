@@ -25,7 +25,9 @@ public class JmsController {
     @ResponseBody
     private void sendJms2() {
         JmsMessage jmsMessage = new JmsMessage();
-        jmsMessage.setEmail("test@email.com");
-        messageProducer.sendMessage("inbound.queue", jmsMessage);
+        jmsMessage.setTo("test@email.com");
+        jmsMessage.setSubject("subject");
+        jmsMessage.setText("text");
+        messageProducer.sendMessage(MessageProducer.OTP_EMAIL_QUEUE_NAME, jmsMessage);
     }
 }

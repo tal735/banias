@@ -19,5 +19,8 @@ https://www.devglan.com/spring-mvc/spring-jms-activemq-integration-example
 https://medium.com/@hasnat.saeed/setup-activemq-artemis-on-ubuntu-18-04-76bb4975308b
 http://websystique.com/springmvc/spring-4-mvc-jms-activemq-annotation-based-example/
 
+https://www.programmersought.com/article/31945905649/
+https://www.programmersought.com/article/85994235623/
+
 sudo /var/lib/test-broker/bin/artemis run
 sudo tail -f /var/lib/test-broker/log/artemis.log

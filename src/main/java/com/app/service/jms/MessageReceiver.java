@@ -1,5 +1,6 @@
 package com.app.service.jms;
 
+import com.app.service.email.EmailDispatcher;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
 
@@ -10,18 +11,17 @@ import org.springframework.jms.annotation.JmsListener;
 
 @Component
 public class MessageReceiver {
-	
-	private final MessageProducer messageProducer;
+
+	private final EmailDispatcher emailDispatcher;
 
 	@Autowired
-	public MessageReceiver(MessageProducer messageProducer) {
-		this.messageProducer = messageProducer;
+	public MessageReceiver(EmailDispatcher emailDispatcher) {
+		this.emailDispatcher = emailDispatcher;
 	}
 
-	@JmsListener(destination = "inbound.queue")
+	@JmsListener(destination = MessageProducer.OTP_EMAIL_QUEUE_NAME)
 	public void receiveMessage(final Message<JmsMessage> message) throws JMSException {
-		JmsMessage payload = message.getPayload();
-		messageProducer.sendMessage("outbound.queue", payload);
+		emailDispatcher.dispatch(message.getPayload());
 	}
 
 }

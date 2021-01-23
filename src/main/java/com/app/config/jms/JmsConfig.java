@@ -5,9 +5,11 @@ import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 @EnableJms
@@ -40,5 +42,17 @@ public class JmsConfig {
         factory.setConnectionFactory(connectionFactory());
         factory.setConcurrency("1-1");
         return factory;
+    }
+
+    @Bean
+    public TaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(50);
+        executor.setQueueCapacity(100);
+        executor.setKeepAliveSeconds(30000);
+        executor.setThreadNamePrefix("otp_email_executor_thread");
+        executor.initialize();
+        return executor;
     }
 }
