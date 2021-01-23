@@ -1,6 +1,8 @@
-package com.app.service.user;
+package com.app.config.security.dao;
 
 import com.app.model.user.User;
+import com.app.service.user.SessionUserDetails;
+import com.app.service.user.UserService;
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
