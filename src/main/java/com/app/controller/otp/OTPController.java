@@ -62,6 +62,6 @@ public class OTPController {
 
     private void dispatchEmail(String email, String otp) {
         EmailMessage message = new EmailMessage(email, "Your OTP", "Your OTP is: " + otp);
-        messageProducer.sendMessage(MessageProducer.OTP_EMAIL_QUEUE_NAME, message);
+        messageProducer.sendMessage(MessageProducer.EMAIL_QUEUE_NAME, message);
     }
 }

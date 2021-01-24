@@ -7,6 +7,8 @@ import com.app.dao.booking.BookingNoteDao;
 import com.app.model.booking.Booking;
 import com.app.model.booking.BookingNote;
 import com.app.model.user.User;
+import com.app.service.jms.EmailMessage;
+import com.app.service.jms.MessageProducer;
 import com.app.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,14 @@ public class BookingServiceImpl implements BookingService {
     private final BookingDao bookingDao;
     private final BookingNoteDao bookingNoteDao;
     private final UserService userService;
+    private final MessageProducer messageProducer;
 
     @Autowired
-    public BookingServiceImpl(BookingDao bookingDao, BookingNoteDao bookingNoteDao, UserService userService) {
+    public BookingServiceImpl(BookingDao bookingDao, BookingNoteDao bookingNoteDao, UserService userService, MessageProducer messageProducer) {
         this.bookingDao = bookingDao;
         this.bookingNoteDao = bookingNoteDao;
         this.userService = userService;
+        this.messageProducer = messageProducer;
     }
 
     @Override
@@ -47,6 +51,11 @@ public class BookingServiceImpl implements BookingService {
         if (StringUtils.isNotBlank(bookingRequest.getNote())) {
             saveNote(user, booking, bookingRequest.getNote());
         }
+        // send email
+        String html = "Hello " + bookingRequest.getContactName() + "\n" + "Booking Reference: " + booking.getReference() + "\nYou will be notified when your booking is examined and approved.";
+        EmailMessage emailMessage = new EmailMessage(user.getEmail(), "Your Booking Details", html);
+        messageProducer.sendMessage(MessageProducer.EMAIL_QUEUE_NAME, emailMessage);
+
         return booking;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageProducer {
 
-	public final static String OTP_EMAIL_QUEUE_NAME = "inbound.queue";
+	public final static String EMAIL_QUEUE_NAME = "inbound.queue";
 
 	private final JmsTemplate jmsTemplate;
 
