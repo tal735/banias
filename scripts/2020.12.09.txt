@@ -24,3 +24,6 @@ https://www.programmersought.com/article/85994235623/
 
 sudo /var/lib/test-broker/bin/artemis run
 sudo tail -f /var/lib/test-broker/log/artemis.log
+
+docker run -it --rm  --name=artemis -p 8161:8161  -p 61616:61616 -e ARTEMIS_USERNAME=test -e ARTEMIS_PASSWORD=test -v /var/lib/artemis/data:/artemis/data vromero/activemq-artemis
+USED: docker run -d  --name artemis -p 8161:8161  -p 61616:61616 -e ARTEMIS_USERNAME=test -e ARTEMIS_PASSWORD=test -v /var/lib/artemis/data:/artemis/data vromero/activemq-artemis
