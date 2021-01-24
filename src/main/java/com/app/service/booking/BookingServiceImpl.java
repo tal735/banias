@@ -104,6 +104,12 @@ public class BookingServiceImpl implements BookingService {
         return bookingDao.getByReference(reference);
     }
 
+    @Override
+    @Transactional
+    public List<Booking> getBookingForReminder(Date dateFrom) {
+        return bookingDao.getBookingForReminder(dateFrom);
+    }
+
     private BookingNote saveNote(User user, Booking booking, String note) {
         BookingNote bookingNote = new BookingNote();
         bookingNote.setBooking(booking);

@@ -17,4 +17,5 @@ public interface BookingService {
     List<Booking> getForDates(BookingFindRequest bookingFindRequest);
     List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo);
     Booking getByReference(String reference);
+    List<Booking> getBookingForReminder(Date dateFrom);
 }

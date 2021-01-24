@@ -101,4 +101,13 @@ public class BookingDaoImpl implements BookingDao {
         ));
         return criteria.list();
     }
+
+    @Override
+    public List<Booking> getBookingForReminder(Date dateFrom) {
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Booking.class);
+        criteria.add(Restrictions.eq("status", Booking.BookingStatus.APPROVED));
+        criteria.add(Restrictions.eq("dateFrom", dateFrom));
+        criteria.setFetchMode("user", FetchMode.JOIN);
+        return criteria.list();
+    }
 }
