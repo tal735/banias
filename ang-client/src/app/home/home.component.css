@@ -1,40 +1,101 @@
-.main {
+#wrapper {
+    display: grid;
+    grid-template-areas: "welcome welcome"
+                         "contact  book"
+                         "contact  view";
+    grid-template-rows: 3fr 2fr 2fr;
+    /* grid-template-columns: 150px 1fr; */
+    grid-gap: 10px;
+    padding: 1rem;
+    margin: 5rem auto;
+    max-width: 1100px;
+  }
+  
+  .btn-wrapper {
+    outline: none;
+  }
+
+  .flex-center {
     display: flex;
     flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
 
+  #wrapper .welcome {
+    grid-area: welcome;
+    background-color: #8ca0ff;
+    text-align: center;
+  }
+
+  #wrapper .welcome .guidelines-link {
+      text-decoration: underline;
+      font-weight: bold;
+      
+  }
+
+  #wrapper .welcome p {
+    font-size: 1.2rem;
+    
 }
 
-.main-btn {
-    background-color: DodgerBlue;
-    border: none;
-    color: white;
-    padding: 12px 16px;
-    font-size: 2rem;
-    cursor: pointer;
-    margin-bottom: 2rem;
+  #wrapper .welcome h1 {
+    margin: 1rem 0;
+  }
+  #wrapper .welcome i {
+    margin-top: 1.5rem;  
+    font-size: 11rem;
   }
 
-  .btn-wrapper {
+  
+  #wrapper .contact {
+    position: relative;
+    grid-area: contact;
+    background-color: #ffa08c;
+  }
+
+  .contact .btn-wrapper {
       display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      background-color: green;
+      flex-direction: column;
+      width: 50%;
+      height: 50%;
       border: none;
-      color: white;
-      padding: 12px 16px;
-      font-size: 2.5rem;
+      background: none;
       cursor: pointer;
-      margin-bottom: 2rem;
-      min-width: 500px;
-      text-transform: uppercase;
+      justify-content: space-around;
+  }
+  
+  .contact .btn-wrapper i {
+      font-size: 9rem;
   }
 
-  .btn-icon {
-    font-size: 3.5rem;
+  .contact .btn-wrapper .btn-text {
+    font-size: 1.5rem;
+}
+
+  #wrapper .book {
+    grid-area: book;
+    background-color: #ffff64;
+  }
+  
+  #wrapper .view {
+    grid-area: view;
+    background-color: #8cffa0;
+  }
+  
+  .book .btn-wrapper, .view .btn-wrapper  {
+      display: flex;
+      align-items: center;
+      border: none;
+      background: none;
+      cursor: pointer;
   }
 
-  .btn-text {
-      display: inline-block;
-      width: 100%;
+  .book .btn-wrapper i, .view .btn-wrapper i {
+      font-size: 6rem;
+      padding: 2rem;
+  }
+
+  .book .btn-wrapper p, .view .btn-wrapper p {
+      font-size: 2rem;
   }
