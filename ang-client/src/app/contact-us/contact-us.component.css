@@ -1,3 +1,9 @@
+.contact-us {
+    text-decoration: underline;
+    text-align: center;
+    font-weight: 200;
+    margin-top: 2rem;
+}
 .wrapper{ 
     display: flex;
     flex-direction: column;
