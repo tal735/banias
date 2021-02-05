@@ -1,24 +1,26 @@
-<div class="wrapper" *ngIf="step!=2">
-    <div class="form" *ngIf="step==0">
-        <h1 class="form-title display-3">View Details</h1>    
-        <i class="top-icon fa fa-barcode"></i>        
-        <input #ref class="email-input" type="text" placeholder="Reference Number">
-        <button type="submit" class="submit-btn btn btn-primary" (click)="requestOtp(ref)">Proceed</button>
-    </div>
-
-    <div class="form" *ngIf="step==1">
-        <h1 class="form-title display-3">Verify</h1>    
-        <i class="top-icon fa fa-asterisk"></i>        
-        <input #otp class="email-input" type="text"  id="inputOtp" placeholder="Code">
-        <button type="submit" class="submit-btn btn btn-primary" (click)="verifyOtp(otp)">Proceed</button>
-        <button type="submit" class="submit-btn btn btn-secondary mt-4" (click)="sendOtpEmail(true)">Resend Code</button>
+<ng-container>
+    <h1 class="form-title">My Booking</h1> 
+  
+    <div class="opt-request-outter" *ngIf="step<2">
+      <div class="otp-request-inner">
+          <input #ref class="input" type="text" placeholder="Reference Number">
+          <button type="submit" class="submit-button request-code-button btn btn-primary" (click)="requestOtp(ref)">Proceed</button>
+      </div>
     </div>
     
-    <div class="alert alert-danger my-3" role="alert" *ngIf="error">
-        {{ error }}
+    <div class="opt-request-outter opt-verify-outter" *ngIf="step==1">
+      <div class="otp-request-inner">
+        <input #otp class="input" type="text"  id="inputOtp" placeholder="Code">
+        <button type="submit" class="submit-btn btn btn-primary" (click)="verifyOtp(otp)">Proceed</button>
+        <button [disabled]="!emailSent" type="submit" class="submit-btn btn btn-secondary" (click)="sendOtpEmail(true)">Resend Code</button>
+        <div class="alert alert-success" role="alert" *ngIf="emailSent">
+            An email has been sent.
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="error">
+          {{ error }}
+        </div>
       </div>
+    </div>
+  </ng-container>
 
-    <button type="submit" class="back-submit-btn btn btn-light" (click)="backClicked()">Back</button>
-</div>
-
-<app-book-edit *ngIf="step==2" [reference]="reference"></app-book-edit>
+  <app-book-edit *ngIf="step==2" [reference]="reference"></app-book-edit>

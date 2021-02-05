@@ -14,6 +14,7 @@ export class BookViewOtpComponent implements OnInit {
   step : number = 0;
   reference : string = null;
   error : string = null;
+  emailSent : boolean = false;
 
   constructor(private authenticationService : AuthenticationService, private networkService : NetworkService, private router : Router, private _location: Location) { }
 
@@ -22,7 +23,6 @@ export class BookViewOtpComponent implements OnInit {
 
 
   requestOtp(element) {
-    this.error = null;
     this.reference = element.value;
     if (!this.reference || this.reference.length == 0) {
       this.error = "Please provide a reference number.";
@@ -36,11 +36,14 @@ export class BookViewOtpComponent implements OnInit {
   }
 
   sendOtpEmail(resend) {
+    this.error = null;
+    this.emailSent = false;
     this.networkService.requestViewOtp(this.reference).subscribe(
       data => {
         if (!resend) {
-          this.step++
+          this.step++;
         }
+        this.emailSent = true;
       },
       error => {this.error = error.error}
     );
@@ -65,14 +68,6 @@ export class BookViewOtpComponent implements OnInit {
         this.error = "Code is invalid.";
       }
     );
-  }
-
-  backClicked() {
-    if (this.step == 0) {
-      this._location.back();
-    } else {
-      this.step--;
-    }
   }
 
 }
