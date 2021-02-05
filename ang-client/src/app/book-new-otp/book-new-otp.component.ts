@@ -11,16 +11,14 @@ import { NetworkService } from '../network.service';
 })
 export class BookNewOtpComponent implements OnInit {
 
-  step : number = 0;
   email : string = null;
+  emailSent : boolean = false;
   error : string = null;
+  message : string = null;
 
-  constructor(private authenticationService : AuthenticationService, private networkService : NetworkService, private router : Router, private _location: Location) { }
+  constructor(public authenticationService : AuthenticationService, private networkService : NetworkService, private router : Router, private _location: Location) { }
 
   ngOnInit(): void {
-    if (this.authenticationService.isAuthenticated()) {
-      this.step = 2;
-    }
   }
 
   requestOtp(element) {
@@ -34,11 +32,10 @@ export class BookNewOtpComponent implements OnInit {
   }
 
   sendOtpEmail(resend) {
+    this.emailSent = false;
     this.networkService.requestBookingOtp(this.email).subscribe(
       data => {
-        if (!resend) {
-          this.step++
-        }
+        this.emailSent = true;
       },
       error => {this.error = error.error}
     );
@@ -54,8 +51,6 @@ export class BookNewOtpComponent implements OnInit {
         this.networkService.getUser().subscribe(
           response => {
             this.authenticationService.setUser(response);
-            this.step++;
-            console.log('GOOD!' + this.step);
           }
         );
       },
@@ -63,14 +58,6 @@ export class BookNewOtpComponent implements OnInit {
         this.error = "Code is invalid.";
       }
     );
-  }
-
-  backClicked() {
-    if (this.step == 0) {
-      this._location.back();
-    } else {
-      this.step--;
-    }
   }
 
 }

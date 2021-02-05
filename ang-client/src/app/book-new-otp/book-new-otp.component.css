@@ -1,48 +1,36 @@
-.wrapper {
+.form-title{
+    margin: 3rem 0;
+    font-weight: 200;
+    text-align: center;
+    font-size: 4rem;
+}
+
+.opt-request-outter {
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
 }
 
-.form {
+.otp-request-inner {
     display: flex;
     flex-direction: column;
-    font-size: 2rem;
+    width: 300px;
+    justify-content: center;
 }
 
-.top-icon {
+.form-icon {
+    font-size: 4rem;
     align-self: center;
-    font-size: 6rem;
-    margin-bottom: 2rem;
-}
-
-.submit-btn {
-    font-size: 1.5rem;
-}
-
-.back-submit-btn {
-    margin-top: 4rem;
-    font-size: 1.5rem;
-}
-
-.submit-icon {
-    float: left;
-    margin-top: 0.5rem;
-}
+    margin-right: 3rem;
+}                 
 
 .email-input{
-    text-align: center; 
-    color: grey;
-
-    height: 4rem;
-    /* width: 30rem;     */
-    margin-bottom: 2rem;
+    text-align: center;                                                         
 }
 
-.form-title {
-    text-align: center;
-    margin-bottom: 3rem;
+.request-code-button{
+    margin: 0.5rem 0;
+}
+
+.opt-verify-outter {
+    margin-top: 5rem;
 }
