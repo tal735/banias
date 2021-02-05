@@ -5,6 +5,9 @@
       <div class="otp-request-inner">
           <input #ref class="input" type="text" placeholder="Reference Number">
           <button type="submit" class="submit-button request-code-button btn btn-primary" (click)="requestOtp(ref)">Proceed</button>
+          <div class="alert alert-danger" role="alert" *ngIf="requestError">
+            {{ requestError }}
+          </div>
       </div>
     </div>
     

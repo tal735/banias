@@ -14,6 +14,7 @@ export class BookViewOtpComponent implements OnInit {
   step : number = 0;
   reference : string = null;
   error : string = null;
+  requestError : string = null;
   emailSent : boolean = false;
 
   constructor(private authenticationService : AuthenticationService, private networkService : NetworkService, private router : Router, private _location: Location) { }
@@ -36,6 +37,7 @@ export class BookViewOtpComponent implements OnInit {
   }
 
   sendOtpEmail(resend) {
+    this.requestError = null;
     this.error = null;
     this.emailSent = false;
     this.networkService.requestViewOtp(this.reference).subscribe(
@@ -45,7 +47,7 @@ export class BookViewOtpComponent implements OnInit {
         }
         this.emailSent = true;
       },
-      error => {this.error = error.error}
+      error => {this.requestError = error.error}
     );
   }
 
