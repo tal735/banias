@@ -2,7 +2,7 @@
   <h1 class="form-title">New Booking</h1> 
 
   <div class="opt-request-outter">
-    <p class="form-icon">1.</p>
+    <p class="form-icon">1</p>
     <div class="otp-request-inner">
       <input #email class="email-input" type="email" placeholder="Email">
       <button type="submit" class="submit-button request-code-button btn btn-primary" (click)="requestOtp(email)">Request Code</button>
@@ -15,7 +15,7 @@
   
   
   <div class="opt-request-outter opt-verify-outter">
-    <p class="form-icon">2.</p>
+    <p class="form-icon">2</p>
     <div class="otp-request-inner">
       <input [disabled]="!emailSent" #otp class="email-input" type="text" id="inputOtp" placeholder="Code">
       <button [disabled]="!emailSent" type="submit" class="submit-button request-code-button btn btn-primary" (click)="verifyOtp(otp)">Proceed To Booking</button>

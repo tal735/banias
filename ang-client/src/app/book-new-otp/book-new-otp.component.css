@@ -34,3 +34,27 @@
 .opt-verify-outter {
     margin-top: 5rem;
 }
+
+@media screen and (max-width: 500px) {
+    .form-title{
+        font-size: 3rem;
+    }
+    
+    .opt-request-outter {
+        flex-direction: column;
+    }
+    
+    .otp-request-inner {
+        width: 80%;
+        margin: 0 auto;
+    }
+    
+    .form-icon {
+        font-size: 3rem;
+        margin-right: 0;
+    }
+
+    .opt-verify-outter {
+        margin-top: 2rem;
+    }
+}

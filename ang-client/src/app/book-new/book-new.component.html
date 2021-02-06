@@ -1,6 +1,6 @@
 <div class="container" *ngIf="!reference">
     <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
-      <h4 class="display-4 my-4">New Booking</h4>
+      <h4 class="form-title display-4 my-4">New Booking</h4>
         <div class="form-group">
             <label for="dateFrom">Coming At</label>
             <input type="date" class="form-control" name="dateFrom" id="dateFrom" required formControlName="dateFrom">
