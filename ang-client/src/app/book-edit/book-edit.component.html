@@ -2,13 +2,12 @@
   <div class="alert alert-danger" role="alert">
     {{ accessError }}
   </div>
-  <button class="btn btn-light" [routerLink] = "['/home']">Go Back</button>
+  <button class="btn btn-light" style="width:100%;" [routerLink] = "['/home']">Go Back</button>
 </div>
 
-<div class="container wrapper" *ngIf="booking">
-    
-    <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
-      <h4 class="display-4">Booking Details</h4>  
+<div class="container" *ngIf="booking">
+    <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+      <h4 class="edit-title display-4">Booking Details</h4>  
         <fieldset [disabled]="isCancelled()">
           <div class="form-group">
             <label for="reference">Reference Number</label>
@@ -50,14 +49,18 @@
             {{ error }}
           </div>
 
-        <button class="btn btn-success mt-2" [disabled]="!form.valid"><i class="fa fa-edit"></i>  Request Changes</button>
-        <button type="submit" class="btn btn-danger" (click)='cancelBooking()'><i class="fa fa-trash-o"></i> Cancel Booking</button>
+          <div class="buttons">
+            <button class="btn btn-success" [disabled]="!form.valid"><i class="fa fa-edit"></i>  Request Changes</button>
+            <button type="submit" class="btn btn-danger" (click)='cancelBooking()'><i class="fa fa-times"></i> Cancel Booking</button>
+          </div>
+        
       </fieldset>
     </form>
 
-    <div>
-      <h4 class="display-4">Messages</h4>
-      <div *ngFor="let note of notes;" class="card">
+    <hr class="hr">
+    <div class="messages">
+      <h4 class="messages-title display-4">Messages</h4>
+      <div *ngFor="let note of notes;" class="message-card card">
         <div class="card-header">
           {{ note.user }}
         </div>
@@ -72,12 +75,13 @@
       <form role="form" id="contact-form" class="contact-form" >
         <fieldset [disabled]="isCancelled()">
           <div class="form-group">
-            <textarea [(ngModel)]="message" class="form-control textarea" rows="3" name="Message" id="Message" placeholder="Message"></textarea>
+            <textarea [(ngModel)]="message" class="form-control textarea" rows="3" name="Message" id="Message" placeholder="Write a message"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary pull-left" [disabled]="!message" (click)='submitMessage()'><i class="fa fa-send-o"></i>Send</button>
+          <div class="buttons">
+            <button type="submit" class="btn btn-primary pull-left" [disabled]="!message" (click)='submitMessage()'><i class="fa fa-send-o"></i> <span>Send</span> </button>
+            <button type="submit" class="btn btn-secondary" (click)='fetchNotes()'><i class="fa fa-refresh"></i> <span>Load Messages</span> </button>
+          </div>
         </fieldset>
       </form>
-      <button type="submit" class="btn btn-secondary" (click)='fetchNotes()'><i class="fa fa-refresh"></i> Load Messages</button>
     </div>
-
   </div>

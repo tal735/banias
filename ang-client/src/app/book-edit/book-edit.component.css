@@ -1,11 +1,26 @@
-.my-form{
-    display: flex;
-    flex-direction: column;
-    max-width: 500px;
-  }
-
-.wrapper {
+.buttons {
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+.hr {
+  margin: 3rem 0;
+}
+
+.edit-title , .messages-title {
+  text-align: center;
+  font-size: 3rem;
+  margin: 1rem 0;
+}
+
+.message-card {
+  margin-bottom: 1rem;
+}
+
+.messages .buttons button {
+  width: 160px;
+}
+
+.messages .buttons button span{
+  margin-left: 10px;
 }
