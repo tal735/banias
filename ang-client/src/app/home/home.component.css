@@ -4,7 +4,7 @@
                          "contact  book"
                          "contact  view";
     grid-template-rows: 3fr 2fr 2fr;
-    /* grid-template-columns: 150px 1fr; */
+    grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     padding: 1rem;
     margin: 5rem auto;
@@ -57,8 +57,6 @@
   .contact .btn-wrapper {
       display: flex;
       flex-direction: column;
-      width: 50%;
-      height: 50%;
       border: none;
       background: none;
       cursor: pointer;
@@ -70,7 +68,7 @@
   }
 
   .contact .btn-wrapper .btn-text {
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
   #wrapper .book {
@@ -99,3 +97,45 @@
   .book .btn-wrapper p, .view .btn-wrapper p {
       font-size: 2rem;
   }
+
+@media screen and (max-width: 790px) {
+    .book .btn-wrapper, .view .btn-wrapper  {
+        flex-direction: column;
+    }
+    .book .btn-wrapper i, .view .btn-wrapper i {
+        font-size: 4rem;
+        padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #wrapper {
+        display: flex;
+        flex-direction: column;
+        grid-gap: 0;
+        padding: 0;
+        margin: 0;
+        grid-template-rows: none;
+        grid-template-columns: none;
+        height: 100%;
+    }
+    i {
+        font-size: 4rem !important;
+    }
+    .welcome , .contact, .book, .view{
+        flex: 1;
+    }
+}
+
+@media screen and (max-width: 520px) {
+    #wrapper .welcome i {
+        font-size: 3rem !important;
+    }
+    #wrapper .welcome p {
+        width: 80%;
+
+    }
+    #wrapper .welcome h1 {
+        font-size: 2rem;
+    }
+}
