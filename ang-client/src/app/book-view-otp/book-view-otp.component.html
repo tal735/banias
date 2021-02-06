@@ -1,7 +1,7 @@
-<ng-container>
+<ng-container *ngIf="step<2">
     <h1 class="form-title">My Booking</h1> 
   
-    <div class="opt-request-outter" *ngIf="step<2">
+    <div class="opt-request-outter">
       <div class="otp-request-inner">
           <input #ref class="input" type="text" placeholder="Reference Number">
           <button type="submit" class="submit-button request-code-button btn btn-primary" (click)="requestOtp(ref)">Proceed</button>
