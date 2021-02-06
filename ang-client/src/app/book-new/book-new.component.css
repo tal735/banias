@@ -1,45 +1,5 @@
-.form-wrapper {
-    display: flex;
-    justify-content: center;
-    align-content: center;
-}
-
-.form-title {
-    text-align: center;
-    font-weight: 200;
-    font-size: 2rem;
-    margin: 1rem 0;
-    text-decoration: underline;
-}
-
-.my-form {
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    /* width: 600px; */
-    text-align: center;
-}
-
-.input-group {
-    /* display: flex; */
-    margin-bottom: 1rem;
-    /* justify-content: center; */
-}
-
-.input-group label {
-    width: 120px;
-    margin-right: .5rem;
-    align-self: center;
-}
-
-.input-group .input-control {
-    width: 215px;
-}
-
 .btn-book {
-    align-self: center;
-    width: 50%;
-    margin-top: 2rem;
+    width: 100%;
 }
 
 .confirmation {
@@ -47,21 +7,19 @@
     margin-top: 10rem;
 }
 
-.confirmation .form-title {
-    margin-top: 2rem;
-}
-
-.confirmation .input-control {
+.confirmation .reference-box {
     text-align: center;
-}
-
-.finish-submit{
-    display: block;
-    margin: 1rem auto;
-    padding: 0.5rem 2rem;
-
+    color: grey;
+    height: 3rem;
 }
 
 .confirmation-icon{
     font-size: 6rem;
+}
+
+.confirmation-btn{
+    display: block;
+    margin: 1rem auto;
+    padding: 0.5rem 2rem;
+
 }
