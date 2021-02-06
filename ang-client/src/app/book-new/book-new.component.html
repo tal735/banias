@@ -1,53 +1,55 @@
-<div class="container" *ngIf="!reference">
-    <h4 class="display-4">New Booking</h4>
+<ng-container *ngIf="!reference">
+  <h4 class="form-title">New Booking</h4>
+  <div class="form-wrapper">
     <form class="my-form" [formGroup]="form" (ngSubmit)="onFormSubmit()">
 
-        <div class="form-group">
-            <label for="dateFrom">Coming At</label>
-            <input type="date" class="form-control" name="dateFrom" id="dateFrom" required formControlName="dateFrom">
-        </div>
-    
-        <div class="form-group">
-          <label for="dateTo">Leaving At</label>
-          <input type="date" class="form-control" name="dateTo" id="dateTo" required formControlName="dateTo">
+      <div class="input-group">
+          <label for="dateFrom">Coming On</label>
+          <input type="date" class="input-control" name="dateFrom" id="dateFrom" required formControlName="dateFrom">
       </div>
 
-        <div class="form-group">
-            <label for="guests">Guests</label>
-            <input type="number" class="form-control" id="guests" min="1" name="guests" formControlName="guests" required>
-          </div>
-
-          <div class="form-group">
-            <label for="contactName">Contant Name</label>
-            <input type="text" class="form-control" id="contactName" name="contactName" formControlName="contactName" required>
-          </div>
-
-          <div class="form-group">
-            <label for="phone">Phone</label>
-            <input type="text" class="form-control" id="phone" name="phone" formControlName="phone" required>
-          </div>
-
-          <div class="form-group">
-            <label for="note">Additional Notes</label>
-            <textarea type="text" class="form-control" id="note" name="note" formControlName="note" rows="3"></textarea>
-          </div>
-
-        <div class="alert alert-danger my-3" role="alert" *ngIf="error">
-            {{ error }}
-          </div>
-
-      <button class="btn btn-success mt-2" [disabled]="!form.valid">Book</button>
-
-    </form>
-  </div>
-
-  <div class="wrapper" *ngIf="reference">
-    <div class="form">
-        <h1 class="form-title display-3">Thank You</h1>    
-        <i class="top-icon fa fa-barcode"></i>        
-        <p class="lead">Please write down your booking number for future reference.</p>
-        <input #email class="email-input" type="text" [value]="reference" disabled>
+      <div class="input-group">
+        <label for="dateTo">Leaving On</label>
+      <input type="date" class="input-control" name="dateTo" id="dateTo" required formControlName="dateTo">
     </div>
-  
-    <button type="submit" class="back-submit-btn btn btn-light" (click)="goHome()">Finish</button>
+
+      <div class="input-group">
+          <label for="guests">Guests</label>
+          <input type="number" class="input-control" id="guests" min="1" name="guests" formControlName="guests" required>
+        </div>
+
+        <div class="input-group">
+          <label for="contactName">Contant Name</label>
+          <input type="text" class="input-control" id="contactName" name="contactName" formControlName="contactName" required>
+        </div>
+
+        <div class="input-group">
+          <label for="phone">Phone</label>
+          <input type="text" class="input-control" id="phone" name="phone" formControlName="phone" required>
+        </div>
+
+        <div class="input-group">
+          <label for="note">Additional Notes</label>
+          <textarea type="text" class="input-control" id="note" name="note" formControlName="note" rows="3"></textarea>
+        </div>
+
+      <div class="alert alert-danger my-3" role="alert" *ngIf="error">
+          {{ error }}
+        </div>
+
+    <button class="btn-book btn btn-success" [disabled]="!form.valid">Book</button>
+
+  </form>
   </div>
+
+</ng-container>
+
+<ng-container *ngIf="reference">
+  <div class="confirmation">
+    <h1 class="form-title display-3">Thank You</h1>    
+    <i class="confirmation-icon fa fa-barcode"></i>        
+    <p class="lead">Please write down your booking number for future reference.</p>
+    <input class="input-control" type="text" [value]="reference" disabled>
+    <button type="submit" class="finish-submit btn btn-light" (click)="goHome()">Finish</button>
+  </div>
+</ng-container>

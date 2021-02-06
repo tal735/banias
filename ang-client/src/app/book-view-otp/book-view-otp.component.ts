@@ -13,8 +13,8 @@ export class BookViewOtpComponent implements OnInit {
 
   step : number = 0;
   reference : string = null;
-  error : string = null;
-  requestError : string = null;
+  otpVerifyError : string = null;
+  otpRequestError : string = null;
   emailSent : boolean = false;
 
   constructor(private authenticationService : AuthenticationService, private networkService : NetworkService, private router : Router, private _location: Location) { }
@@ -26,7 +26,7 @@ export class BookViewOtpComponent implements OnInit {
   requestOtp(element) {
     this.reference = element.value;
     if (!this.reference || this.reference.length == 0) {
-      this.error = "Please provide a reference number.";
+      this.otpVerifyError = "Please provide a reference number.";
       return;
     }
     if (this.authenticationService.isAuthenticated()) {
@@ -37,8 +37,8 @@ export class BookViewOtpComponent implements OnInit {
   }
 
   sendOtpEmail(resend) {
-    this.requestError = null;
-    this.error = null;
+    this.otpRequestError = null;
+    this.otpVerifyError = null;
     this.emailSent = false;
     this.networkService.requestViewOtp(this.reference).subscribe(
       data => {
@@ -47,13 +47,13 @@ export class BookViewOtpComponent implements OnInit {
         }
         this.emailSent = true;
       },
-      error => {this.requestError = error.error}
+      error => {this.otpRequestError = error.error}
     );
   }
 
   verifyOtp(otp) {
     if (!otp.value || otp.value.length == 0) {
-      this.error = "Please provide code.";
+      this.otpVerifyError = "Please provide code.";
       return;
     }
     this.networkService.otpLogin(this.reference, otp.value).subscribe(
@@ -67,7 +67,7 @@ export class BookViewOtpComponent implements OnInit {
         );
       },
       error => {
-        this.error = "Code is invalid.";
+        this.otpVerifyError = "Code is invalid.";
       }
     );
   }

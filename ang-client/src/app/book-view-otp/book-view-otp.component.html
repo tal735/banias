@@ -5,8 +5,8 @@
       <div class="otp-request-inner">
           <input #ref class="input" type="text" placeholder="Reference Number">
           <button type="submit" class="submit-button request-code-button btn btn-primary" (click)="requestOtp(ref)">Proceed</button>
-          <div class="alert alert-danger" role="alert" *ngIf="requestError">
-            {{ requestError }}
+          <div class="alert alert-danger" role="alert" *ngIf="otpRequestError">
+            {{ otpRequestError }}
           </div>
       </div>
     </div>
@@ -19,11 +19,11 @@
         <div class="alert alert-success" role="alert" *ngIf="emailSent">
             An email has been sent.
         </div>
-        <div class="alert alert-danger" role="alert" *ngIf="error">
-          {{ error }}
+        <div class="alert alert-danger" role="alert" *ngIf="otpVerifyError">
+          {{ otpVerifyError }}
         </div>
       </div>
     </div>
-  </ng-container>
+</ng-container>
 
-  <app-book-edit *ngIf="step==2" [reference]="reference"></app-book-edit>
+<app-book-edit *ngIf="step==2" [reference]="reference"></app-book-edit>
