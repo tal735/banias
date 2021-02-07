@@ -61,6 +61,7 @@
       background: none;
       cursor: pointer;
       justify-content: space-around;
+      align-items: center;
   }
   
   .contact .btn-wrapper i {
