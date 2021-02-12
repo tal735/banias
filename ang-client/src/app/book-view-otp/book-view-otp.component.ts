@@ -32,7 +32,8 @@ export class BookViewOtpComponent implements OnInit {
     if (this.authenticationService.isAuthenticated()) {
       this.step = 2;
     } else {
-      this.sendOtpEmail(false);
+      let resend = false;
+      this.sendOtpEmail(resend);
     }
   }
 
@@ -62,7 +63,6 @@ export class BookViewOtpComponent implements OnInit {
           response => {
             this.authenticationService.setUser(response);
             this.step++;
-            console.log('GOOD!' + this.step);
           }
         );
       },

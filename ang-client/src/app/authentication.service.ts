@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
 
   user : any;
+  redirect : string = null;
 
   constructor(private networkService : NetworkService, private router : Router) { }
 
@@ -15,30 +16,10 @@ export class AuthenticationService {
     this.user = user;
   }
 
-
-  otpLogin(username, password) {
-    this.networkService.otpLogin(username, password).subscribe(
-      () => {
-        this.checkAuthentication();
-      } 
-    )
-  }
-
-  login(username, password) {
-    this.networkService.login(username, password).subscribe(
-      () => {
-        this.checkAuthentication();
-      } 
-    )
-  }
-
   checkAuthentication() {
     this.networkService.getUser().subscribe(
       response => {
         this.setUser(response);
-        // if (this.isAuthenticated()) { /* move from here */
-        //   this.router.navigate(["/home"]);
-        // }
       },
       error => {
         console.log('error: ' + error);

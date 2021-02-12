@@ -7,20 +7,16 @@ import { AuthenticationService } from '../authentication.service';
 })
 export class AuthGuardService implements CanActivate {
 
-  routeURL: string;
 
-  constructor(private authService: AuthenticationService, private router: Router) {
-    this.routeURL = this.router.url;
-  }
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (!this.authService.isAuthenticated()) {
-        this.routeURL = '/login';
+        this.authService.redirect = state.url;
         this.router.navigate(['/login']);
-        return resolve(false);
+        return reject(true);
       } else {
-        this.routeURL = this.router.url;
         return resolve(true);
       }
     });
