@@ -2,13 +2,12 @@ package com.app.service.scheduled;
 
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
-import com.app.service.jms.EmailMessage;
-import com.app.service.jms.MessageProducer;
+import com.app.service.email.EmailDispatcher;
+import com.app.service.email.EmailMessage;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -20,15 +19,15 @@ public class SendReminderJob {
     private static final Logger LOGGER = LoggerFactory.getLogger(SendReminderJob.class);
 
     private final BookingService bookingService;
-    private final MessageProducer messageProducer;
+    private final EmailDispatcher emailDispatcher;
 
     @Autowired
-    public SendReminderJob(BookingService bookingService, MessageProducer messageProducer) {
+    public SendReminderJob(BookingService bookingService, EmailDispatcher emailDispatcher) {
         this.bookingService = bookingService;
-        this.messageProducer = messageProducer;
+        this.emailDispatcher = emailDispatcher;
     }
 
-    @Scheduled(cron = "0 0 3 * * *") // every day at 3AM
+//    @Scheduled(cron = "0 0 3 * * *") // every day at 3AM
     public void sendReminder() {
         try {
             LOGGER.debug("sendReminder: job started.");
@@ -41,7 +40,7 @@ public class SendReminderJob {
                 emailMessage.setTo(booking.getUser().getEmail());
                 emailMessage.setSubject("We are waiting for you!");
                 emailMessage.setText(generateEmailBody(booking));
-                messageProducer.sendMessage(MessageProducer.EMAIL_QUEUE_NAME, emailMessage);
+                emailDispatcher.sendMessage(emailMessage);
             }
             LOGGER.debug("sendReminder: job finished.");
         } catch (Exception e) {

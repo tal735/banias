@@ -1,4 +1,4 @@
-package com.app.service.jms;
+package com.app.service.email;
 
 import java.io.Serializable;
 

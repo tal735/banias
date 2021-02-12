@@ -3,8 +3,8 @@ package com.app.controller.otp;
 import com.app.controller.validator.EmailValidator;
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
-import com.app.service.jms.EmailMessage;
-import com.app.service.jms.MessageProducer;
+import com.app.service.email.EmailDispatcher;
+import com.app.service.email.EmailMessage;
 import com.app.service.otp.OTPService;
 import com.app.service.user.UserService;
 import org.slf4j.Logger;
@@ -22,14 +22,14 @@ public class OTPController {
     private final UserService userService;
     private final BookingService bookingService;
     private final OTPService otpService;
-    private final MessageProducer messageProducer;
+    private final EmailDispatcher emailDispatcher;
 
     @Autowired
-    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, MessageProducer messageProducer) {
+    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, EmailDispatcher emailDispatcher) {
         this.userService = userService;
         this.bookingService = bookingService;
         this.otpService = otpService;
-        this.messageProducer = messageProducer;
+        this.emailDispatcher = emailDispatcher;
     }
 
     @PostMapping(value = "/otp/book")
@@ -62,6 +62,6 @@ public class OTPController {
 
     private void dispatchEmail(String email, String otp) {
         EmailMessage message = new EmailMessage(email, "Your OTP", "Your OTP is: " + otp);
-        messageProducer.sendMessage(MessageProducer.EMAIL_QUEUE_NAME, message);
+        emailDispatcher.sendMessage(message);
     }
 }
