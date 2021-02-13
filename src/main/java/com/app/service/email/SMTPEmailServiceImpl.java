@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("SMTPEmailServiceImpl")
 public class SMTPEmailServiceImpl implements EmailService {
 
@@ -19,7 +21,7 @@ public class SMTPEmailServiceImpl implements EmailService {
     }
 
     @Override
-    public boolean sendEmail(String to, String subject, String text) {
+    public boolean sendEmail(List<String> to, String subject, String text) {
         LOGGER.debug("Sending Email to: " + to + ", subject: " + subject + ", text: " + text);
 //        SimpleMailMessage message = new SimpleMailMessage();
 //        message.setFrom("noreply@baniascamping.com");

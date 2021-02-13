@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -83,16 +82,8 @@ public class AdminBookingController {
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
-        Booking booking = bookingService.getById(id);
-        booking.setDateFrom(updateRequest.getDateFrom());
-        booking.setDateTo(updateRequest.getDateTo());
-        booking.setGuests(updateRequest.getGuests());
-        booking.setContactName(updateRequest.getContactName());
-        booking.setPhone(updateRequest.getPhone());
-        booking.setStatus(updateRequest.getStatus());
-        booking.setDateModified(new Date());
-        bookingService.saveOrUpdate(booking);
-        return ResponseEntity.ok(new BookingDto(booking, true));
+        Booking updateBooking = bookingService.updateBookingById(id, updateRequest);
+        return ResponseEntity.ok(new BookingDto(updateBooking, true));
     }
 
     @GetMapping("/{id}/notes")

@@ -24,7 +24,7 @@ public class JmsConfig {
         connectionFactory.setBrokerURL(BROKER_URL);
         connectionFactory.setPassword(BROKER_USERNAME);
         connectionFactory.setUserName(BROKER_PASSWORD);
-        connectionFactory.setTrustedPackages(Lists.newArrayList("com.app.service.jms"));
+        connectionFactory.setTrustedPackages(Lists.newArrayList("com.app.service.email","java.util"));
         return connectionFactory;
     }
 

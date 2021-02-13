@@ -26,13 +26,10 @@ public class BookingDaoImpl implements BookingDao {
 
     @Override
     public void saveOrUpdate(Booking booking) {
-        if (booking.getId() == null) {
-            sessionFactory.getCurrentSession().saveOrUpdate(booking);
-        } else {
-            Booking dbBooking = getById(booking.getId());
-            dbBooking.setDateModified(new Date());
-            sessionFactory.getCurrentSession().merge(booking);
+        if (booking.getId() != null) {
+            booking.setDateModified(new Date());
         }
+        sessionFactory.getCurrentSession().saveOrUpdate(booking);
     }
 
     @Override

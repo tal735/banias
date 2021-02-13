@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -47,7 +45,7 @@ public class BookingController {
 
     @PostMapping
     @ResponseBody
-    public ResponseEntity book(@RequestBody BookingRequest bookingRequest, HttpServletRequest httpServletRequest) throws Exception {
+    public ResponseEntity book(@RequestBody BookingRequest bookingRequest) throws Exception {
         SessionUserDetails user = SecurityUtils.getLoggedInUser();
         Map<String, String> errors = bookingValidator.validate(user.getUserId(), null, bookingRequest);
         if (!errors.isEmpty()) {
@@ -58,7 +56,6 @@ public class BookingController {
         Long bookingId = booking.getId();
         booking = bookingService.getById(bookingId);
         BookingDto bookingDto = new BookingDto(booking);
-        httpServletRequest.logout();
         return ResponseEntity.ok().body(bookingDto);
     }
 
@@ -70,18 +67,9 @@ public class BookingController {
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
         }
-
-        Booking booking = bookingService.getByReference(reference);
-        booking.setDateFrom(bookingRequest.getDateFrom());
-        booking.setDateTo(bookingRequest.getDateTo());
-        booking.setGuests(bookingRequest.getGuests());
-        booking.setContactName(bookingRequest.getContactName());
-        booking.setPhone(bookingRequest.getPhone());
-        booking.setStatus(Booking.BookingStatus.PENDING);
-        booking.setDateModified(new Date());
-        bookingService.saveOrUpdate(booking);
-
-        BookingDto bookingDto = new BookingDto(booking);
+        bookingRequest.setStatus(Booking.BookingStatus.PENDING);
+        Booking updatedBooking = bookingService.updateBookingByReference(reference, bookingRequest);
+        BookingDto bookingDto = new BookingDto(updatedBooking);
         return ResponseEntity.ok(bookingDto);
     }
 
@@ -93,9 +81,8 @@ public class BookingController {
         if (booking == null || !booking.getUser().getId().equals(userId)) {
             return ResponseEntity.badRequest().body("Booking does not belong to user.");
         }
-        booking.setStatus(Booking.BookingStatus.CANCELLED);
-        bookingService.saveOrUpdate(booking);
-        BookingDto bookingDto = new BookingDto(booking);
+        Booking updatedBooking = bookingService.cancelBooking(booking.getId());
+        BookingDto bookingDto = new BookingDto(updatedBooking);
         return ResponseEntity.ok(bookingDto);
     }
 }

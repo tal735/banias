@@ -7,8 +7,9 @@ import com.app.dao.booking.BookingNoteDao;
 import com.app.model.booking.Booking;
 import com.app.model.booking.BookingNote;
 import com.app.model.user.User;
-import com.app.service.email.EmailDispatcher;
-import com.app.service.email.EmailMessage;
+import com.app.service.notification.NotificationService;
+import com.app.service.notification.diff.Diff;
+import com.app.service.notification.diff.DiffUtils;
 import com.app.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,14 @@ public class BookingServiceImpl implements BookingService {
     private final BookingDao bookingDao;
     private final BookingNoteDao bookingNoteDao;
     private final UserService userService;
-    private final EmailDispatcher emailDispatcher;
+    private final NotificationService notificationService;
 
     @Autowired
-    public BookingServiceImpl(BookingDao bookingDao, BookingNoteDao bookingNoteDao, UserService userService, EmailDispatcher emailDispatcher) {
+    public BookingServiceImpl(BookingDao bookingDao, BookingNoteDao bookingNoteDao, UserService userService, NotificationService notificationService) {
         this.bookingDao = bookingDao;
         this.bookingNoteDao = bookingNoteDao;
         this.userService = userService;
-        this.emailDispatcher = emailDispatcher;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -51,11 +52,7 @@ public class BookingServiceImpl implements BookingService {
         if (StringUtils.isNotBlank(bookingRequest.getNote())) {
             saveNote(user, booking, bookingRequest.getNote());
         }
-        // send email
-        String html = "Hello " + bookingRequest.getContactName() + "\n" + "Booking Reference: " + booking.getReference() + "\nYou will be notified when your booking is examined and approved.";
-        EmailMessage emailMessage = new EmailMessage(user.getEmail(), "Your Booking Details", html);
-        emailDispatcher.sendMessage(emailMessage);
-
+        notificationService.notifyBookingAdded(booking);
         return booking;
     }
 
@@ -63,6 +60,16 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public Booking saveOrUpdate(Booking booking) {
         bookingDao.saveOrUpdate(booking);
+        return booking;
+    }
+
+    @Override
+    @Transactional
+    public Booking cancelBooking(Long bookingId) {
+        Booking booking = getById(bookingId);
+        booking.setStatus(Booking.BookingStatus.CANCELLED);
+        saveOrUpdate(booking);
+        notificationService.notifyBookingCancelled(booking);
         return booking;
     }
 
@@ -77,7 +84,9 @@ public class BookingServiceImpl implements BookingService {
     public BookingNote addNote(Long userId, Long bookingId, String note) {
         User user = userService.getById(userId);
         Booking booking = bookingDao.getById(bookingId);
-        return saveNote(user, booking, note);
+        BookingNote bookingNote = saveNote(user, booking, note);
+        notificationService.notifyNoteAdded(bookingNote);
+        return bookingNote;
     }
 
     @Override
@@ -108,6 +117,36 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public List<Booking> getBookingForReminder(Date dateFrom) {
         return bookingDao.getBookingForReminder(dateFrom);
+    }
+
+    @Override
+    @Transactional
+    public Booking updateBookingById(Long bookingId, BookingRequest bookingRequest) {
+        Booking booking = getById(bookingId);
+        return updateBooking(booking, bookingRequest);
+    }
+
+    @Override
+    @Transactional
+    public Booking updateBookingByReference(String reference, BookingRequest bookingRequest) {
+        Booking booking = getByReference(reference);
+        return updateBooking(booking, bookingRequest);
+    }
+
+    private Booking updateBooking(Booking booking, BookingRequest bookingRequest) {
+        // find diffs
+        List<Diff> diffs = DiffUtils.findDiffs(booking, bookingRequest);
+        // update
+        booking.setDateFrom(bookingRequest.getDateFrom());
+        booking.setDateTo(bookingRequest.getDateTo());
+        booking.setGuests(bookingRequest.getGuests());
+        booking.setContactName(bookingRequest.getContactName());
+        booking.setPhone(bookingRequest.getPhone());
+        booking.setStatus(bookingRequest.getStatus());
+        saveOrUpdate(booking);
+        // send notification about diffs
+        notificationService.notifyBookingModified(booking, diffs);
+        return booking;
     }
 
     private BookingNote saveNote(User user, Booking booking, String note) {

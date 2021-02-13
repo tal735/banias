@@ -1,26 +1,27 @@
 package com.app.service.email;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class EmailMessage implements Serializable {
-    private String to;
+    private List<String> to;
     private String subject;
     private String text;
 
     public EmailMessage() {
     }
 
-    public EmailMessage(String to, String subject, String text) {
+    public EmailMessage(List<String> to, String subject, String text) {
         this.to = to;
         this.subject = subject;
         this.text = text;
     }
 
-    public String getTo() {
+    public List<String> getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(List<String> to) {
         this.to = to;
     }
 

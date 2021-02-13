@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("MailJetEmailServiceImpl")
 public class MailJetEmailServiceImpl implements EmailService {
 
@@ -21,7 +23,7 @@ public class MailJetEmailServiceImpl implements EmailService {
     private static final String MAILJET_EMAIL_ADDRESS = "jbytttzvrq@effobe.com";
 
     @Override
-    public boolean sendEmail(String to, String subject, String text) {
+    public boolean sendEmail(List<String> to, String subject, String text) {
         try {
             MailjetClient client;
             MailjetRequest request;

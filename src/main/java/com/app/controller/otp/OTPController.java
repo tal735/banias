@@ -3,8 +3,7 @@ package com.app.controller.otp;
 import com.app.controller.validator.EmailValidator;
 import com.app.model.booking.Booking;
 import com.app.service.booking.BookingService;
-import com.app.service.email.EmailDispatcher;
-import com.app.service.email.EmailMessage;
+import com.app.service.notification.NotificationService;
 import com.app.service.otp.OTPService;
 import com.app.service.user.UserService;
 import org.slf4j.Logger;
@@ -22,14 +21,14 @@ public class OTPController {
     private final UserService userService;
     private final BookingService bookingService;
     private final OTPService otpService;
-    private final EmailDispatcher emailDispatcher;
+    private final NotificationService notificationService;
 
     @Autowired
-    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, EmailDispatcher emailDispatcher) {
+    public OTPController(UserService userService, BookingService bookingService, OTPService otpService, NotificationService notificationService) {
         this.userService = userService;
         this.bookingService = bookingService;
         this.otpService = otpService;
-        this.emailDispatcher = emailDispatcher;
+        this.notificationService = notificationService;
     }
 
     @PostMapping(value = "/otp/book")
@@ -39,10 +38,7 @@ public class OTPController {
             return ResponseEntity.badRequest().body("Email is invalid");
         }
         String userEmail = email.toLowerCase().trim();
-        userService.getOrCreateUser(userEmail);
-        String otp = otpService.generateOtp(userEmail);
-        dispatchEmail(userEmail, otp);
-        LOGGER.debug("Email: " + email + ", OTP: " + otp);
+        sendOtp(userEmail);
         return ResponseEntity.ok().build();
     }
 
@@ -54,14 +50,13 @@ public class OTPController {
             return ResponseEntity.badRequest().body("Reference number not found.");
         }
         String userEmail = booking.getUser().getEmail();
-        String otp = otpService.generateOtp(userEmail);
-        dispatchEmail(userEmail, otp);
-        LOGGER.debug("Reference: " + reference + ", OTP: " + otp);
+        sendOtp(userEmail);
         return ResponseEntity.ok().build();
     }
 
-    private void dispatchEmail(String email, String otp) {
-        EmailMessage message = new EmailMessage(email, "Your OTP", "Your OTP is: " + otp);
-        emailDispatcher.sendMessage(message);
+    private void sendOtp(String userEmail) {
+        userService.getOrCreateUser(userEmail);
+        String otp = otpService.generateOtp(userEmail);
+        notificationService.notifyOtp(userEmail, otp);
     }
 }

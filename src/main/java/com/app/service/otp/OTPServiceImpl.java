@@ -2,8 +2,6 @@ package com.app.service.otp;
 
 import com.app.service.otp.store.OTPStore;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,13 +13,10 @@ public class OTPServiceImpl implements OTPService {
     private final OTPStore otpStore;
     private final PasswordEncoder passwordEncoder;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OTPServiceImpl.class);
-
     @Autowired
     public OTPServiceImpl(@Qualifier("CacheOTPStoreImpl") OTPStore otpStore, PasswordEncoder passwordEncoder) {
         this.otpStore = otpStore;
         this.passwordEncoder = passwordEncoder;
-        LOGGER.debug("OTPServiceImpl CONSTRUCTOR");
     }
 
     @Override
