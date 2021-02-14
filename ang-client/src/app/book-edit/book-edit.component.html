@@ -6,7 +6,7 @@
 </div>
 
 <div class="container" *ngIf="booking">
-    <form [formGroup]="form" (ngSubmit)="onFormSubmit()">
+    <form [formGroup]="form">
       <h4 class="edit-title display-4">Booking Details</h4>  
         <fieldset [disabled]="isCancelled()">
           <div class="form-group">
@@ -50,7 +50,7 @@
           </div>
 
           <div class="buttons">
-            <button class="btn btn-success" [disabled]="!form.valid"><i class="fa fa-edit"></i>  Request Changes</button>
+            <button class="btn btn-success" [disabled]="!form.valid"><i class="fa fa-edit" (click)="onFormSubmit()"></i>  Request Changes</button>
             <button type="submit" class="btn btn-danger" (click)='cancelBooking()'><i class="fa fa-times"></i> Cancel Booking</button>
           </div>
         
