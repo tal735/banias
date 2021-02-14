@@ -1,5 +1,6 @@
 package com.app.config.security.otp;
 
+import com.app.config.security.AuthoritiesConstants;
 import com.app.model.booking.Booking;
 import com.app.model.user.User;
 import com.app.service.booking.BookingService;
@@ -48,7 +49,7 @@ public class OTPUserDetailsServiceImpl implements UserDetailsService {
 
         SessionUserDetails u = new SessionUserDetails();
         u.setPassword(otp);
-        u.setAuthorities(Sets.newHashSet(new SimpleGrantedAuthority("ROLE_USER")));
+        u.setAuthorities(Sets.newHashSet(new SimpleGrantedAuthority(AuthoritiesConstants.USER)));
         u.setUsername(user.getEmail());
         u.setUserId(user.getId());
 

@@ -1,5 +1,6 @@
 package com.app.config.security.dao;
 
+import com.app.config.security.AuthoritiesConstants;
 import com.app.model.user.User;
 import com.app.service.user.SessionUserDetails;
 import com.app.service.user.UserService;
@@ -27,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User " + email + " Not Found.");
         }
 
-        Set<SimpleGrantedAuthority> authorities = Sets.newHashSet(new SimpleGrantedAuthority("ROLE_USER"));
+        Set<SimpleGrantedAuthority> authorities = Sets.newHashSet(new SimpleGrantedAuthority(AuthoritiesConstants.USER));
         user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
 
         SessionUserDetails u = new SessionUserDetails();
