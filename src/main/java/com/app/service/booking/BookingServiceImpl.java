@@ -52,6 +52,7 @@ public class BookingServiceImpl implements BookingService {
         if (StringUtils.isNotBlank(bookingRequest.getNote())) {
             saveNote(user, booking, bookingRequest.getNote());
         }
+        bookingDao.flushAndRefresh(booking); // to get db-auto-generated reference number.   https://stackoverflow.com/questions/63523314/jpa-entity-not-being-created-with-default-value-with-migration-query
         notificationService.notifyBookingAdded(booking);
         return booking;
     }

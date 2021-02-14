@@ -107,4 +107,10 @@ public class BookingDaoImpl implements BookingDao {
         criteria.setFetchMode("user", FetchMode.JOIN);
         return criteria.list();
     }
+
+    @Override
+    public void flushAndRefresh(Booking booking) {
+        sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().refresh(booking);
+    }
 }

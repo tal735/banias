@@ -57,7 +57,6 @@ public class AdminBookingController {
         }
 
         Booking booking = bookingService.book(user.getId(), bookingAddRequest);
-        booking = bookingService.getById(booking.getId());
         return ResponseEntity.ok(new BookingDto(booking, true));
     }
 

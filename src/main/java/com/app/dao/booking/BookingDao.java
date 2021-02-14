@@ -13,4 +13,5 @@ public interface BookingDao {
     Booking getByReference(String reference);
     List<Booking> getExistingBookings(Long userId, Date dateFrom, Date dateTo);
     List<Booking> getBookingForReminder(Date dateFrom);
+    void flushAndRefresh(Booking booking);
 }

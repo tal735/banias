@@ -53,8 +53,6 @@ public class BookingController {
         }
         bookingRequest.setStatus(Booking.BookingStatus.PENDING);
         Booking booking = bookingService.book(user.getUserId(), bookingRequest);
-        Long bookingId = booking.getId();
-        booking = bookingService.getById(bookingId);
         BookingDto bookingDto = new BookingDto(booking);
         return ResponseEntity.ok().body(bookingDto);
     }
