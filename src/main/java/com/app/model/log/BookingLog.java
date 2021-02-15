@@ -1,6 +1,5 @@
 package com.app.model.log;
 
-
 import com.app.model.DaoModel;
 import com.app.model.booking.Booking;
 
