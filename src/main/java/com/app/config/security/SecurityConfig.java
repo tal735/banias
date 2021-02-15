@@ -10,6 +10,7 @@ import com.app.config.security.dao.UserDetailsServiceImpl;
 import com.app.service.user.UserService;
 import com.app.config.security.otp.OTPUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -40,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired AuthenticationEntryPoint authenticationEntryPoint;
     @Autowired AccessDeniedHandler accessDeniedHandler;
     @Autowired LogoutSuccessHandler logoutSuccessHandler;
-    @Autowired AuthenticationSuccessHandler successHandler;
+    @Autowired @Qualifier("AjaxAuthenticationSuccessHandler") AuthenticationSuccessHandler successHandler;
+    @Autowired @Qualifier("OTPAuthenticationSuccessHandler")  AuthenticationSuccessHandler otpSuccessHandler;
     @Autowired AuthenticationFailureHandler failureHandler;
 
     @Bean
@@ -78,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         // configure filters
         http.addFilterBefore( new DaoAuthenticationFilter("/authentication", successHandler, failureHandler, authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class );
-        http.addFilterBefore( new OTPAuthenticationFilter("/api/authentication", successHandler, failureHandler, authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class );
+        http.addFilterBefore( new OTPAuthenticationFilter("/api/authentication", otpSuccessHandler, failureHandler, authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class );
 
         // configure authentication providers
         http.authenticationProvider( authenticationProvider() );
