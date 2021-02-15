@@ -109,7 +109,7 @@ public class BookingValidator {
         if (StringUtils.isBlank(bookingRequest.getPhone())) {
             errors.put("error", "Please enter a valid phone number.");
         } else if (StringUtils.length(bookingRequest.getContactName()) < 3) {
-            errors.put("error", "Please enter a valid name.");
+            errors.put("error", "Please enter a valid contact name.");
         } else if (bookingRequest.getDateFrom() == null || bookingRequest.getDateTo() == null) {
             errors.put("error", "Please enter valid dates.");
         } else if (bookingRequest.getDateFrom().after(bookingRequest.getDateTo())) {
