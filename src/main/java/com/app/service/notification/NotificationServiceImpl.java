@@ -55,10 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void notifyBookingModified(Booking booking, List<Diff> diffs) {
         if (!CollectionUtils.isEmpty(diffs)) {
-            String changes = diffs.stream().map(diff ->
-                    diff.getField() + " has been updated from '" + diff.getOldValue() + "' to '" + diff.getNewValue() + "'")
-                    .collect(Collectors.joining("\n"));
-
+            String changes = diffs.stream().map(Diff::toString).collect(Collectors.joining("\n"));
             String subject = "Booking Modified [" + booking.getReference() + "]";
             String html = "Booking Reference: " + booking.getReference() + " has been modified.\nHere are the changes:\n" + changes;
             sendEmail(booking.getUser().getEmail(), subject, html);

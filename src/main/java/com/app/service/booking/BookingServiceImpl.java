@@ -7,6 +7,7 @@ import com.app.dao.booking.BookingNoteDao;
 import com.app.model.booking.Booking;
 import com.app.model.booking.BookingNote;
 import com.app.model.user.User;
+import com.app.service.log.LogService;
 import com.app.service.notification.NotificationService;
 import com.app.service.notification.diff.Diff;
 import com.app.service.notification.diff.DiffUtils;
@@ -26,13 +27,15 @@ public class BookingServiceImpl implements BookingService {
     private final BookingNoteDao bookingNoteDao;
     private final UserService userService;
     private final NotificationService notificationService;
+    private final LogService logService;
 
     @Autowired
-    public BookingServiceImpl(BookingDao bookingDao, BookingNoteDao bookingNoteDao, UserService userService, NotificationService notificationService) {
+    public BookingServiceImpl(BookingDao bookingDao, BookingNoteDao bookingNoteDao, UserService userService, NotificationService notificationService, LogService logService) {
         this.bookingDao = bookingDao;
         this.bookingNoteDao = bookingNoteDao;
         this.userService = userService;
         this.notificationService = notificationService;
+        this.logService = logService;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class BookingServiceImpl implements BookingService {
         }
         bookingDao.flushAndRefresh(booking); // to get db-auto-generated reference number.   https://stackoverflow.com/questions/63523314/jpa-entity-not-being-created-with-default-value-with-migration-query
         notificationService.notifyBookingAdded(booking);
+        logService.logBookingAdded(booking);
         return booking;
     }
 
@@ -70,6 +74,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = getById(bookingId);
         booking.setStatus(Booking.BookingStatus.CANCELLED);
         saveOrUpdate(booking);
+        logService.logBookingCancelled(booking);
         notificationService.notifyBookingCancelled(booking);
         return booking;
     }
@@ -147,6 +152,7 @@ public class BookingServiceImpl implements BookingService {
         saveOrUpdate(booking);
         // send notification about diffs
         notificationService.notifyBookingModified(booking, diffs);
+        logService.logBookingModified(booking, diffs);
         return booking;
     }
 

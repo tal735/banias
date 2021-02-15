@@ -76,3 +76,13 @@ create table otp(
                     date_created timestamp default now()
 );
 create index otp_reference on otp(reference);
+
+create table booking_log (
+                               id numeric(19,0) primary key,
+                               booking_id numeric(19,0),
+                               date timestamp,
+                               log text,
+                               constraint booking_log_booking_id_fk FOREIGN KEY (booking_id) references booking(id)
+);
+create index booking_log_booking_id_idx on booking_log(booking_id);
+CREATE SEQUENCE booking_log_id_sequence START 1;

@@ -24,7 +24,7 @@ public class JmsConfig {
         connectionFactory.setBrokerURL(BROKER_URL);
         connectionFactory.setPassword(BROKER_USERNAME);
         connectionFactory.setUserName(BROKER_PASSWORD);
-        connectionFactory.setTrustedPackages(Lists.newArrayList("com.app.service.email","java.util"));
+        connectionFactory.setTrustedPackages(Lists.newArrayList("com.app.service.email","com.app.service.log","java.util","java.lang"));
         return connectionFactory;
     }
 
@@ -44,7 +44,7 @@ public class JmsConfig {
         return factory;
     }
 
-    @Bean
+    @Bean("EmailThreadPoolTaskExecutor")
     public TaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);
@@ -52,6 +52,18 @@ public class JmsConfig {
         executor.setQueueCapacity(100);
         executor.setKeepAliveSeconds(30000);
         executor.setThreadNamePrefix("otp_email_executor_thread");
+        executor.initialize();
+        return executor;
+    }
+
+    @Bean("BookingLogThreadPoolTaskExecutor")
+    public TaskExecutor bookingLogThreadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(50);
+        executor.setQueueCapacity(100);
+        executor.setKeepAliveSeconds(30000);
+        executor.setThreadNamePrefix("booking_log_executor_thread");
         executor.initialize();
         return executor;
     }

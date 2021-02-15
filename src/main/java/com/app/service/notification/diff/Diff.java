@@ -34,4 +34,9 @@ public class Diff {
     public void setNewValue(String newValue) {
         this.newValue = newValue;
     }
+
+    @Override
+    public String toString() {
+        return this.field + " has been updated from '" + this.oldValue + "' to '" + this.newValue + "'";
+    }
 }

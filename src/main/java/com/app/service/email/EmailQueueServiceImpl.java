@@ -14,13 +14,13 @@ public class EmailQueueServiceImpl implements EmailQueueService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailQueueServiceImpl.class);
 
-    public final static String EMAIL_QUEUE_NAME = "inbound.queue";
+    public final static String EMAIL_QUEUE_NAME = "email.queue";
 
     private final EmailService emailService;
     private final TaskExecutor threadPoolTaskExecutor;
     private final JmsTemplate jmsTemplate;
 
-    public EmailQueueServiceImpl(@Qualifier("SMTPEmailServiceImpl") EmailService emailService, TaskExecutor threadPoolTaskExecutor, JmsTemplate jmsTemplate) {
+    public EmailQueueServiceImpl(@Qualifier("SMTPEmailServiceImpl") EmailService emailService, @Qualifier("EmailThreadPoolTaskExecutor") TaskExecutor threadPoolTaskExecutor, JmsTemplate jmsTemplate) {
         this.emailService = emailService;
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.jmsTemplate = jmsTemplate;
