@@ -41,10 +41,12 @@ public class BookingValidator {
             List<Booking> bookings = bookingService.getExistingBookings(userId,
                     bookingRequest.getDateFrom(), bookingRequest.getDateTo());
             if (StringUtils.isBlank(bookingReference)) {
+                // new booking
                 if (!bookings.isEmpty()) {
                     errors.put("error", "There is another booking during these dates.");
                 }
             } else {
+                // updating existing booking
                 if (bookings.size() > 1) {
                     errors.put("error", "There is another booking during these dates.");
                 } else if (bookings.size() == 1) {
