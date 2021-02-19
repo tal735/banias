@@ -1,0 +1,3 @@
+docker start pg
+docker start pgadmin
+docker start artemis

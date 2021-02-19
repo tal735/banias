@@ -1,0 +1,15 @@
+tomcat_dir=/home/ryzen/apache-tomcat-9.0.43
+webapps_dir=$tomcat_dir/webapps
+project_dir=/home/ryzen/IdeaProjects/banias/target
+war_name=app
+
+# remove old war from tomcat
+rm -rf $webapps_dir/$war_name
+rm  $webapps_dir/$war_name.war
+
+
+# copy new war to tomcat
+cp $project_dir/$war_name.war $webapps_dir
+
+# run tomcat
+$tomcat_dir/bin/catalina.sh jpda run
