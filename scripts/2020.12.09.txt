@@ -25,9 +25,6 @@ https://www.programmersought.com/article/85994235623/
 sudo /var/lib/test-broker/bin/artemis run
 sudo tail -f /var/lib/test-broker/log/artemis.log
 
-docker run -it --rm  --name=artemis -p 8161:8161  -p 61616:61616 -e ARTEMIS_USERNAME=test -e ARTEMIS_PASSWORD=test -v /var/lib/artemis/data:/artemis/data vromero/activemq-artemis
-USED: docker run -d  --name artemis -p 8161:8161  -p 61616:61616 -e ARTEMIS_USERNAME=test -e ARTEMIS_PASSWORD=test -v /var/lib/artemis/data:/artemis/data vromero/activemq-artemis
-
 DataSource with JNDI (Tomcat)
 -----------------------------
 https://www.baeldung.com/spring-persistence-jpa-jndi-datasource
@@ -35,3 +32,14 @@ https://www.journaldev.com/2597/spring-datasource-jndi-with-tomcat-example
 
 insert into usr values(nextval('usr_id_sequence'),'a@a.com','$2y$12$o9MkipQwa1NQxsW5GwyP9.JFQOAruHC6mo1LuH9mmSrCUf/y9CqUC');
 insert into usr_role values(1,'ADMIN');
+
+
+https://medium.com/@nithin.biliya/deploying-angular-application-on-tomcat-server-fixing-deep-linking-issue-577565fe303d
+https://stackoverflow.com/questions/2078915/a-regular-expression-to-exclude-a-word-string
+
+
+Docker containers setup:
+------------------------
+docker run -d  --name artemis -p 8161:8161  -p 61616:61616 -e ARTEMIS_USERNAME=test -e ARTEMIS_PASSWORD=test -v /var/lib/artemis/data:/artemis/data vromero/activemq-artemis
+docker run --name pgadmin -p 5050:80  -e "PGADMIN_DEFAULT_EMAIL=user@user.com" -e "PGADMIN_DEFAULT_PASSWORD=admin"  -d dpage/pgadmin4
+docker container run -d --name=pg -p 5432:5432 -e POSTGRES_PASSWORD=secret -e PGDATA=/pgdata -v /pgdata:/pgdata postgres
