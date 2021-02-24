@@ -24,8 +24,8 @@ import { BookViewOtpComponent } from './book-view-otp/book-view-otp.component';
 import { BookEditComponent } from './book-edit/book-edit.component';
 import { BookNewComponent } from './book-new/book-new.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
-import { MustReadComponent } from './must-read/must-read.component';
 import { AdminBookingAddComponent } from './admin-booking-add/admin-booking-add.component';
+import { GuidelinesComponent } from './guidelines/guidelines.component';
 
 @NgModule({
   declarations: [
@@ -42,8 +42,8 @@ import { AdminBookingAddComponent } from './admin-booking-add/admin-booking-add.
     BookEditComponent,
     BookNewComponent,
     ContactUsComponent,
-    MustReadComponent,
-    AdminBookingAddComponent
+    AdminBookingAddComponent,
+    GuidelinesComponent
   ],
   imports: [
     BrowserModule,
