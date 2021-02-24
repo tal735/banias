@@ -30,7 +30,7 @@ DataSource with JNDI (Tomcat)
 https://www.baeldung.com/spring-persistence-jpa-jndi-datasource
 https://www.journaldev.com/2597/spring-datasource-jndi-with-tomcat-example
 
-insert into usr values(nextval('usr_id_sequence'),'a@a.com','$2y$12$o9MkipQwa1NQxsW5GwyP9.JFQOAruHC6mo1LuH9mmSrCUf/y9CqUC');
+insert into usr values(nextval('usr_id_sequence'),'admin@admin.com','$2y$12$lCCaIcknHr3SblNFbIuWceyIoMjyPAfvpEiEkTmwlcYg3Qwbl0Q8G');
 insert into usr_role values(1,'ADMIN');
 
 
@@ -43,3 +43,38 @@ Docker containers setup:
 docker run -d  --name artemis -p 8161:8161  -p 61616:61616 -e ARTEMIS_USERNAME=test -e ARTEMIS_PASSWORD=test -v /var/lib/artemis/data:/artemis/data vromero/activemq-artemis
 docker run --name pgadmin -p 5050:80  -e "PGADMIN_DEFAULT_EMAIL=user@user.com" -e "PGADMIN_DEFAULT_PASSWORD=admin"  -d dpage/pgadmin4
 docker container run -d --name=pg -p 5432:5432 -e POSTGRES_PASSWORD=secret -e PGDATA=/pgdata -v /pgdata:/pgdata postgres
+
+https://www.linode.com/docs/guides/apache-tomcat-on-ubuntu-18-04/
+https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/
+https://stackoverflow.com/questions/299412/is-there-any-winscp-equivalent-for-linux
+https://linuxize.com/post/how-to-setup-a-firewall-with-ufw-on-ubuntu-18-04/
+https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
+https://medium.com/@hasnat.saeed/setup-activemq-artemis-on-ubuntu-18-04-76bb4975308b
+https://linuxconfig.org/redhat-8-open-http-port-80-and-https-port-443-with-firewalld
+
+
+https://stackoverflow.com/questions/54774942/how-to-configure-port-forwarding-with-google-cloud-compute-engine-for-a-node-js/54782096
+https://stackoverflow.com/questions/24861311/forwarding-port-80-to-8080-using-nginx
+this worked: https://eladnava.com/binding-nodejs-port-80-using-nginx/
+
+https://sendgrid.com/docs/ui/sending-email/sender-verification
+
+
+apache deeplink angular:
+    http://joeljoseph.net/angular-6-deploy-on-apache-server-by-solving-404-not-found-error-on-page-refresh/
+reverse proxy tomcat:
+    https://medium.com/@mirela95/apache-http-server-as-reverse-proxy-with-java-back-end-application-running-on-tomcat-9c8c9210783e
+certbot:
+    https://www.youtube.com/watch?v=mGcqC3oOINw
+postgres user:
+    https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
+
+
+/etc/apache2/sites-available
+
+ubuntu@ubuntuserver:~/Downloads/apache-tomcat-10.0.2/bin$ sudo rm -rf /var/www/html/*
+ubuntu@ubuntuserver:~/Downloads/apache-tomcat-10.0.2/bin$ sudo cp ~/Downloads/.htaccess /var/www/html/
+ubuntu@ubuntuserver:~/Downloads/apache-tomcat-10.0.2/bin$ sudo cp ~/ang-client/* /var/www/html/
+ubuntu@ubuntuserver:~/Downloads/apache-tomcat-10.0.2/bin$ sudo systemctl restart apache2
+
+sudo "/var/lib/broker/bin/artemis-service" start

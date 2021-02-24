@@ -22,7 +22,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
-    public final static List<String> ADMIN_MAILING_LIST = Lists.newArrayList("admin@baniascamping.com");
+    public final static List<String> ADMIN_MAILING_LIST = Lists.newArrayList("admin@vaniascamping.com");
 
     private final EmailQueueService emailQueueService;
 

@@ -7,7 +7,7 @@ import { AuthenticationService } from './authentication.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ang-client';
+  title = 'banias-camping';
 
   constructor(private authService : AuthenticationService) {}
 

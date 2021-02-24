@@ -108,6 +108,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         config.setAllowedHeaders(Collections.singletonList("*"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedOrigin("https://www.vaniascamping.com");
+        config.addAllowedOrigin("https://vaniascamping.com");
         config.setAllowCredentials(true);
         return config;
     }

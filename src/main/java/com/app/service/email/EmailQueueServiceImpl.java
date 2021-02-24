@@ -20,7 +20,7 @@ public class EmailQueueServiceImpl implements EmailQueueService {
     private final TaskExecutor threadPoolTaskExecutor;
     private final JmsTemplate jmsTemplate;
 
-    public EmailQueueServiceImpl(@Qualifier("SMTPEmailServiceImpl") EmailService emailService, @Qualifier("EmailThreadPoolTaskExecutor") TaskExecutor threadPoolTaskExecutor, JmsTemplate jmsTemplate) {
+    public EmailQueueServiceImpl(@Qualifier("SendGridEmailServiceImpl") EmailService emailService, @Qualifier("EmailThreadPoolTaskExecutor") TaskExecutor threadPoolTaskExecutor, JmsTemplate jmsTemplate) {
         this.emailService = emailService;
         this.threadPoolTaskExecutor = threadPoolTaskExecutor;
         this.jmsTemplate = jmsTemplate;
