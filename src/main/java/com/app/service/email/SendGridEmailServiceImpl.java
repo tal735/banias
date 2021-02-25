@@ -23,7 +23,7 @@ public class SendGridEmailServiceImpl implements EmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SendGridEmailServiceImpl.class);
 
     private static final String API_KEY = "APIKEY";
-    private static final String EMAIL_FROM = "supermarimarket@gmail.com";
+    private static final String EMAIL_FROM = "admin@vaniascamping.com";
 
     @Override
     public boolean sendEmail(List<String> to, String subject, String text) {
