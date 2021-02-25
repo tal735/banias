@@ -32,7 +32,6 @@ public class JmsConfig {
     public JmsTemplate jmsTemplate(){
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(connectionFactory());
-//        template.setDefaultDestinationName(QUEUE_NAME);
         return template;
     }
 
