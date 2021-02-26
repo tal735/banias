@@ -1,5 +1,6 @@
 package com.app.config.security;
 
+import com.app.config.security.csrf.CsrfHeaderFilter;
 import com.app.config.security.dao.DAOAuthenticationProvider;
 import com.app.config.security.dao.DaoAuthenticationFilter;
 import com.app.config.security.otp.OTPAuthenticationFilter;
@@ -26,6 +27,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -81,6 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // configure filters
         http.addFilterBefore( new DaoAuthenticationFilter("/authentication", successHandler, failureHandler, authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class );
         http.addFilterBefore( new OTPAuthenticationFilter("/api/authentication", otpSuccessHandler, failureHandler, authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class );
+        http.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
 
         // configure authentication providers
         http.authenticationProvider( authenticationProvider() );
@@ -92,8 +97,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.USER)
                 .antMatchers("/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .and()
-                .cors().configurationSource(SecurityConfig::getCorsConfiguration).and()
-                .csrf().disable()
+                .cors().configurationSource(SecurityConfig::getCorsConfiguration)
+                .and()
+                .csrf().csrfTokenRepository(csrfTokenRepository())
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
@@ -112,6 +119,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedOrigin("https://vaniascamping.com");
         config.setAllowCredentials(true);
         return config;
+    }
+
+    private CsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
     }
 
 }
