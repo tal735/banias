@@ -39,8 +39,6 @@ export class BookNewComponent implements OnInit {
     }
     this.networkService.book(bookingRequest).subscribe(
       data => {
-        console.log('GUT!');
-        console.log(data);
         this.handleResponse(data);
       },
       error => {this.error = error.error.error; console.log(error.error.error)}
