@@ -68,7 +68,8 @@ certbot:
     https://www.youtube.com/watch?v=mGcqC3oOINw
 postgres user:
     https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
-
+tomcat jndi environment variables:
+    https://stackoverflow.com/questions/18404219/how-to-store-string-values-in-context-xml/24122238
 
 /etc/apache2/sites-available
 

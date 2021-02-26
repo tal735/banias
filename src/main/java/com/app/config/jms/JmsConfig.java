@@ -3,6 +3,7 @@ package com.app.config.jms;
 import com.google.common.collect.Lists;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -15,8 +16,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @EnableJms
 public class JmsConfig {
     private static final String BROKER_URL = ActiveMQConnection.DEFAULT_BROKER_URL;
-    private static final String BROKER_USERNAME = "test";
-    private static final String BROKER_PASSWORD = "test";
+
+    @Value("${jms.broker.user}")
+    private String BROKER_USERNAME;
+
+    @Value("${jms.broker.password}")
+    private String BROKER_PASSWORD;
 
     @Bean
     public ActiveMQConnectionFactory connectionFactory(){

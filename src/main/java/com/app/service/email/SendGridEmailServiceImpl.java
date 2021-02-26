@@ -10,6 +10,7 @@ import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,7 +23,9 @@ public class SendGridEmailServiceImpl implements EmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendGridEmailServiceImpl.class);
 
-    private static final String API_KEY = "APIKEY";
+    @Value("${sendgrid.api.key}")
+    private String API_KEY;
+
     private static final String EMAIL_FROM = "admin@vaniascamping.com";
 
     @Override
