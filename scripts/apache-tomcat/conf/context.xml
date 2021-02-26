@@ -28,8 +28,20 @@
     <!--
     <Manager pathname="" />
     -->
-        <ResourceLink 
-      name="jdbc/db" 
-      global="jdbc/db" 
-      type="javax.sql.DataSource"/>
+
+    <!-- Database -->
+    <ResourceLink name="jdbc/db" global="jdbc/db" type="javax.sql.DataSource"/>
+
+    <!-- SMTP Email Credentials -->
+    <Environment name="smtp.host" 	            value="" 	type="java.lang.String"/>
+    <Environment name="smtp.port" 	            value="587" type="java.lang.Integer"/>
+    <Environment name="smtp.user" 	            value="" 	type="java.lang.String"/>
+    <Environment name="smtp.password" 	        value="" 	type="java.lang.String"/>
+
+    <!-- JMS/ActiveMQ -->
+    <Environment name="jms.broker.user" 		value="test" 	type="java.lang.String"/>
+    <Environment name="jms.broker.password" 	value="test" 	type="java.lang.String"/>
+
+    <!-- SendGrid API -->
+    <Environment name="sendgrid.api.key"        value="KEY" type="java.lang.String"/>
 </Context>
