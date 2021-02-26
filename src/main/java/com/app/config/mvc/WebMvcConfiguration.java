@@ -33,21 +33,4 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         return mailSender;
     }
 
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("*").allowCredentials(true).allowedHeaders("*").allowedMethods("*").allowedOrigins("http://localhost:4200");
-//    }
-
-//    protected ResourceHandlerRegistration appendResourceHandler(ResourceHandlerRegistry registry) {
-//        return registry.addResourceHandler(RESOURCE_PATHS);
-//    }
-//
-//    protected void initializeResourceHandler(ResourceHandlerRegistration resourceHandlerRegistration) {
-//        resourceHandlerRegistration.addResourceLocations(RESOURCE_LOCATIONS).setCacheControl(getCacheControl());
-//    }
-//
-//    protected CacheControl getCacheControl() {
-//        return CacheControl.maxAge(10, TimeUnit.DAYS).cachePublic();
-//    }
-
 }
