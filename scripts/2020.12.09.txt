@@ -73,3 +73,7 @@ ubuntu@ubuntuserver:~/Downloads/apache-tomcat-10.0.2/bin$ sudo cp ~/ang-client/*
 ubuntu@ubuntuserver:~/Downloads/apache-tomcat-10.0.2/bin$ sudo systemctl restart apache2
 
 sudo "/var/lib/broker/bin/artemis-service" start
+
+
+dev:
+    self sign certificate:  https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-20-04
