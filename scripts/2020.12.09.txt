@@ -24,7 +24,7 @@ DataSource with JNDI (Tomcat)
 https://www.baeldung.com/spring-persistence-jpa-jndi-datasource
 https://www.journaldev.com/2597/spring-datasource-jndi-with-tomcat-example
 
-insert into usr values(nextval('usr_id_sequence'),'admin@admin.com','$2y$12$lCCaIcknHr3SblNFbIuWceyIoMjyPAfvpEiEkTmwlcYg3Qwbl0Q8G');
+insert into usr values(nextval('usr_id_sequence'),'admin@vaniascamping.com','$2y$12$sP/MGDyIeeCIebIUpQlSleb.nM3oBzE9EI5wcX1NcVAyePyAyjgue');    // AdminPa55w0rd
 insert into usr_role values(1,'ADMIN');
 
 
@@ -64,6 +64,8 @@ postgres user:
     https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e
 tomcat jndi environment variables:
     https://stackoverflow.com/questions/18404219/how-to-store-string-values-in-context-xml/24122238
+tomcat as a service:
+    https://www.atlantic.net/vps-hosting/how-to-setup-tomcat-with-nginx-as-a-reverse-proxy-on-ubuntu-18-04/
 
 /etc/apache2/sites-available
 
