@@ -79,3 +79,22 @@ sudo "/var/lib/broker/bin/artemis-service" start
 
 dev:
     self sign certificate:  https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-20-04
+
+
+
+
+expose postgres using nginx proxy:
+1.
+    /etc/nginx/nginx.conf:
+        stream {
+            upstream postgres {
+                server 127.0.0.1:5432;
+            }
+
+            server {
+                listen 54322 so_keepalive=on;
+                proxy_pass postgres;
+            }
+        }
+2. set up firewall rule for 54322
+3. secure port with certificate
