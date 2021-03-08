@@ -26,8 +26,6 @@ public class SendGridEmailServiceImpl implements EmailService {
     @Value("${sendgrid.api.key}")
     private String API_KEY;
 
-    private static final String EMAIL_FROM = "admin@vaniascamping.com";
-
     @Override
     public boolean sendEmail(List<String> to, String subject, String text) {
         try {

@@ -17,12 +17,12 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.app.service.email.EmailService.ADMIN_MAILING_LIST;
+
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotificationServiceImpl.class);
-
-    public final static List<String> ADMIN_MAILING_LIST = Lists.newArrayList("admin@vaniascamping.com");
 
     private final EmailQueueService emailQueueService;
 
@@ -76,10 +76,11 @@ public class NotificationServiceImpl implements NotificationService {
         }
         String html = "A new message has been added to booking " + booking.getReference() + ":\n" + "\"" + note + "\"";
         String subject = booking.getReference() + ": A new message from " + noteUser.getEmail();
-        if (!noteUser.getId().equals(bookingUser.getId())) { // when admin adds a note, notify the booking user
-            sendEmail(bookingUser.getEmail(), subject, html);
+        if (noteUser.getId().equals(bookingUser.getId())) {
+            sendEmailToAdmin(subject, html);
+        } else {
+            sendEmail(bookingUser.getEmail(), subject, html); // when admin adds a note, notify the booking user
         }
-        sendEmailToAdmin(subject, html);
     }
 
     @Override
