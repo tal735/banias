@@ -24,7 +24,7 @@ DataSource with JNDI (Tomcat)
 https://www.baeldung.com/spring-persistence-jpa-jndi-datasource
 https://www.journaldev.com/2597/spring-datasource-jndi-with-tomcat-example
 
-insert into usr values(nextval('usr_id_sequence'),'admin@vaniascamping.com','$2y$12$sP/MGDyIeeCIebIUpQlSleb.nM3oBzE9EI5wcX1NcVAyePyAyjgue');    // AdminPa55w0rd
+insert into usr values(nextval('usr_id_sequence'),'admin@vaniascamping.com','$2y$12$FuitgFsF/3ov/mGNpE6nle0KHiL7fIakZPV8bx1Ij/3MMF8cy895G'); -- 123456
 insert into usr_role values(1,'ADMIN');
 
 

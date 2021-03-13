@@ -30,7 +30,7 @@ export class AuthenticationService {
   logout() {
     this.networkService.logout().subscribe(
       () => {
-        this.setUser(null);
+        this.checkAuthentication();
         this.router.navigate(["/home"]);
       }
     )
