@@ -22,7 +22,7 @@ public class SMTPEmailServiceImpl implements EmailService {
 
     @Override
     public boolean sendEmail(List<String> to, String subject, String text) {
-        LOGGER.debug("Sending Email to: " + to + ", subject: " + subject + ", text: " + text);
+        LOGGER.debug("Sending Email to: " + to + ", subject: " + subject + ", text: " + text + ", from: " + EmailDomainUtils.EMAIL_NOTIFICATION_FROM);
 //        SimpleMailMessage message = new SimpleMailMessage();
 //        message.setFrom("noreply@baniascamping.com");
 //        message.setTo(to);

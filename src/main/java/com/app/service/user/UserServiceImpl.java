@@ -1,5 +1,6 @@
 package com.app.service.user;
 
+import com.app.service.email.EmailDomainUtils;
 import com.app.dao.user.UserDao;
 import com.app.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public synchronized User createInternalUser() {
         int count = userDao.getCount();
-        String newEmail = String.format("user_%d@baniascamping.com", count);
+        String user = String.format("user_%d", count);
+        String newEmail = EmailDomainUtils.getEmailWithDomain(user);
         return createUser(newEmail);
     }
 

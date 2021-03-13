@@ -3,6 +3,7 @@ package com.app.service.notification;
 import com.app.model.booking.Booking;
 import com.app.model.booking.BookingNote;
 import com.app.model.user.User;
+import com.app.service.email.EmailDomainUtils;
 import com.app.service.notification.diff.Diff;
 import com.app.service.email.EmailQueueService;
 import com.app.service.email.EmailMessage;
@@ -16,8 +17,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.app.service.email.EmailService.ADMIN_MAILING_LIST;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -111,7 +110,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     private void sendEmailToAdmin(String subject, String text) {
-        sendEmail(ADMIN_MAILING_LIST, subject, text);
+        sendEmail(EmailDomainUtils.ADMIN_MAILING_LIST, subject, text);
     }
 
     private void sendEmail(List<String> to, String subject, String text) {

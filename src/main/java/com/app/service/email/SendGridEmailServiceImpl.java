@@ -45,7 +45,7 @@ public class SendGridEmailServiceImpl implements EmailService {
 
     private Mail createMail(List<String> to, String subject, String text) {
         Mail mail = new Mail();
-        mail.setFrom(new Email(EMAIL_FROM));
+        mail.setFrom(new Email(EmailDomainUtils.EMAIL_NOTIFICATION_FROM));
         mail.setSubject(subject);
         mail.addContent(new Content("text/plain", text));
         Personalization personalization = new Personalization();

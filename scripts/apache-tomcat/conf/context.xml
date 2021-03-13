@@ -45,7 +45,10 @@
     <!-- SendGrid API -->
     <Environment name="sendgrid.api.key"        value="KEY" type="java.lang.String"/>
 
-    <!-- CORS Allowed Origins -->
-    <Environment name="cors.origin"        value="vaniascamping.com" type="java.lang.String"/>
+    <!-- CORS Allowed Origin(s) -->
+    <Environment name="cors.origin"        value="http://localhost:4200" type="java.lang.String"/>
+
+    <!-- Application Domain (for emails, etc...) -->
+    <Environment name="app.domain"        value="vaniascamping.com" type="java.lang.String"/>
 
 </Context>
