@@ -44,4 +44,8 @@
 
     <!-- SendGrid API -->
     <Environment name="sendgrid.api.key"        value="KEY" type="java.lang.String"/>
+
+    <!-- CORS Allowed Origins -->
+    <Environment name="cors.origin"        value="vaniascamping.com" type="java.lang.String"/>
+
 </Context>

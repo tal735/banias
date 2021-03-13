@@ -12,6 +12,7 @@ import com.app.service.user.UserService;
 import com.app.config.security.otp.OTPUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -32,7 +33,6 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 
 @EnableWebSecurity
@@ -48,6 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired @Qualifier("AjaxAuthenticationSuccessHandler") AuthenticationSuccessHandler successHandler;
     @Autowired @Qualifier("OTPAuthenticationSuccessHandler")  AuthenticationSuccessHandler otpSuccessHandler;
     @Autowired AuthenticationFailureHandler failureHandler;
+
+    @Value("${cors.origin}")
+    private String origin;
 
     @Bean
     public PasswordEncoder BCryptPasswordEncoder() {
@@ -97,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").hasAuthority(AuthoritiesConstants.USER)
                 .antMatchers("/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
                 .and()
-                .cors().configurationSource(SecurityConfig::getCorsConfiguration)
+                .cors().configurationSource((request) -> getCorsConfiguration(origin))
                 .and()
                 .csrf().csrfTokenRepository(csrfTokenRepository())
                 .and()
@@ -110,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(logoutSuccessHandler);
     }
 
-    private static CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+    private static CorsConfiguration getCorsConfiguration(String origin) {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedHeaders(Collections.singletonList("*"));
         config.setAllowedMethods(Collections.singletonList("*"));
